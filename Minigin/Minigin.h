@@ -2,18 +2,18 @@
 #include <string>
 #include <functional>
 
-namespace dae
+namespace aze
 {
-	class Minigin
+	class Azeban
 	{
 	public:
-		explicit Minigin(const std::string& dataPath);
-		~Minigin();
+		explicit Azeban(const std::string& dataPath);
+		~Azeban();
 		void Run(const std::function<void()>& load);
 
-		Minigin(const Minigin& other) = delete;
-		Minigin(Minigin&& other) = delete;
-		Minigin& operator=(const Minigin& other) = delete;
-		Minigin& operator=(Minigin&& other) = delete;
+		Azeban(const Azeban& other) = delete;
+		Azeban(Azeban&& other) = delete;
+		Azeban& operator=(const Azeban& other) = delete;
+		Azeban& operator=(Azeban&& other) = delete;
 	};
 }

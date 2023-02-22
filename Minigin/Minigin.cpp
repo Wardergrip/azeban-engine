@@ -40,7 +40,7 @@ void PrintSDLVersion()
 		version.major, version.minor, version.patch);
 }
 
-dae::Minigin::Minigin(const std::string &dataPath)
+aze::Azeban::Azeban(const std::string &dataPath)
 {
 	PrintSDLVersion();
 	
@@ -67,7 +67,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	ResourceManager::GetInstance().Init(dataPath);
 }
 
-dae::Minigin::~Minigin()
+aze::Azeban::~Azeban()
 {
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(g_window);
@@ -75,7 +75,7 @@ dae::Minigin::~Minigin()
 	SDL_Quit();
 }
 
-void dae::Minigin::Run(const std::function<void()>& load)
+void aze::Azeban::Run(const std::function<void()>& load)
 {
 	load();
 
