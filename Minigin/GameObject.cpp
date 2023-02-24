@@ -3,9 +3,14 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 
+#include "Azemacros.h"
+
 aze::GameObject::~GameObject() = default;
 
-void aze::GameObject::Update(){}
+void aze::GameObject::Update(float elapsedSec)
+{
+	UNREFERENCED_PARAMETER(elapsedSec);
+}
 
 void aze::GameObject::Render() const
 {

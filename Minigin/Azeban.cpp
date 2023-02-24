@@ -10,6 +10,8 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 
+#include <chrono>
+
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
@@ -85,10 +87,17 @@ void aze::Azeban::Run(const std::function<void()>& load)
 
 	// todo: this update loop could use some work.
 	bool doContinue = true;
+	std::chrono::steady_clock::time_point currentTime;
+	std::chrono::steady_clock::time_point lastTime;
 	while (doContinue)
 	{
+		currentTime = std::chrono::high_resolution_clock::now();
+		const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
+
 		doContinue = input.ProcessInput();
-		sceneManager.Update();
+		sceneManager.Update(deltaTime);
 		renderer.Render();
+
+		lastTime = currentTime;
 	}
 }

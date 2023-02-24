@@ -51,6 +51,9 @@
     <ClInclude Include="Azeban.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Azemacros.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">

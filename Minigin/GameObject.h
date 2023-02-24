@@ -10,7 +10,7 @@ namespace aze
 	class GameObject 
 	{
 	public:
-		virtual void Update();
+		virtual void Update(float elapsedSec);
 		virtual void Render() const;
 
 		void SetTexture(const std::string& filename);
