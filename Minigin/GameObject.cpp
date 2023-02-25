@@ -13,6 +13,10 @@ void aze::GameObject::Update(float elapsedSec)
 	{
 		renderComps->Update(elapsedSec);
 	}
+	for (const auto& updateComps : m_pUpdateComponents)
+	{
+		updateComps->Update(elapsedSec);
+	}
 }
 
 void aze::GameObject::Render() const

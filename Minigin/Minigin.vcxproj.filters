@@ -66,6 +66,9 @@
     <ClInclude Include="UpdateComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="FPS.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -103,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="Azeban.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FPS.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -9,7 +9,7 @@
 
 aze::TextObject::TextObject(std::weak_ptr<GameObject> pParent)
 	:RenderComponent(pParent)
-	, m_needsUpdate(true), m_text(), m_font(), m_textTexture(nullptr)
+	, m_needsUpdate(true), m_text(), m_font(), m_textTexture(nullptr), m_Color{255,255,255}
 {
 }
 
@@ -18,8 +18,7 @@ void aze::TextObject::Update(float elapsedSec)
 	UNREFERENCED_PARAMETER(elapsedSec);
 	if (m_needsUpdate)
 	{
-		const SDL_Color color = { 255,255,255 }; // only white text is supported now
-		const auto surf = TTF_RenderText_Blended(m_font->GetFont(), m_text.c_str(), color);
+		const auto surf = TTF_RenderText_Blended(m_font->GetFont(), m_text.c_str(), m_Color);
 		if (surf == nullptr) 
 		{
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
@@ -61,6 +60,14 @@ aze::TextObject* aze::TextObject::SetPosition(const float x, const float y)
 aze::TextObject* aze::TextObject::SetFont(std::shared_ptr<Font> pFont)
 {
 	m_font = pFont;
+	m_needsUpdate = true;
+	return this;
+}
+
+aze::TextObject* aze::TextObject::SetColor(const SDL_Color& sdl_Col)
+{
+	m_Color = sdl_Col;
+	m_needsUpdate = true;
 	return this;
 }
 

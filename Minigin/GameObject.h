@@ -33,8 +33,9 @@ namespace aze
 		template<typename T> bool RemoveComponent();
 
 	private:
-		std::vector<std::shared_ptr<Component>> m_pComponents;
+		std::vector<std::weak_ptr<Component>> m_pComponents;
 		std::vector<std::shared_ptr<RenderComponent>> m_pRenderComponents;
+		std::vector<std::shared_ptr<UpdateComponent>> m_pUpdateComponents;
 
 		Transform m_transform{};
 		// todo: mmm, every gameobject has a texture? Is that correct?
@@ -49,14 +50,15 @@ namespace aze
 
 		auto pT = std::make_shared<T>();
 		auto weakComp = std::weak_ptr<T>(pT);
-		if (std::is_base_of<RenderComponent, T>{}())
+		if constexpr (std::is_base_of<RenderComponent, T>{}())
 		{
 			m_pRenderComponents.push_back(pT);
 		}
-		else
+		else if constexpr (std::is_base_of<UpdateComponent, T>{}())
 		{
-			m_pComponents.push_back(pT);
+			m_pUpdateComponents.push_back(pT);
 		}
+		m_pComponents.push_back(pT);
 		Component* pComponent = pT.get();
 		pComponent->SetParent(weak_from_this());
 		return weakComp;
@@ -85,15 +87,6 @@ namespace aze
 			if (aze::is_uninitialized(derivedComp))
 			{
 				m_pComponents.erase(iterator);
-				return true;
-			}
-		}
-		for (auto iterator{ m_pRenderComponents.begin() }; iterator < m_pRenderComponents.end(); ++iterator)
-		{
-			std::weak_ptr<T> derivedComp{ std::dynamic_pointer_cast<T>(*iterator) };
-			if (!aze::is_uninitialized(derivedComp))
-			{
-				m_pRenderComponents.erase(iterator);
 				return true;
 			}
 		}
