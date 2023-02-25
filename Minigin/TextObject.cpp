@@ -7,9 +7,11 @@
 
 #include "Azemacros.h"
 
-aze::TextObject::TextObject(const std::string& text, std::shared_ptr<Font> font) 
-	: m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
-{ }
+aze::TextObject::TextObject(std::weak_ptr<GameObject> pParent)
+	:RenderComponent(pParent)
+	, m_needsUpdate(true), m_text(), m_font(), m_textTexture(nullptr)
+{
+}
 
 void aze::TextObject::Update(float elapsedSec)
 {
@@ -43,15 +45,23 @@ void aze::TextObject::Render() const
 }
 
 // This implementation uses the "dirty flag" pattern
-void aze::TextObject::SetText(const std::string& text)
+aze::TextObject* aze::TextObject::SetText(const std::string& text)
 {
 	m_text = text;
 	m_needsUpdate = true;
+	return this;
 }
 
-void aze::TextObject::SetPosition(const float x, const float y)
+aze::TextObject* aze::TextObject::SetPosition(const float x, const float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
+	return this;
+}
+
+aze::TextObject* aze::TextObject::SetFont(std::shared_ptr<Font> pFont)
+{
+	m_font = pFont;
+	return this;
 }
 
 

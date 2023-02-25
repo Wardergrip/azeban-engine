@@ -177,10 +177,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Azemacros.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="UpdateComponent.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Azeban.h" />
+    <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />

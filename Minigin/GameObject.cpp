@@ -9,13 +9,23 @@ aze::GameObject::~GameObject() = default;
 
 void aze::GameObject::Update(float elapsedSec)
 {
-	UNREFERENCED_PARAMETER(elapsedSec);
+	for (const auto& renderComps : m_pRenderComponents)
+	{
+		renderComps->Update(elapsedSec);
+	}
 }
 
 void aze::GameObject::Render() const
 {
 	const auto& pos = m_transform.GetPosition();
-	Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
+	if (m_texture.get())
+	{
+		Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
+	}
+	for (const auto& renderComps : m_pRenderComponents)
+	{
+		renderComps->Render();
+	}
 }
 
 void aze::GameObject::SetTexture(const std::string& filename)
