@@ -21,6 +21,9 @@ namespace aze
 		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
 
+		const Transform& GetTransform() const;
+		Transform& GetTransform();
+
 		GameObject() = default;
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
@@ -29,7 +32,8 @@ namespace aze
 		GameObject& operator=(GameObject&& other) = delete;
 
 		template <typename T> std::weak_ptr<T> AddComponent();
-		template<typename T> std::weak_ptr<T> GetComponent() const;
+		template <typename T> std::weak_ptr<T> GetComponent() const;
+		template <typename T> bool HasComponent() const;
 		template<typename T> bool RemoveComponent();
 
 	private:
@@ -76,6 +80,20 @@ namespace aze
 			}
 		}
 		return nullptr;
+	}
+	
+	template<typename T>
+	inline bool GameObject::HasComponent() const
+	{
+		for (const auto& pComp : m_pComponents)
+		{
+			std::weak_ptr<T> derivedComp{ std::dynamic_pointer_cast<T>(pComp) };
+			if (!aze::is_uninitialized(derivedComp))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	template<typename T>

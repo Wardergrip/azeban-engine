@@ -41,3 +41,13 @@ void aze::GameObject::SetPosition(float x, float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
 }
+
+const aze::Transform& aze::GameObject::GetTransform() const
+{
+	return m_transform;
+}
+
+aze::Transform& aze::GameObject::GetTransform()
+{
+	return m_transform;
+}
