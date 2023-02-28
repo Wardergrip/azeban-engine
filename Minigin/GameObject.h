@@ -49,8 +49,11 @@ namespace aze
 	template <typename T>
 	inline std::weak_ptr<T> GameObject::AddComponent()
 	{
+#ifdef DEBUG
 		bool isBased = std::is_base_of<Component, T>{}();
 		assert(isBased && "Type is not a component.");
+#endif // DEBUG
+
 
 		auto pT = std::make_shared<T>();
 		auto weakComp = std::weak_ptr<T>(pT);
