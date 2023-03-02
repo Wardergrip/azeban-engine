@@ -1,11 +1,12 @@
 #pragma once
 #include "UpdateComponent.h"
+#include <memory>
+
 namespace aze
 {
 	class RenderComponent : public UpdateComponent
 	{
 	public:
-		RenderComponent() = default;
 		RenderComponent(std::weak_ptr<GameObject> pParent) :UpdateComponent{ pParent } {}
 		RenderComponent(RenderComponent&& component) = default;
 		RenderComponent(const RenderComponent& component) = default;

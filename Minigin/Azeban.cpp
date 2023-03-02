@@ -11,6 +11,10 @@
 #include "ResourceManager.h"
 
 #include <chrono>
+#include <thread>
+
+#undef min
+#undef max
 
 SDL_Window* g_window{};
 
@@ -85,10 +89,11 @@ void aze::Azeban::Run(const std::function<void()>& load)
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 
-	// todo: this update loop could use some work.
 	bool doContinue = true;
 	std::chrono::steady_clock::time_point currentTime;
 	std::chrono::steady_clock::time_point lastTime;
+	const constexpr int targetFps{ 144 };
+	const constexpr float maxSleepTime{ 1.f / targetFps };
 	while (doContinue)
 	{
 		currentTime = std::chrono::high_resolution_clock::now();
@@ -99,5 +104,9 @@ void aze::Azeban::Run(const std::function<void()>& load)
 		renderer.Render();
 
 		lastTime = currentTime;
+		
+		const auto now = std::chrono::high_resolution_clock::now();
+		const auto timeDiff = static_cast<float>((now - currentTime).count());
+		std::this_thread::sleep_for(std::chrono::duration<float>(std::min(maxSleepTime, timeDiff)));
 	}
 }

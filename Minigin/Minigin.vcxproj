@@ -181,6 +181,7 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="TextureObject.h" />
     <ClInclude Include="UpdateComponent.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Azeban.h" />
@@ -207,6 +208,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="TextureObject.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

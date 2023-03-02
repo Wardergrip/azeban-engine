@@ -30,6 +30,13 @@ void Scene::Update(float elapsedSec)
 	{
 		object->Update(elapsedSec);
 	}
+	for (auto& object : m_objects)
+	{
+		if (object->IsMarkedForDestroy())
+		{
+			Remove(object);
+		}
+	}
 }
 
 void Scene::Render() const

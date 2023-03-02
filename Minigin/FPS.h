@@ -7,8 +7,14 @@ namespace aze
 	class FPS : public UpdateComponent
 	{
 	public:
-		FPS() = default;
-		FPS(std::weak_ptr<GameObject> pParent) :UpdateComponent{ pParent } {}
+		FPS(std::weak_ptr<GameObject> pParent, std::weak_ptr<TextObject> pTextRenderer) 
+			:UpdateComponent{ pParent } 
+			,m_pTextRenderer{pTextRenderer}
+			,m_NrFramesPassed{ 0 }
+			,m_TimeElapsed{ 0 }
+			,m_UpdateInterval{ 1.f }
+		{
+		}
 		FPS(FPS&& component) = default;
 		FPS(const FPS& component) = default;
 		FPS& operator=(FPS&& component) = default;
@@ -16,12 +22,12 @@ namespace aze
 		virtual ~FPS() = default;
 
 		void SetUpdateInterval(float interval);
-		void SetTextureRenderer(std::weak_ptr<TextObject> pTextRenderer);
 
 		virtual void Update(float elapsedSec) override;
 	private:
 		std::weak_ptr<TextObject> m_pTextRenderer;
-		float m_TimeElapsed{ 0.f };
-		float m_UpdateInterval{ 1.f };
+		int m_NrFramesPassed;
+		float m_TimeElapsed;
+		float m_UpdateInterval;
 	};
 }
