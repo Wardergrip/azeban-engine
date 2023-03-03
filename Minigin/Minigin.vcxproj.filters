@@ -16,12 +16,15 @@
     <Filter Include="Components">
       <UniqueIdentifier>{efa5466a-80f1-40f1-bbfb-34ec15fa869c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{e4690120-111b-49aa-9111-9da65c55304b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{09ea915d-e340-4cd4-99c5-679bc0423c9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
@@ -30,22 +33,13 @@
     <ClInclude Include="Texture2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Azeban.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Azemacros.h">
@@ -73,20 +67,26 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="RevolutionComponent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Azeban.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Texture2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
@@ -95,16 +95,7 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Azeban.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FPS.cpp">
@@ -120,7 +111,22 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="RevolutionComponent.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Azeban.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
