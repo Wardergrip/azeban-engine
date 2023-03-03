@@ -4,6 +4,7 @@
 #include "Renderer.h"
 #include "Font.h"
 #include "Texture2D.h"
+#include "GameObject.h"
 
 #include "Azemacros.h"
 
@@ -14,7 +15,6 @@ aze::TextObject::TextObject(std::weak_ptr<GameObject> pParent, const std::string
 	, m_font{ pFont }
 	, m_textTexture{ nullptr }
 	, m_Color{255,255,255}
-	, m_transform{}
 {
 }
 
@@ -42,7 +42,7 @@ void aze::TextObject::Render() const
 {
 	if (m_textTexture != nullptr)
 	{
-		const auto& pos = m_transform.GetPosition();
+		const auto& pos = GetGameObject().lock()->GetTransform().GetWorldPosition();
 		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
 	}
 }
@@ -55,9 +55,9 @@ aze::TextObject& aze::TextObject::SetText(const std::string& text)
 	return *this;
 }
 
-aze::TextObject& aze::TextObject::SetPosition(const float x, const float y)
+aze::TextObject& aze::TextObject::SetPosition(const float , const float )
 {
-	m_transform.SetPosition(x, y, 0.0f);
+	assert(false && "Currently not implemented");
 	return *this;
 }
 

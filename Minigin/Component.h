@@ -7,15 +7,17 @@ namespace aze
 	class Component
 	{
 	public:
-		Component(std::weak_ptr<GameObject> pParent):m_pParent{pParent}{}
+		Component(std::weak_ptr<GameObject> pParent):m_pParentGameObject{pParent}{}
 		Component(Component&& component) = default;
 		Component(const Component& component) = default;
 		Component& operator=(Component&& component) = default;
 		Component& operator=(const Component& component) = default;
 		virtual ~Component() = default;
 	
-		std::weak_ptr<GameObject> GetParent() const { return m_pParent; }
+		virtual void Start() {}
+
+		std::weak_ptr<GameObject> GetGameObject() const { return m_pParentGameObject; }
 	private:
-		std::weak_ptr<GameObject> m_pParent;
+		std::weak_ptr<GameObject> m_pParentGameObject;
 	};
 }

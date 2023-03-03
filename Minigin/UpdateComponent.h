@@ -5,7 +5,7 @@ namespace aze
 	class UpdateComponent : public Component
 	{
 	public:
-		UpdateComponent(std::weak_ptr<GameObject> pParent) :Component{ pParent } {}
+		UpdateComponent(std::weak_ptr<GameObject> pParentGameObject) :Component{ pParentGameObject } {}
 		UpdateComponent(UpdateComponent&& component) = default;
 		UpdateComponent(const UpdateComponent& component) = default;
 		UpdateComponent& operator=(UpdateComponent&& component) = default;

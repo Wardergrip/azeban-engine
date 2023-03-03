@@ -1,14 +1,29 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <memory>
+#include "Component.h"
 
 namespace aze
 {
-	class Transform final
+	class Transform final : public Component
 	{
 	public:
-		const glm::vec3& GetPosition() const { return m_position; }
-		void SetPosition(float x, float y, float z);
+		Transform(std::weak_ptr<GameObject> pParent, const glm::vec3& pos);
+		Transform(std::weak_ptr<GameObject> pParent, float x, float y, float z = 0.f);
+		Transform(std::weak_ptr<GameObject> pParent);
+
+		void SetPosition(const glm::vec3& pos);
+		void SetPosition(float x, float y, float z = 0.f);
+		void SetWorldPosDirty();
+
+		const glm::vec3& GetWorldPosition();
+		const glm::vec3& GetLocalPosition() const;
+
 	private:
-		glm::vec3 m_position;
+		void UpdateWorldPos();
+
+		bool m_IsWorldPosDirty;
+		glm::vec3 m_WorldPosition;
+		glm::vec3 m_LocalPosition;
 	};
 }

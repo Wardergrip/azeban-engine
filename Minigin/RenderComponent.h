@@ -7,7 +7,7 @@ namespace aze
 	class RenderComponent : public UpdateComponent
 	{
 	public:
-		RenderComponent(std::weak_ptr<GameObject> pParent) :UpdateComponent{ pParent } {}
+		RenderComponent(std::weak_ptr<GameObject> pParentGameObject) :UpdateComponent{ pParentGameObject } {}
 		RenderComponent(RenderComponent&& component) = default;
 		RenderComponent(const RenderComponent& component) = default;
 		RenderComponent& operator=(RenderComponent&& component) = default;

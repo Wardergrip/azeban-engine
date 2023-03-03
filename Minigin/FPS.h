@@ -7,8 +7,8 @@ namespace aze
 	class FPS : public UpdateComponent
 	{
 	public:
-		FPS(std::weak_ptr<GameObject> pParent, std::weak_ptr<TextObject> pTextRenderer) 
-			:UpdateComponent{ pParent } 
+		FPS(std::weak_ptr<GameObject> pParentGameObject, std::weak_ptr<TextObject> pTextRenderer) 
+			:UpdateComponent{ pParentGameObject } 
 			,m_pTextRenderer{pTextRenderer}
 			,m_NrFramesPassed{ 0 }
 			,m_TimeElapsed{ 0 }
