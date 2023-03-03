@@ -93,7 +93,7 @@ void aze::Azeban::Run(const std::function<void()>& load)
 	std::chrono::steady_clock::time_point currentTime;
 	std::chrono::steady_clock::time_point lastTime;
 	const constexpr int targetFps{ 144 };
-	const constexpr float maxSleepTime{ 1.f / targetFps };
+	constexpr int maxWaitingTimeMs{ static_cast<int>(1000 / targetFps) };
 	while (doContinue)
 	{
 		currentTime = std::chrono::high_resolution_clock::now();
@@ -105,8 +105,7 @@ void aze::Azeban::Run(const std::function<void()>& load)
 
 		lastTime = currentTime;
 		
-		const auto now = std::chrono::high_resolution_clock::now();
-		const auto timeDiff = static_cast<float>((now - currentTime).count());
-		std::this_thread::sleep_for(std::chrono::duration<float>(std::min(maxSleepTime, timeDiff)));
+		const auto sleepTime{ currentTime + std::chrono::milliseconds(maxWaitingTimeMs) - std::chrono::high_resolution_clock::now() };
+		std::this_thread::sleep_for(sleepTime);
 	}
 }
