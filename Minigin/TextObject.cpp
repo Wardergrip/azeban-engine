@@ -9,7 +9,7 @@
 #include "Azemacros.h"
 
 aze::TextObject::TextObject(std::weak_ptr<GameObject> pParent, const std::string& text, std::shared_ptr<Font> pFont)
-	:RenderComponent(pParent)
+	:Component(pParent)
 	, m_needsUpdate{ true }
 	, m_text{ text }
 	, m_font{ pFont }

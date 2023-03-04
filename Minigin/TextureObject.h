@@ -1,12 +1,11 @@
 #pragma once
-#include "RenderComponent.h"
 #include "Texture2D.h"
 #include "Transform.h"
 #include <string>
 
 namespace aze
 {
-	class TextureObject : public RenderComponent
+	class TextureObject : public Component
 	{
 	public:
 		TextureObject(std::weak_ptr<GameObject> pParentGameObject, const std::string& fileName);

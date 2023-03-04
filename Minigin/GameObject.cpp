@@ -10,8 +10,6 @@ aze::GameObject::GameObject()
 	,m_pChildren{}
 	,m_IsMarkedForDestroy{false}
 	,m_pComponents{}
-	,m_pRenderComponents{}
-	,m_pUpdateComponents{}
 	,m_Transform{}
 {
 }
@@ -31,21 +29,17 @@ void aze::GameObject::Destroy(GameObject* pGameObject)
 
 void aze::GameObject::Update(float elapsedSec)
 {
-	for (const auto& renderComps : m_pRenderComponents)
+	for (auto& comp : m_pComponents)
 	{
-		renderComps->Update(elapsedSec);
-	}
-	for (const auto& updateComps : m_pUpdateComponents)
-	{
-		updateComps->Update(elapsedSec);
+		comp->Update(elapsedSec);
 	}
 }
 
 void aze::GameObject::Render() const
 {
-	for (const auto& renderComps : m_pRenderComponents)
+	for (const auto& comp : m_pComponents)
 	{
-		renderComps->Render();
+		comp->Render();
 	}
 }
 

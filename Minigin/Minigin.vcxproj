@@ -183,10 +183,8 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="RevolutionComponent.h" />
     <ClInclude Include="TextureObject.h" />
-    <ClInclude Include="UpdateComponent.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Azeban.h" />
-    <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
@@ -197,6 +195,7 @@
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameObject.cpp" />

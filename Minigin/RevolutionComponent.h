@@ -1,11 +1,11 @@
 #pragma once
-#include "UpdateComponent.h"
+#include "Component.h"
 
 namespace aze
 {
 	class Transform;
 
-	class RevolutionComponent final : public UpdateComponent
+	class RevolutionComponent final : public Component
 	{
 	public:
 		RevolutionComponent(std::weak_ptr<GameObject> pGameObjectParent, float radius = 10.f, float speed = 10.f);

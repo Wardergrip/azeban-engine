@@ -4,7 +4,7 @@
 #include "GameObject.h"
 
 aze::TextureObject::TextureObject(std::weak_ptr<GameObject> pParentGameObject, const std::string& fileName)
-	:RenderComponent(pParentGameObject)
+	:Component(pParentGameObject)
 	,m_pTexture{ nullptr }
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(fileName);

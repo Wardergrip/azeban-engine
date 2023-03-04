@@ -4,14 +4,11 @@
 #include <SDL_pixels.h>
 #include "Transform.h"
 
-#include "RenderComponent.h"
-#include "UpdateComponent.h"
-
 namespace aze
 {
 	class Font;
 	class Texture2D;
-	class TextObject final : public RenderComponent
+	class TextObject final : public Component
 	{
 	public:
 		void Update(float elapsedSec) override;

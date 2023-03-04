@@ -1,8 +1,6 @@
 #pragma once
 #include "Transform.h"
 #include "Component.h"
-#include "RenderComponent.h"
-#include "UpdateComponent.h"
 #include <memory>
 #include <vector>
 #include <stdexcept>
@@ -60,31 +58,19 @@ namespace aze
 		template <typename T, typename... TArgs >
 		std::weak_ptr<T> AddComponent(TArgs&&... targs)
 		{
-			[[maybe_unused]] const bool isBased = std::is_base_of<Component, T>{}();
-			static_assert(isBased && "Type is not a component.");
-			[[maybe_unused]] const bool isTransform = std::is_same<Transform, T>{}();
-			static_assert(!isTransform && "GameObject has transform by default. Cannot add more transforms than one.");
+			static_assert(std::is_base_of<Component, T>::value, "Type is not a component.");
+			static_assert(!std::is_same<Transform, T>::value,"GameObject has transform by default. Cannot add more transforms than one.");
+			static_assert(std::is_constructible<T, std::weak_ptr<GameObject>, TArgs...>::value, "TArgs do not result in a successful instantiation of T");
 
 			auto pT = std::make_shared<T>(weak_from_this(), std::forward<TArgs>(targs)...);
-			auto weakComp = std::weak_ptr<T>(pT);
-			if constexpr (std::is_base_of<RenderComponent, T>{}())
-			{
-				m_pRenderComponents.push_back(pT);
-			}
-			else if constexpr (std::is_base_of<UpdateComponent, T>{}())
-			{
-				m_pUpdateComponents.push_back(pT);
-			}
 			m_pComponents.push_back(pT);
-			pT->Start();
-			return weakComp;
+			return pT;
 		}
 
 		template <typename T> 
 		std::weak_ptr<T> GetComponent() const
 		{
-			[[maybe_unused]] const bool isTransform = std::is_same<Transform, T>{}();
-			static_assert(isTransform && "Illegal way to access transform. Use GameObject::GetTransform()");
+			static_assert(std::is_same<Transform, T>::value && "Illegal way to access transform. Use GameObject::GetTransform()");
 
 			for (const auto& pComp : m_pComponents)
 			{
@@ -117,8 +103,7 @@ namespace aze
 		template<typename T> 
 		bool RemoveComponent()
 		{
-			[[maybe_unused]] const bool isTransform = std::is_same<Transform, T>{}();
-			static_assert(isTransform && "Cannot remove the transform from a GameObject");
+			static_assert(std::is_same<Transform, T>::value && "Cannot remove the transform from a GameObject");
 
 			for (auto iterator{ m_pComponents.begin() }; iterator < m_pComponents.end(); ++iterator)
 			{
@@ -144,9 +129,7 @@ namespace aze
 		std::vector<std::weak_ptr<GameObject>> m_pChildren;
 		bool m_IsMarkedForDestroy;
 
-		std::vector<std::weak_ptr<Component>> m_pComponents;
-		std::vector<std::shared_ptr<RenderComponent>> m_pRenderComponents;
-		std::vector<std::shared_ptr<UpdateComponent>> m_pUpdateComponents;
+		std::vector<std::shared_ptr<Component>> m_pComponents;
 
 		std::unique_ptr<Transform> m_Transform;
 	};

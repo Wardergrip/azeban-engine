@@ -13,8 +13,9 @@ namespace aze
 		Component& operator=(Component&& component) = default;
 		Component& operator=(const Component& component) = default;
 		virtual ~Component() = default;
-	
-		virtual void Start() {}
+
+		virtual void Render() const;
+		virtual void Update(float elapsedSec);
 
 		std::weak_ptr<GameObject> GetGameObject() const { return m_pParentGameObject; }
 	private:

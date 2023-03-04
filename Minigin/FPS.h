@@ -1,14 +1,14 @@
 #pragma once
-#include "UpdateComponent.h"
+#include "Component.h"
 namespace aze
 {
 	class TextObject;
 
-	class FPS : public UpdateComponent
+	class FPS : public Component
 	{
 	public:
 		FPS(std::weak_ptr<GameObject> pParentGameObject, std::weak_ptr<TextObject> pTextRenderer) 
-			:UpdateComponent{ pParentGameObject } 
+			:Component{ pParentGameObject } 
 			,m_pTextRenderer{pTextRenderer}
 			,m_NrFramesPassed{ 0 }
 			,m_TimeElapsed{ 0 }
