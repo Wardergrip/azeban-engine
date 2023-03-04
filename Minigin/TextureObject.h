@@ -18,7 +18,7 @@ namespace aze
 		TextureObject* SetTexture(const std::string& fileName);
 		std::weak_ptr<Texture2D> GetTexture() const;
 
-		TextureObject& SetPosition(float x, float y);
+		/*TextureObject& SetPosition(float x, float y);*/
 		
 		void Render() const override;
 		void Update(float elapsedSec) override;

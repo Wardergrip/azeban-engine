@@ -55,11 +55,11 @@ aze::TextObject& aze::TextObject::SetText(const std::string& text)
 	return *this;
 }
 
-aze::TextObject& aze::TextObject::SetPosition(const float , const float )
-{
-	assert(false && "Currently not implemented");
-	return *this;
-}
+//aze::TextObject& aze::TextObject::SetPosition(const float , const float )
+//{
+//	CURRENTLY NOT IMPLEMENTED
+//	return *this;
+//}
 
 aze::TextObject& aze::TextObject::SetFont(std::shared_ptr<Font> pFont)
 {

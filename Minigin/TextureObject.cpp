@@ -21,11 +21,11 @@ std::weak_ptr<aze::Texture2D> aze::TextureObject::GetTexture() const
 	return m_pTexture;
 }
 
-aze::TextureObject& aze::TextureObject::SetPosition(float , float )
-{
-	assert(false && "Currently not implemented");
-	return *this;
-}
+//aze::TextureObject& aze::TextureObject::SetPosition(float , float )
+//{
+//	CURRENTLY NOT IMPLEMENTED
+//	return *this;
+//}
 
 void aze::TextureObject::Render() const
 {
