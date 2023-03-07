@@ -4,6 +4,16 @@ namespace aze
 {
 	class GameObject;
 
+	class missing_component : public std::runtime_error
+	{
+	public:
+		missing_component() :runtime_error(what()) {}
+		const char* what() const override
+		{
+			return "A crucial component is not present";
+		}
+	};
+
 	class Component
 	{
 	public:

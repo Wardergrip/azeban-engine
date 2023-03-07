@@ -75,6 +75,9 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="RenderComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renderer.cpp">
@@ -123,6 +126,9 @@
       <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

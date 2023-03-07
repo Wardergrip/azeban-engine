@@ -15,13 +15,8 @@ namespace aze
 		TextureObject& operator=(const TextureObject& other) = delete;
 		~TextureObject() = default;
 
-		TextureObject* SetTexture(const std::string& fileName);
+		TextureObject& SetTexture(const std::string& fileName);
 		std::weak_ptr<Texture2D> GetTexture() const;
-
-		/*TextureObject& SetPosition(float x, float y);*/
-		
-		void Render() const override;
-		void Update(float elapsedSec) override;
 
 	private:
 		std::shared_ptr<Texture2D> m_pTexture;

@@ -12,10 +12,8 @@ namespace aze
 	{
 	public:
 		void Update(float elapsedSec) override;
-		void Render() const override;
 
 		TextObject& SetText(const std::string& text);
-		//TextObject& SetPosition(float x, float y);
 		TextObject& SetFont(std::shared_ptr<Font> pFont);
 		TextObject& SetColor(const SDL_Color& sdl_Col);
 

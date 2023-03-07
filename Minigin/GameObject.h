@@ -71,7 +71,7 @@ namespace aze
 		template <typename T> 
 		std::weak_ptr<T> GetComponent() const
 		{
-			static_assert(std::is_same<Transform, T>::value && "Illegal way to access transform. Use GameObject::GetTransform()");
+			static_assert(!std::is_same<Transform, T>::value, "Illegal way to access transform. Use GameObject::GetTransform()");
 
 			for (const auto& pComp : m_pComponents)
 			{
@@ -81,7 +81,9 @@ namespace aze
 					return derivedComp;
 				}
 			}
-			return nullptr;
+			auto p = std::weak_ptr<T>();
+			p.reset();
+			return p;
 		}
 
 		template <typename T> 

@@ -2,6 +2,7 @@
 #include <SDL_ttf.h>
 #include "TextObject.h"
 #include "Renderer.h"
+#include "RenderComponent.h"
 #include "Font.h"
 #include "Texture2D.h"
 #include "GameObject.h"
@@ -22,6 +23,16 @@ void aze::TextObject::Update(float)
 {
 	if (m_needsUpdate)
 	{
+		auto pRenderComp = GetGameObject().lock()->GetComponent<RenderComponent>();
+		if (pRenderComp.expired())
+		{
+			throw missing_component();
+		}
+		auto renderComp = GetGameObject().lock()->GetComponent<RenderComponent>().lock();
+		if (m_textTexture.get())
+		{
+			renderComp->RemoveTexture(m_textTexture);
+		}
 		const auto surf = TTF_RenderText_Blended(m_font->GetFont(), m_text.c_str(), m_Color);
 		if (surf == nullptr) 
 		{
@@ -35,17 +46,10 @@ void aze::TextObject::Update(float)
 		SDL_FreeSurface(surf);
 		m_textTexture = std::make_shared<Texture2D>(texture);
 		m_needsUpdate = false;
+		renderComp->AddTexture(m_textTexture);
 	}
 }
 
-void aze::TextObject::Render() const
-{
-	if (m_textTexture != nullptr)
-	{
-		const auto& pos = GetGameObject().lock()->GetTransform().GetWorldPosition();
-		Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
-	}
-}
 
 // This implementation uses the "dirty flag" pattern
 aze::TextObject& aze::TextObject::SetText(const std::string& text)
@@ -54,12 +58,6 @@ aze::TextObject& aze::TextObject::SetText(const std::string& text)
 	m_needsUpdate = true;
 	return *this;
 }
-
-//aze::TextObject& aze::TextObject::SetPosition(const float , const float )
-//{
-//	CURRENTLY NOT IMPLEMENTED
-//	return *this;
-//}
 
 aze::TextObject& aze::TextObject::SetFont(std::shared_ptr<Font> pFont)
 {
