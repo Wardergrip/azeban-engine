@@ -47,6 +47,7 @@ namespace aze
 		void SetPosition(float x, float y);
 
 		GameObject& SetParent(std::weak_ptr<GameObject> pParent, bool worldPositionStays = false);
+		GameObject& SetParent(std::nullptr_t null);
 		std::weak_ptr<GameObject> GetParent() const;
 		size_t GetChildCount() const;
 		std::weak_ptr<GameObject> GetChildAt(size_t index) const;

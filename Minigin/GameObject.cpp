@@ -10,7 +10,7 @@ aze::GameObject::GameObject()
 	,m_pChildren{}
 	,m_IsMarkedForDestroy{false}
 	,m_pComponents{}
-	,m_Transform{}
+	,m_Transform{nullptr}
 {
 }
 
@@ -128,6 +128,25 @@ aze::GameObject& aze::GameObject::SetParent(std::weak_ptr<GameObject> pParent, b
 	return *this;
 }
 
+aze::GameObject& aze::GameObject::SetParent(std::nullptr_t)
+{
+	// If we have no parent, we don't have to do anything
+	if (m_pParent.expired())
+	{
+		return *this;
+	}
+
+	// Remove ourselves from their children
+	m_pParent.lock()->RemoveChild(weak_from_this());
+
+	m_pParent.reset();
+
+	auto transform = GetTransform();
+	// Our local = world since our parent is the scene.
+	transform.SetPosition(transform.GetWorldPosition());
+	return *this;
+}
+
 std::weak_ptr<aze::GameObject> aze::GameObject::GetParent() const
 {
 	return m_pParent;
@@ -155,7 +174,7 @@ const aze::Transform& aze::GameObject::GetTransform() const
 
 aze::Transform& aze::GameObject::GetTransform()
 {
-	if (!m_Transform.get())
+	if (!m_Transform || !m_Transform.get())
 	{
 		m_Transform = std::make_unique<Transform>(weak_from_this());
 	}
