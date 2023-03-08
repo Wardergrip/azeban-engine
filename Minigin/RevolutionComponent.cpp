@@ -4,6 +4,7 @@
 
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <cmath>
 
 #include <iostream>
 
@@ -22,10 +23,12 @@ void aze::RevolutionComponent::Update(float elapsedSec)
 	// When frames are long, the rotationAngle is high and small steps might not make any impact.
 	// The following lines make sure that m_RotationAngle stays small.
 	const constexpr float twoPi = static_cast<float>(2 * M_PI);
-	while (m_RotationAngle >= twoPi)
-	{
-		m_RotationAngle -= twoPi;
-	}
+
+	// The std::fmod function calculates the floating-point remainder of division 
+	// and returns a result with the same sign as the dividend.
+	// The std::fmod function takes care of wrapping the value of m_RotationAngle
+	// within the range of [-twoPi, twoPi].
+	m_RotationAngle = std::fmod(m_RotationAngle, twoPi);
 	m_ParentGameObjectTransform.SetPosition(m_Radius * std::cosf(m_RotationAngle), m_Radius * std::sinf(m_RotationAngle));
 }
 
