@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include "InputManager.h"
+#include "../3rdParty/imgui/imgui_impl_sdl2.h"
 
 bool aze::InputManager::ProcessInput()
 {
@@ -15,6 +16,7 @@ bool aze::InputManager::ProcessInput()
 			
 		}
 		// etc...
+		ImGui_ImplSDL2_ProcessEvent(&e);
 	}
 
 	return true;
