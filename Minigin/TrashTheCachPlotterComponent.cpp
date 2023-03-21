@@ -1,15 +1,15 @@
-#include "PlotterComponent.h"
+#include "TrashTheCachPlotterComponent.h"
 #include "../3rdParty/imgui/imgui.h"
 #include "../3rdParty/imgui/imgui_plot.h"
 #include "TrashTheCache.h"
 
-void aze::PlotterComponent::OnGUI()
+void aze::TrashTheCachPlotterComponent::OnGUI()
 {
     RenderExc1();
     RenderExc2();
 }
 
-void aze::PlotterComponent::RenderExc1()
+void aze::TrashTheCachPlotterComponent::RenderExc1()
 {
     const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x + 10, main_viewport->WorkPos.y + 50));
@@ -26,13 +26,8 @@ void aze::PlotterComponent::RenderExc1()
     if (ImGui::Button("Trash the cache"))
     {
         m_Exc1Samples.clear();
-        auto avarages = TrashTheCache::GetAvaragesTestInt(static_cast<size_t>(m_Exc1SampleAmount));
-        std::for_each(avarages.begin(), avarages.end(),
-            [&](const std::chrono::microseconds& ms)
-            {
-                m_Exc1Samples.push_back(static_cast<float>(ms.count()));
-            }
-        );
+        auto avarages = TrashTheCache::GetAvaragesTest<size_t>(static_cast<size_t>(m_Exc1SampleAmount));
+        m_Exc1Samples = TrashTheCache::ToFloatVector(avarages);
     }
 
     if (!m_Exc1Samples.empty())
@@ -43,16 +38,14 @@ void aze::PlotterComponent::RenderExc1()
     ImGui::End();
 }
 
-void aze::PlotterComponent::RenderExc2()
+void aze::TrashTheCachPlotterComponent::RenderExc2()
 {
     const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x + 310, main_viewport->WorkPos.y + 50));
     ImGui::SetNextWindowSize(ImVec2(300, 400));
 
-    // Main body of the Demo window starts here.
     if (!ImGui::Begin("Exercise 2"))
     {
-        // Early out if the window is collapsed, as an optimization.
         ImGui::End();
         return;
     }
@@ -62,13 +55,8 @@ void aze::PlotterComponent::RenderExc2()
     if (ImGui::Button("Trash the cache with GameObject3D"))
     {
         m_Exc2Samples.clear();
-        auto avarages = TrashTheCache::GetAvaragesTestGameObject3D(static_cast<size_t>(m_Exc2SampleAmount));
-        std::for_each(avarages.begin(), avarages.end(),
-            [&](const std::chrono::microseconds& ms)
-            {
-                m_Exc2Samples.push_back(static_cast<float>(ms.count()));
-            }
-        );
+        auto avarages = TrashTheCache::GetAvaragesTest<TrashTheCache::GameObject3D>(static_cast<size_t>(m_Exc2SampleAmount));
+        m_Exc2Samples = TrashTheCache::ToFloatVector(avarages);
     }
 
     if (!m_Exc2Samples.empty())
@@ -79,13 +67,8 @@ void aze::PlotterComponent::RenderExc2()
     if (ImGui::Button("Trash the cache with GameObject3DAlt"))
     {
         m_Exc2SamplesAlt.clear();
-        auto avarages = TrashTheCache::GetAvaragesTestGameObject3DAlt(static_cast<size_t>(m_Exc2SampleAmount));
-        std::for_each(avarages.begin(), avarages.end(),
-            [&](const std::chrono::microseconds& ms)
-            {
-                m_Exc2SamplesAlt.push_back(static_cast<float>(ms.count()));
-            }
-        );
+        auto avarages = TrashTheCache::GetAvaragesTest<TrashTheCache::GameObject3DAlt>(static_cast<size_t>(m_Exc2SampleAmount));
+        m_Exc2SamplesAlt = TrashTheCache::ToFloatVector(avarages);
     }
 
     if (!m_Exc2SamplesAlt.empty())
@@ -118,9 +101,9 @@ void aze::PlotterComponent::RenderExc2()
     ImGui::End();
 }
 
-void aze::PlotterComponent::RenderPlot(const std::vector<float>& samples, size_t verticalLineIndex)
+void aze::TrashTheCachPlotterComponent::RenderPlot(const std::vector<float>& samples, size_t verticalLineIndex)
 {
-    ImGui::PlotConfig::Values plotValues{ nullptr, samples.data(), static_cast<int>(samples.size()), 0, ImColor{ 1.0f, 0.5f, 1.0f } };
+    ImGui::PlotConfig::Values plotValues{ nullptr, samples.data(), static_cast<int>(samples.size()), 0, ImColor{ 1.0f, 0.5f, 0.25f } };
 
     const float maxElement{ *std::max_element(begin(samples), end(samples)) };
 

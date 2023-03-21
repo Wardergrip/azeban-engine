@@ -108,7 +108,7 @@
     <ClInclude Include="TrashTheCache.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlotterComponent.h">
+    <ClInclude Include="TrashTheCachPlotterComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\3rdParty\imgui\imgui_plot.h">
@@ -188,10 +188,7 @@
     <ClCompile Include="..\3rdParty\imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="TrashTheCache.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlotterComponent.cpp">
+    <ClCompile Include="TrashTheCachPlotterComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\imgui_plot.cpp">
