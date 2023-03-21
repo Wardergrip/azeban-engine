@@ -43,6 +43,7 @@ namespace aze
 
 		void Update(float elapsedSec);
 		void Render() const;
+		void OnGUI();
 
 		void SetPosition(float x, float y);
 

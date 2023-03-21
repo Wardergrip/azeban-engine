@@ -14,6 +14,7 @@ namespace aze
 
 		void Update(float elapsedSec);
 		void Render() const;
+		void OnGUI();
 
 		~Scene();
 		Scene(const Scene& other) = delete;

@@ -48,3 +48,11 @@ void Scene::Render() const
 	}
 }
 
+void aze::Scene::OnGUI()
+{
+	for (const auto& object : m_objects)
+	{
+		object->OnGUI();
+	}
+}
+

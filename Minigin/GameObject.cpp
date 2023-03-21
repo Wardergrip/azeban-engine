@@ -43,6 +43,14 @@ void aze::GameObject::Render() const
 	}
 }
 
+void aze::GameObject::OnGUI()
+{
+	for (const auto& pComp : m_pComponents)
+	{
+		pComp->OnGUI();
+	}
+}
+
 void aze::GameObject::SetPosition(float x, float y)
 {
 	GetTransform().SetPosition(x, y, 0.0f);

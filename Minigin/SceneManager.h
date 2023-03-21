@@ -14,6 +14,7 @@ namespace aze
 
 		void Update(float elapsedSec);
 		void Render();
+		void OnGUI();
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;

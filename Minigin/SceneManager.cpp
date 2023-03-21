@@ -17,6 +17,14 @@ void aze::SceneManager::Render()
 	}
 }
 
+void aze::SceneManager::OnGUI()
+{
+	for (const auto& scene : m_scenes)
+	{
+		scene->OnGUI();
+	}
+}
+
 aze::Scene& aze::SceneManager::CreateScene(const std::string& name)
 {
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));

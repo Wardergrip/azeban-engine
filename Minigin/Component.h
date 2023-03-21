@@ -27,6 +27,7 @@ namespace aze
 
 		virtual void Render() const;
 		virtual void Update(float elapsedSec);
+		virtual void OnGUI();
 
 		std::weak_ptr<GameObject> GetGameObject() const { return m_pParentGameObject; }
 	private:
