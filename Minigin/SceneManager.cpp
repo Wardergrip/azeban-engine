@@ -1,11 +1,11 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-void aze::SceneManager::Update(float elapsedSec)
+void aze::SceneManager::Update()
 {
 	for(auto& scene : m_scenes)
 	{
-		scene->Update(elapsedSec);
+		scene->Update();
 	}
 }
 

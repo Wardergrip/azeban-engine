@@ -19,5 +19,44 @@ bool aze::InputManager::ProcessInput()
 		ImGui_ImplSDL2_ProcessEvent(&e);
 	}
 
+	for (const auto& pController : m_pControllers)
+	{
+		pController->Update();
+	}
+
+	for (const auto& pControllerKeyCommand : m_pControllerKeyCommands)
+	{
+		const auto& [key, command] = pControllerKeyCommand;
+
+		bool execute{ false };
+		switch (key.inputType)
+		{
+		case InputType::OnButtonUp:
+			execute = m_pControllers[key.controllerIdx]->IsUpThisFrame(key.button);
+			break;
+		case InputType::OnButtonDown:
+			execute = m_pControllers[key.controllerIdx]->IsDownThisFrame(key.button);
+			break;
+		case InputType::OnButtonPressed:
+			execute = m_pControllers[key.controllerIdx]->IsPressed(key.button);
+			break;
+		}
+
+		if (execute)
+		{
+			command->Execute();
+		}
+	}
+
 	return true;
+}
+
+void aze::InputManager::BindCommand(std::unique_ptr<Command> pCommand, ControllerKey key)
+{
+	if (key.controllerIdx >= m_pControllers.size())
+	{
+		m_pControllers.push_back(std::make_unique<XBoxController>(key.controllerIdx));
+	}
+
+	m_pControllerKeyCommands[key] = std::move(pCommand);
 }

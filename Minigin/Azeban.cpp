@@ -9,6 +9,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "GameTime.h"
 
 #include <chrono>
 #include <thread>
@@ -100,7 +101,8 @@ void aze::Azeban::Run(const std::function<void()>& load)
 		const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 
 		doContinue = input.ProcessInput();
-		sceneManager.Update(deltaTime);
+		GameTime::GetInstance().SetElapsed(deltaTime);
+		sceneManager.Update();
 		renderer.Render();
 
 		lastTime = currentTime;

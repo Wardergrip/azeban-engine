@@ -27,11 +27,11 @@ void aze::GameObject::Destroy(GameObject* pGameObject)
 	pGameObject->m_IsMarkedForDestroy = true;
 }
 
-void aze::GameObject::Update(float elapsedSec)
+void aze::GameObject::Update()
 {
 	for (auto& comp : m_pComponents)
 	{
-		comp->Update(elapsedSec);
+		comp->Update();
 	}
 }
 

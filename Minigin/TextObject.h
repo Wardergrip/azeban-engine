@@ -11,7 +11,7 @@ namespace aze
 	class TextObject final : public Component
 	{
 	public:
-		void Update(float elapsedSec) override;
+		void Update() override;
 
 		TextObject& SetText(const std::string& text);
 		TextObject& SetFont(std::shared_ptr<Font> pFont);

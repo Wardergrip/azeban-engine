@@ -41,7 +41,7 @@ namespace aze
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-		void Update(float elapsedSec);
+		void Update();
 		void Render() const;
 		void OnGUI();
 

@@ -1,5 +1,6 @@
 #include "FPS.h"
 #include "TextObject.h"
+#include "GameTime.h"
 #include <sstream>
 
 void aze::FPS::SetUpdateInterval(float interval)
@@ -7,9 +8,9 @@ void aze::FPS::SetUpdateInterval(float interval)
 	m_UpdateInterval = interval;
 }
 
-void aze::FPS::Update(float elapsedSec)
+void aze::FPS::Update()
 {
-	m_TimeElapsed += elapsedSec;
+	m_TimeElapsed += GameTime::GetInstance().GetElapsed();
 	++m_NrFramesPassed;
 	if (m_TimeElapsed >= m_UpdateInterval)
 	{

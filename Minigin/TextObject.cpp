@@ -19,7 +19,7 @@ aze::TextObject::TextObject(std::weak_ptr<GameObject> pParent, const std::string
 {
 }
 
-void aze::TextObject::Update(float)
+void aze::TextObject::Update()
 {
 	if (m_needsUpdate)
 	{

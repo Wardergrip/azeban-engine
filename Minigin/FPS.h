@@ -23,7 +23,7 @@ namespace aze
 
 		void SetUpdateInterval(float interval);
 
-		virtual void Update(float elapsedSec) override;
+		virtual void Update() override;
 	private:
 		std::weak_ptr<TextObject> m_pTextRenderer;
 		int m_NrFramesPassed;

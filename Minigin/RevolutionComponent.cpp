@@ -1,6 +1,7 @@
 #include "RevolutionComponent.h"
 #include "Transform.h"
 #include "GameObject.h"
+#include "GameTime.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -17,9 +18,9 @@ aze::RevolutionComponent::RevolutionComponent(std::weak_ptr<GameObject> pGameObj
 {
 }
 
-void aze::RevolutionComponent::Update(float elapsedSec)
+void aze::RevolutionComponent::Update()
 {
-	m_RotationAngle += elapsedSec * m_Speed;
+	m_RotationAngle += GameTime::GetInstance().GetElapsed() * m_Speed;
 	// When frames are long, the rotationAngle is high and small steps might not make any impact.
 	// The following lines make sure that m_RotationAngle stays small.
 	const constexpr float twoPi = static_cast<float>(2 * M_PI);
