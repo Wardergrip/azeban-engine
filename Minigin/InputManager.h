@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
+#include <set>
 #include "XBoxController.h"
 #include "Command.h"
 
@@ -61,6 +62,28 @@ namespace aze
 				);
 		}
 	};
+
+	using KeyboardButton = unsigned int;
+	struct KeyboardKey
+	{
+		KeyboardKey(KeyboardButton kButton = -1, InputType type = InputType::OnButtonDown)
+			:button{ kButton }
+			, inputType{ type }
+		{}
+
+		KeyboardButton button{};
+		InputType inputType{};
+
+		bool operator==(const KeyboardKey& other) const
+		{
+			return
+				(
+					button == other.button
+					&&
+					inputType == other.inputType
+				);
+		}
+	};
 }
 
 namespace std 
@@ -88,6 +111,20 @@ namespace std
 		}
 	};
 
+	template <>
+	struct hash<aze::KeyboardKey>
+	{
+		std::size_t operator()(const aze::KeyboardKey& k) const
+		{
+			using std::hash;
+			return
+				(
+					(hash<unsigned int>()(k.button)
+						^
+					(hash<unsigned int>()(k.inputType) << 1)) >> 1
+				);
+		}
+	};
 }
 
 namespace aze
@@ -98,11 +135,18 @@ namespace aze
 		bool ProcessInput();
 
 		void BindCommand(std::unique_ptr<Command> pCommand, ControllerKey key);
+		void BindCommand(std::unique_ptr<Command> pCommand, KeyboardKey key);
 
 	private:
 		using ControllerCommandsMap = std::unordered_map<ControllerKey, std::unique_ptr<Command>>;
+		using KeyboardCommandsMap = std::unordered_map<KeyboardKey, std::unique_ptr<Command>>;
 		std::vector<std::unique_ptr<XBoxController>> m_pControllers{};
 		ControllerCommandsMap m_pControllerKeyCommands{};
+		KeyboardCommandsMap m_pKeyboardKeyCommands{};
+
+		std::set<KeyboardButton> m_KeyboardDownInputs{};
+		std::set<KeyboardButton> m_KeyboardUpInputs{};
+		std::set<KeyboardButton> m_KeyboardPressedInputs{};
 	};
 
 }
