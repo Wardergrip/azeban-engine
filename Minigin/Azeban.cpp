@@ -1,3 +1,7 @@
+#pragma warning( push )
+#pragma warning( disable : 4996)
+#include <steam_api.h>
+#pragma warning( pop )
 #include <stdexcept>
 #define WIN32_LEAN_AND_MEAN 
 #include <windows.h>
@@ -102,6 +106,7 @@ void aze::Azeban::Run(const std::function<void()>& load)
 
 		doContinue = input.ProcessInput();
 		GameTime::GetInstance().SetElapsed(deltaTime);
+		SteamAPI_RunCallbacks();
 		sceneManager.Update();
 		renderer.Render();
 
