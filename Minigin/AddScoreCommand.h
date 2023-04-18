@@ -11,7 +11,7 @@ namespace aze
 		{}
 		void Execute() override
 		{
-			m_pScoreComponent->AddScore(10);
+			m_pScoreComponent->AddScore(100);
 		}
 
 	private:
