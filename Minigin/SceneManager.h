@@ -12,6 +12,7 @@ namespace aze
 	public:
 		Scene& CreateScene(const std::string& name);
 
+		void Start();
 		void Update();
 		void Render();
 		void OnGUI();

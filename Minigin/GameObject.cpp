@@ -27,6 +27,14 @@ void aze::GameObject::Destroy(GameObject* pGameObject)
 	pGameObject->m_IsMarkedForDestroy = true;
 }
 
+void aze::GameObject::Start()
+{
+	for (auto& comp : m_pComponents)
+	{
+		comp->Start();
+	}
+}
+
 void aze::GameObject::Update()
 {
 	for (auto& comp : m_pComponents)

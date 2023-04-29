@@ -95,6 +95,7 @@ void aze::Azeban::Run(const std::function<void()>& load)
 	std::chrono::steady_clock::time_point lastTime;
 	const constexpr int targetFps{ 144 };
 	constexpr int maxWaitingTimeMs{ static_cast<int>(1000 / targetFps) };
+	sceneManager.Start();
 	while (doContinue)
 	{
 		currentTime = std::chrono::high_resolution_clock::now();

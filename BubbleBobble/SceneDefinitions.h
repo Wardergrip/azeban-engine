@@ -1,29 +1,33 @@
 #pragma once
+#include <iostream>
+
 #include "SceneManager.h"
+#include "InputManager.h"
 #include "ResourceManager.h"
+#include "FPS.h"
+
 #include "TextObject.h"
 #include "TextureObject.h"
-#include "GameObject.h"
-#include "FPS.h"
-#include "RevolutionComponent.h"
-#include "RenderComponent.h"
+
 #include "Scene.h"
-#include "TrashTheCachPlotterComponent.h"
-#include "InputManager.h"
-#include <iostream>
+#include "GameObject.h"
+
 #include "DebugCommand.h"
 #include "MoveCommand.h"
-#include "MovementComponent.h"
-#include "LivesDisplayComponent.h"
-#include "LivesComponent.h"
 #include "RemoveLifeCommand.h" 
-#include "ScoreComponent.h"
 #include "AddScoreCommand.h"
+
+#include "RevolutionComponent.h"
+#include "RenderComponent.h"
+#include "MovementComponent.h"
+#include "LivesComponent.h"
+#include "ScoreComponent.h"
+#include "LivesDisplayComponent.h"
 #include "ScoreDisplayComponent.h"
 
 using namespace aze;
 
-void full_load()
+void DemoScene()
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 
@@ -42,8 +46,7 @@ void full_load()
 		auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 		auto to = std::make_shared<GameObject>();
 		to->AddComponent<RenderComponent>();
-		/*auto toc = */to->AddComponent<TextObject>("Programming 4 Assignment", font);
-		//toc->SetPosition(80, 20);
+		to->AddComponent<TextObject>("Programming 4 Assignment", font);
 		to->SetPosition(80, 20);
 		scene.Add(to);
 	}
@@ -52,7 +55,7 @@ void full_load()
 	auto fpsGO = std::make_shared<GameObject>();
 	fpsGO->AddComponent<RenderComponent>();
 	auto fpsText = fpsGO->AddComponent<TextObject>("FPS", fpsFont);
-	fpsText->/*SetPosition(10, 10).*/SetColor(SDL_Color{ 255,255,0 });
+	fpsText->SetColor(SDL_Color{ 255,255,0 });
 	fpsGO->SetPosition(10, 10);
 	auto fps = fpsGO->AddComponent<FPS>(fpsText);
 	fps->SetUpdateInterval(1.f);
@@ -148,4 +151,83 @@ void full_load()
 			<< "- v: add score\n"
 			;
 	}
+}
+
+void LevelOne()
+{
+	auto& scene = SceneManager::GetInstance().CreateScene("Level 1");
+
+	// FPS
+	{
+		auto fpsFont = ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
+		auto fpsObj = std::make_shared<GameObject>();
+		fpsObj->AddComponent<RenderComponent>();
+		auto fpsText = fpsObj->AddComponent<TextObject>("FPS", fpsFont);
+		fpsText->SetColor(SDL_Color{ 255,255,0 });
+		fpsObj->SetPosition(10, 10);
+		auto fps = fpsObj->AddComponent<FPS>(fpsText);
+		fps->SetUpdateInterval(1.f);
+		scene.Add(fpsObj);
+	}
+
+	// Bub
+	auto bubObj = std::make_shared<GameObject>();
+	bubObj->SetPosition(100, 100);
+	bubObj->AddComponent<RenderComponent>();
+	bubObj->AddComponent<TextureObject>("Bub.png");
+	auto bubMovement = bubObj->AddComponent<MovementComponent>();
+	auto bubLives = bubObj->AddComponent<LivesComponent>();
+	auto bubScore = bubObj->AddComponent<ScoreComponent>();
+	scene.Add(bubObj);
+
+	// Bob
+	auto bobObj = std::make_shared<GameObject>();
+	bobObj->SetPosition(100, 200);
+	bobObj->AddComponent<RenderComponent>();
+	bobObj->AddComponent<TextureObject>("Bob.png");
+	auto bobMovement = bobObj->AddComponent<MovementComponent>();
+	auto bobLives = bobObj->AddComponent<LivesComponent>();
+	auto bobScore = bobObj->AddComponent<ScoreComponent>();
+	scene.Add(bobObj);
+
+	// Input bindings
+	{
+		constexpr float movementSpeed{ 50.f };
+		using namespace aze;
+		using namespace glm;
+
+		InputManager& inputManager = InputManager::GetInstance();
+		inputManager.BindCommand(std::make_unique<MoveCommand>(bubMovement, vec2{ 1,0 }, movementSpeed * 2.f), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_RIGHT),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveCommand>(bubMovement, vec2{ -1,0 }, movementSpeed * 2.f), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_LEFT),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveCommand>(bubMovement, vec2{ 0,-1 }, movementSpeed * 2.f), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_UP),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveCommand>(bubMovement, vec2{ 0,1 }, movementSpeed * 2.f), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_DOWN),OnButtonPressed });
+
+		inputManager.BindCommand(std::make_unique<RemoveLifeCommand>(bubLives), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::A),OnButtonDown });
+		inputManager.BindCommand(std::make_unique<AddScoreCommand>(bubScore), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::B),OnButtonDown });
+
+		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ 1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_RIGHT),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ -1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_LEFT),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ 0,-1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_UP),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ 0,1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_DOWN),OnButtonPressed });
+
+		inputManager.BindCommand(std::make_unique<RemoveLifeCommand>(bobLives), KeyboardKey{ static_cast<KeyboardButton>(SDLK_SPACE),OnButtonDown });
+		inputManager.BindCommand(std::make_unique<AddScoreCommand>(bobScore), KeyboardKey{ static_cast<KeyboardButton>(SDLK_v),OnButtonDown });
+
+		std::cout << "[INFO] CONTROLS\n"
+			<< "Player 1:\n"
+			<< "- Dpad: movement\n"
+			<< "- A: remove life\n"
+			<< "- B: add score\n"
+			<< "Player 2:\n"
+			<< "- Arrow keys: movement\n"
+			<< "- Space: remove life\n"
+			<< "- v: add score\n"
+			;
+	}
+}
+
+void full_load()
+{
+	//DemoScene();
+	LevelOne();
 }

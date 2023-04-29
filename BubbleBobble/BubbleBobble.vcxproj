@@ -159,7 +159,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ImageParser.cpp" />
+    <ClCompile Include="LivesComponent.cpp" />
+    <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MovementComponent.cpp" />
+    <ClCompile Include="RevolutionComponent.cpp" />
+    <ClCompile Include="ScoreComponent.cpp" />
+    <ClCompile Include="ScoreDisplayComponent.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AddScoreCommand.h" />
+    <ClInclude Include="Ev_AddScore.h" />
+    <ClInclude Include="Ev_PlayerDied.h" />
+    <ClInclude Include="ImageParser.h" />
+    <ClInclude Include="LivesComponent.h" />
+    <ClInclude Include="LivesDisplayComponent.h" />
+    <ClInclude Include="MoveCommand.h" />
+    <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="RemoveLifeCommand.h" />
+    <ClInclude Include="RevolutionComponent.h" />
+    <ClInclude Include="SceneDefinitions.h" />
+    <ClInclude Include="ScoreComponent.h" />
+    <ClInclude Include="ScoreDisplayComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,14 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
+void aze::SceneManager::Start()
+{
+	for (auto& scene : m_scenes)
+	{
+		scene->Start();
+	}
+}
+
 void aze::SceneManager::Update()
 {
 	for(auto& scene : m_scenes)

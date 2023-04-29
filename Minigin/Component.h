@@ -25,6 +25,7 @@ namespace aze
 		Component& operator=(const Component& component) = default;
 		virtual ~Component() = default;
 
+		virtual void Start();
 		virtual void Render() const;
 		virtual void Update();
 		virtual void OnGUI();

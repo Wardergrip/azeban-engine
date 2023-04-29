@@ -25,6 +25,14 @@ void Scene::RemoveAll()
 	m_objects.clear();
 }
 
+void aze::Scene::Start()
+{
+	for (auto& object : m_objects)
+	{
+		object->Start();
+	}
+}
+
 void Scene::Update()
 {
 	for(auto& object : m_objects)

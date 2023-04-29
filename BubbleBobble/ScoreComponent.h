@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Subject.h"
-#include "Event.h"
+#include "Ev_AddScore.h"
 namespace aze
 {
 	class ScoreComponent : public Component

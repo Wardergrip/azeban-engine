@@ -12,6 +12,7 @@ namespace aze
 		void Remove(std::shared_ptr<GameObject> object);
 		void RemoveAll();
 
+		void Start();
 		void Update();
 		void Render() const;
 		void OnGUI();

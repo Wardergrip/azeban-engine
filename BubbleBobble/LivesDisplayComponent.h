@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Observer.h"
-#include "Event.h" 
+#include "Ev_PlayerDied.h" 
 namespace aze
 {
 	class TextObject;

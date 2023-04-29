@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{efa5466a-80f1-40f1-bbfb-34ec15fa869c}</UniqueIdentifier>
     </Filter>
@@ -31,6 +27,15 @@
     <Filter Include="Observer">
       <UniqueIdentifier>{392c0ba3-d7be-4aa0-b0d2-991a799fbcc3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TrashTheCache">
+      <UniqueIdentifier>{18c58fdc-54c4-4f23-bf2f-1d671f56d68b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Data">
+      <UniqueIdentifier>{6b8c26bd-ab6a-4bdd-8af3-556c8377da7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{833db18e-5610-471c-b41e-b4d01125f5f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -39,16 +44,10 @@
     <ClInclude Include="Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Texture2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Font.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Azemacros.h">
@@ -60,16 +59,7 @@
     <ClInclude Include="FPS.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="TextureObject.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TextObject.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="RevolutionComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Azeban.h">
@@ -111,29 +101,14 @@
     <ClInclude Include="..\3rdParty\imgui\imstb_textedit.h">
       <Filter>imgui</Filter>
     </ClInclude>
-    <ClInclude Include="TrashTheCache.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TrashTheCachPlotterComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\3rdParty\imgui\imgui_plot.h">
       <Filter>imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Command.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="XBoxController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DebugCommand.h">
       <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveCommand.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="MovementComponent.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="GameTime.h">
       <Filter>Core</Filter>
@@ -150,30 +125,30 @@
     <ClInclude Include="EventQueue.h">
       <Filter>Observer</Filter>
     </ClInclude>
-    <ClInclude Include="LivesDisplayComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="LivesComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="RemoveLifeCommand.h">
+    <ClInclude Include="Command.h">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="ScoreComponent.h">
-      <Filter>Components</Filter>
+    <ClInclude Include="TrashTheCache.h">
+      <Filter>TrashTheCache</Filter>
     </ClInclude>
-    <ClInclude Include="AddScoreCommand.h">
-      <Filter>Commands</Filter>
+    <ClInclude Include="TrashTheCachPlotterComponent.h">
+      <Filter>TrashTheCache</Filter>
     </ClInclude>
-    <ClInclude Include="ScoreDisplayComponent.h">
-      <Filter>Components</Filter>
+    <ClInclude Include="TextureObject.h">
+      <Filter>Components\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="TextObject.h">
+      <Filter>Components\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
@@ -182,22 +157,10 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FPS.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="TextureObject.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="TextObject.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="RevolutionComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Azeban.cpp">
@@ -242,17 +205,11 @@
     <ClCompile Include="..\3rdParty\imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="TrashTheCachPlotterComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\3rdParty\imgui\imgui_plot.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
     <ClCompile Include="XBoxController.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MovementComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="GameTime.cpp">
       <Filter>Core</Filter>
@@ -260,17 +217,20 @@
     <ClCompile Include="EventQueue.cpp">
       <Filter>Observer</Filter>
     </ClCompile>
-    <ClCompile Include="LivesDisplayComponent.cpp">
-      <Filter>Components</Filter>
+    <ClCompile Include="TrashTheCachPlotterComponent.cpp">
+      <Filter>TrashTheCache</Filter>
     </ClCompile>
-    <ClCompile Include="LivesComponent.cpp">
-      <Filter>Components</Filter>
+    <ClCompile Include="TextureObject.cpp">
+      <Filter>Components\Data</Filter>
     </ClCompile>
-    <ClCompile Include="ScoreComponent.cpp">
-      <Filter>Components</Filter>
+    <ClCompile Include="TextObject.cpp">
+      <Filter>Components\Data</Filter>
     </ClCompile>
-    <ClCompile Include="ScoreDisplayComponent.cpp">
-      <Filter>Components</Filter>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
