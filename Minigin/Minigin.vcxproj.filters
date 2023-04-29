@@ -168,9 +168,6 @@
     <ClInclude Include="ScoreDisplayComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="AchievementComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renderer.cpp">
@@ -273,9 +270,6 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="ScoreDisplayComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="AchievementComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
