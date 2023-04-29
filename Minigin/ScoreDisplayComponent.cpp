@@ -9,5 +9,5 @@ void aze::ScoreDisplayComponent::OnNotify(Ev_AddScore* event)
 	std::stringstream s;
 	s << "Score: ";
 	s << event->GetScore();
-	m_pTextRenderer.lock()->SetText(s.str());
+	m_pTextRenderer->SetText(s.str());
 }

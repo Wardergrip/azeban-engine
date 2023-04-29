@@ -9,5 +9,5 @@ void aze::LivesDisplayComponent::OnNotify(Ev_PlayerDied* event)
 	std::stringstream s;
 	s << "Lives: ";
 	s << event->GetLivesLeft();
-	m_pTextRenderer.lock()->SetText(s.str());
+	m_pTextRenderer->SetText(s.str());
 }

@@ -9,9 +9,9 @@
 
 #include <iostream>
 
-aze::RevolutionComponent::RevolutionComponent(std::weak_ptr<GameObject> pGameObjectParent, float radius, float speed)
+aze::RevolutionComponent::RevolutionComponent(GameObject* pGameObjectParent, float radius, float speed)
 	:Component(pGameObjectParent)
-	,m_ParentGameObjectTransform{pGameObjectParent.lock()->GetTransform()}
+	,m_ParentGameObjectTransform{pGameObjectParent->GetTransform()}
 	,m_Radius{radius}
 	,m_Speed{speed}
 	,m_RotationAngle{0}

@@ -6,7 +6,7 @@ namespace aze
 	class MovementComponent : public Component
 	{
 	public:
-		MovementComponent(std::weak_ptr<GameObject> pParentGameObject);
+		MovementComponent(GameObject* pParentGameObject);
 		virtual ~MovementComponent() = default;
 		MovementComponent(const MovementComponent& other) = delete;
 		MovementComponent(MovementComponent&& other) = delete;

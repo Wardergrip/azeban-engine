@@ -8,9 +8,9 @@ namespace aze
 	class Transform final : public Component
 	{
 	public:
-		Transform(std::weak_ptr<GameObject> pParent, const glm::vec3& pos);
-		Transform(std::weak_ptr<GameObject> pParent, float x, float y, float z = 0.f);
-		Transform(std::weak_ptr<GameObject> pParent);
+		Transform(GameObject* pParent, const glm::vec3& pos);
+		Transform(GameObject* pParent, float x, float y, float z = 0.f);
+		Transform(GameObject* pParent);
 
 		void SetPosition(const glm::vec3& pos);
 		void SetPosition(float x, float y, float z = 0.f);

@@ -9,7 +9,7 @@
 
 #include "Azemacros.h"
 
-aze::TextObject::TextObject(std::weak_ptr<GameObject> pParent, const std::string& text, std::shared_ptr<Font> pFont)
+aze::TextObject::TextObject(GameObject* pParent, const std::string& text, std::shared_ptr<Font> pFont)
 	:Component(pParent)
 	, m_needsUpdate{ true }
 	, m_text{ text }
@@ -23,12 +23,12 @@ void aze::TextObject::Update()
 {
 	if (m_needsUpdate)
 	{
-		auto pRenderComp = GetGameObject().lock()->GetComponent<RenderComponent>();
-		if (pRenderComp.expired())
+		auto pRenderComp = GetGameObject()->GetComponent<RenderComponent>();
+		if (pRenderComp == nullptr)
 		{
 			throw missing_component();
 		}
-		auto renderComp = GetGameObject().lock()->GetComponent<RenderComponent>().lock();
+		auto renderComp = GetGameObject()->GetComponent<RenderComponent>();
 		if (m_textTexture.get())
 		{
 			renderComp->RemoveTexture(m_textTexture);

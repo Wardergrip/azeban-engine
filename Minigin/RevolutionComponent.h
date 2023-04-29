@@ -8,7 +8,7 @@ namespace aze
 	class RevolutionComponent final : public Component
 	{
 	public:
-		RevolutionComponent(std::weak_ptr<GameObject> pGameObjectParent, float radius = 10.f, float speed = 10.f);
+		RevolutionComponent(GameObject* pGameObjectParent, float radius = 10.f, float speed = 10.f);
 
 		void Update() override;
 

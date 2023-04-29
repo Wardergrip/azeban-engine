@@ -7,7 +7,7 @@ namespace aze
 	class FPS : public Component
 	{
 	public:
-		FPS(std::weak_ptr<GameObject> pParentGameObject, std::weak_ptr<TextObject> pTextRenderer) 
+		FPS(GameObject* pParentGameObject, TextObject* pTextRenderer)
 			:Component{ pParentGameObject } 
 			,m_pTextRenderer{pTextRenderer}
 			,m_NrFramesPassed{ 0 }
@@ -25,7 +25,7 @@ namespace aze
 
 		virtual void Update() override;
 	private:
-		std::weak_ptr<TextObject> m_pTextRenderer;
+		TextObject* m_pTextRenderer;
 		int m_NrFramesPassed;
 		float m_TimeElapsed;
 		float m_UpdateInterval;

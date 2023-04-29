@@ -7,7 +7,7 @@ namespace aze
 	class ScoreComponent : public Component
 	{
 	public:
-		ScoreComponent(std::weak_ptr<GameObject> pParentGameObject, int score = 0)
+		ScoreComponent(GameObject* pParentGameObject, int score = 0)
 			:Component{ pParentGameObject }
 			, m_pSubject{ std::make_unique<Subject<Ev_AddScore>>() }
 			, m_Score{ score }

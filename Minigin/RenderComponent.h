@@ -7,7 +7,7 @@ namespace aze
 	class RenderComponent : public Component
 	{
 	public:
-		RenderComponent(std::weak_ptr<GameObject> pParentGameObject);
+		RenderComponent(GameObject* pParentGameObject);
 		virtual ~RenderComponent() = default;
 		RenderComponent(const RenderComponent& other) = delete;
 		RenderComponent(RenderComponent&& other) = delete;

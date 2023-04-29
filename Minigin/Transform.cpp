@@ -1,7 +1,7 @@
 #include "Transform.h"
 #include "GameObject.h"
 
-aze::Transform::Transform(std::weak_ptr<GameObject> pParent, const glm::vec3& pos)
+aze::Transform::Transform(GameObject* pParent, const glm::vec3& pos)
 	:Component(pParent)
 	, m_LocalPosition{ pos }
 	, m_WorldPosition{}
@@ -9,12 +9,12 @@ aze::Transform::Transform(std::weak_ptr<GameObject> pParent, const glm::vec3& po
 {
 }
 
-aze::Transform::Transform(std::weak_ptr<GameObject> pParent, float x, float y, float z)
+aze::Transform::Transform(GameObject* pParent, float x, float y, float z)
 	:Transform(pParent, glm::vec3{x,y,z})
 {
 }
 
-aze::Transform::Transform(std::weak_ptr<GameObject> pParent)
+aze::Transform::Transform(GameObject* pParent)
 	:Transform{ pParent, glm::vec3{0,0,0} }
 {
 }
@@ -49,7 +49,7 @@ const glm::vec3& aze::Transform::GetLocalPosition() const
 
 void aze::Transform::SetWorldPosDirty()
 {
-	const auto children = GetGameObject().lock()->GetChildren();
+	const auto children = GetGameObject()->GetChildren();
 	for (const auto child : children)
 	{
 		child.lock()->GetTransform().SetWorldPosDirty();
@@ -59,7 +59,7 @@ void aze::Transform::SetWorldPosDirty()
 
 void aze::Transform::UpdateWorldPos()
 {
-	const auto gameObjectParent = GetGameObject().lock()->GetParent();
+	const auto gameObjectParent = GetGameObject()->GetParent();
 	if (gameObjectParent.expired())
 	{
 		m_WorldPosition = m_LocalPosition;

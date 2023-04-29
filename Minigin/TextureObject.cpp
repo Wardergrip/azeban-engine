@@ -3,17 +3,17 @@
 #include "GameObject.h"
 #include "RenderComponent.h"
 
-aze::TextureObject::TextureObject(std::weak_ptr<GameObject> pParentGameObject, const std::string& fileName)
+aze::TextureObject::TextureObject(GameObject* pParentGameObject, const std::string& fileName)
 	:Component(pParentGameObject)
 	,m_pTexture{ nullptr }
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(fileName);
-	auto renderComp = GetGameObject().lock()->GetComponent<RenderComponent>();
-	if (renderComp.expired())
+	auto renderComp = GetGameObject()->GetComponent<RenderComponent>();
+	if (renderComp == nullptr)
 	{
 		throw missing_component();
 	}
-	renderComp.lock()->AddTexture(m_pTexture);
+	renderComp->AddTexture(m_pTexture);
 }
 
 aze::TextureObject& aze::TextureObject::SetTexture(const std::string& fileName)
@@ -22,7 +22,7 @@ aze::TextureObject& aze::TextureObject::SetTexture(const std::string& fileName)
 	return *this;
 }
 
-std::weak_ptr<aze::Texture2D> aze::TextureObject::GetTexture() const
+aze::Texture2D* aze::TextureObject::GetTexture() const
 {
-	return m_pTexture;
+	return m_pTexture.get();
 }

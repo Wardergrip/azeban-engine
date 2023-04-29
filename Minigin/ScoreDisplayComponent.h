@@ -9,7 +9,7 @@ namespace aze
 	class ScoreDisplayComponent : public Component, public Observer<Ev_AddScore>
 	{
 	public:
-		ScoreDisplayComponent(std::weak_ptr<GameObject> pParentGameObject, std::weak_ptr<TextObject> pTextRenderer)
+		ScoreDisplayComponent(GameObject* pParentGameObject, TextObject* pTextRenderer)
 			:Component{ pParentGameObject }
 			, m_pTextRenderer{ pTextRenderer }
 		{
@@ -22,7 +22,7 @@ namespace aze
 
 		virtual void OnNotify(Ev_AddScore* event) override;
 	private:
-		std::weak_ptr<TextObject> m_pTextRenderer;
+		TextObject* m_pTextRenderer;
 	};
 }
 

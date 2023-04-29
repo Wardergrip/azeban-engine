@@ -17,7 +17,7 @@ namespace aze
 		TextObject& SetFont(std::shared_ptr<Font> pFont);
 		TextObject& SetColor(const SDL_Color& sdl_Col);
 
-		TextObject(std::weak_ptr<GameObject> pParent, const std::string& text, std::shared_ptr<Font> pFont);
+		TextObject(GameObject* pParent, const std::string& text, std::shared_ptr<Font> pFont);
 		virtual ~TextObject() = default;
 		TextObject(const TextObject& other) = delete;
 		TextObject(TextObject&& other) = delete;

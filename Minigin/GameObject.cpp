@@ -184,7 +184,7 @@ aze::Transform& aze::GameObject::GetTransform()
 {
 	if (!m_Transform || !m_Transform.get())
 	{
-		m_Transform = std::make_unique<Transform>(weak_from_this());
+		m_Transform = std::make_unique<Transform>(this);
 	}
 	return *m_Transform;
 }

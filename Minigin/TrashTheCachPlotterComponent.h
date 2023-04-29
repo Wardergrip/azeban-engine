@@ -8,7 +8,7 @@ namespace aze
     class TrashTheCachPlotterComponent : public Component
     {
 	public:
-		TrashTheCachPlotterComponent(std::weak_ptr<GameObject> pParent) :Component{ pParent } {}
+		TrashTheCachPlotterComponent(GameObject* pParent) :Component{ pParent } {}
 		TrashTheCachPlotterComponent(TrashTheCachPlotterComponent&& component) = delete;
 		TrashTheCachPlotterComponent(const TrashTheCachPlotterComponent& component) = delete;
 		TrashTheCachPlotterComponent& operator=(TrashTheCachPlotterComponent&& component) = delete;

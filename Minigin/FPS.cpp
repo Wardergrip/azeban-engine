@@ -17,7 +17,7 @@ void aze::FPS::Update()
 		std::stringstream s;
 		s << /*static_cast<int>*/(m_NrFramesPassed / m_TimeElapsed);
 		s << " FPS";
-		m_pTextRenderer.lock()->SetText(s.str());
+		m_pTextRenderer->SetText(s.str());
 		m_NrFramesPassed = 0;
 		m_TimeElapsed = 0.f;
 	}

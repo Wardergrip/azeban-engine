@@ -58,48 +58,45 @@ namespace aze
 		Transform& GetTransform();
 
 		template <typename T, typename... TArgs >
-		std::weak_ptr<T> AddComponent(TArgs&&... targs)
+		T* AddComponent(TArgs&&... targs)
 		{
 			static_assert(std::is_base_of<Component, T>::value, "Type is not a component.");
 			static_assert(!std::is_same<Transform, T>::value,"GameObject has transform by default. Cannot add more transforms than one.");
-			static_assert(std::is_constructible<T, std::weak_ptr<GameObject>, TArgs...>::value, "TArgs do not result in a successful instantiation of T");
+			static_assert(std::is_constructible<T, GameObject*, TArgs...>::value, "TArgs do not result in a successful instantiation of T");
 
-			auto pT = std::make_shared<T>(weak_from_this(), std::forward<TArgs>(targs)...);
-			m_pComponents.push_back(pT);
-			return pT;
+			auto pT = std::make_unique<T>(this, std::forward<TArgs>(targs)...);
+			auto p = pT.get();
+
+			m_pComponents.push_back(std::move(pT));
+			return p;
 		}
 
 		template <typename T> 
-		std::weak_ptr<T> GetComponent() const
+		T* GetComponent() const
 		{
+			static_assert(std::is_base_of<Component, T>::value, "Type is not a component.");
 			static_assert(!std::is_same<Transform, T>::value, "Illegal way to access transform. Use GameObject::GetTransform()");
 
 			for (const auto& pComp : m_pComponents)
 			{
-				std::weak_ptr<T> derivedComp{ std::dynamic_pointer_cast<T>(pComp) };
-				if (!aze::is_uninitialized(derivedComp))
-				{
-					return derivedComp;
-				}
+				T* compToFind{ dynamic_cast<T*>(pComp.get()) };
+				if (compToFind) return compToFind;
 			}
-			auto p = std::weak_ptr<T>();
-			p.reset();
-			return p;
+			return nullptr;
 		}
 
 		template <typename T> 
 		bool HasComponent() const
 		{
+			static_assert(std::is_base_of<Component, T>::value, "Type is not a component.");
+
 			const bool isTransform = std::is_same<Transform, T>{}();
 			if constexpr (isTransform) return true;
 
 			for (const auto& pComp : m_pComponents)
 			{
-				std::weak_ptr<T> derivedComp{ std::dynamic_pointer_cast<T>(pComp) };
-				if (!aze::is_uninitialized(derivedComp))
-				{
-					return true;
-				}
+				T* compToFind{ dynamic_cast<T*>(pComp.get()) };
+				if (compToFind) return true;
 			}
 			return false;
 		}
@@ -111,8 +108,8 @@ namespace aze
 
 			for (auto iterator{ m_pComponents.begin() }; iterator < m_pComponents.end(); ++iterator)
 			{
-				std::weak_ptr<T> derivedComp{ std::dynamic_pointer_cast<T>(*iterator) };
-				if (aze::is_uninitialized(derivedComp))
+				T* compToFind{ dynamic_cast<T*>((*iterator).get()) };
+				if (compToFind)
 				{
 					m_pComponents.erase(iterator);
 					return true;
@@ -133,7 +130,7 @@ namespace aze
 		std::vector<std::weak_ptr<GameObject>> m_pChildren;
 		bool m_IsMarkedForDestroy;
 
-		std::vector<std::shared_ptr<Component>> m_pComponents;
+		std::vector<std::unique_ptr<Component>> m_pComponents;
 
 		std::unique_ptr<Transform> m_Transform;
 	};

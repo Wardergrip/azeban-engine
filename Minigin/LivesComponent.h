@@ -7,7 +7,7 @@ namespace aze
 	class LivesComponent : public Component
 	{
 	public:
-		LivesComponent(std::weak_ptr<GameObject> pParentGameObject, int lives = 3)
+		LivesComponent(GameObject* pParentGameObject, int lives = 3)
 			:Component{ pParentGameObject }
 			,m_pSubject{std::make_unique<Subject<Ev_PlayerDied>>()}
 			,m_Lives{lives}

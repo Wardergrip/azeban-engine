@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Renderer.h"
 
-aze::RenderComponent::RenderComponent(std::weak_ptr<GameObject> pParentGameObject)
+aze::RenderComponent::RenderComponent(GameObject* pParentGameObject)
 	:Component(pParentGameObject)
 	,m_pTextures{}
 {
@@ -29,7 +29,7 @@ void aze::RenderComponent::RemoveTexture(std::weak_ptr<Texture2D> pTexture)
 
 void aze::RenderComponent::Render() const
 {
-	const auto& pos = GetGameObject().lock()->GetTransform().GetWorldPosition();
+	const auto& pos = GetGameObject()->GetTransform().GetWorldPosition();
 	for (const auto& texture : m_pTextures)
 	{
 		auto pTexture = texture.lock();
