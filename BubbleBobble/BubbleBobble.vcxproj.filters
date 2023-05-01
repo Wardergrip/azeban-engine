@@ -25,6 +25,9 @@
     <Filter Include="Core">
       <UniqueIdentifier>{ec4f4578-8a2d-47ca-beac-6cd8fb94296f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fundamentals">
+      <UniqueIdentifier>{dc2a6427-e627-45de-8ce5-915f290a3067}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -50,6 +53,12 @@
     </ClCompile>
     <ClCompile Include="ImageParser.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Fundamentals</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectf.cpp">
+      <Filter>Fundamentals</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +100,12 @@
     </ClInclude>
     <ClInclude Include="ImageParser.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Fundamentals</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectf.h">
+      <Filter>Fundamentals</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
