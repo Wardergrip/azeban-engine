@@ -1,16 +1,17 @@
 #pragma once
 #include <vector>
-#include <utility>
 #include <string>
+#include <memory>
 #include <SDL.h>
-#include <SDL_image.h>
+
 
 namespace aze
 {
+	class Surface2D;
 	class ImageParser final
 	{
 	public:
-		ImageParser() = delete;
+		ImageParser(const std::string& inputFile);
 
 		struct PointCol
 		{
@@ -18,7 +19,14 @@ namespace aze
 			SDL_Color col;
 		};
 
-		static std::vector<PointCol> GetPixels(const std::string& inputFile);
+		const std::vector<PointCol>& GetPixels();
+		size_t GetWidth() const;
+		size_t GetHeight() const;
+
+	private:
+		std::string m_InputFile;
+		std::vector<PointCol> m_Pixels;
+		std::shared_ptr<Surface2D> m_Image;
 	};
 }
 

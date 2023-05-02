@@ -10,6 +10,7 @@ namespace aze
 {
 	class Texture2D;
 	class Component;
+	class Scene;
 
 	class wrong_parent : public std::runtime_error
 	{
@@ -34,7 +35,7 @@ namespace aze
 	class GameObject final : public std::enable_shared_from_this<GameObject>
 	{
 	public:
-		GameObject();
+		GameObject(Scene* pScene);
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -48,12 +49,18 @@ namespace aze
 
 		void SetPosition(float x, float y);
 
-		GameObject& SetParent(std::weak_ptr<GameObject> pParent, bool worldPositionStays = false);
+		GameObject& SetParent(GameObject* pParent, bool worldPositionStays = false);
 		GameObject& SetParent(std::nullptr_t null);
-		std::weak_ptr<GameObject> GetParent() const;
+		GameObject& Adopt(std::unique_ptr<GameObject> pChild, bool worldPositionStays = false);
+		GameObject& Adopt(GameObject* pChild, bool worldPositionStays = false);
+		GameObject& RemoveChild(GameObject* pChild);
+		std::unique_ptr<GameObject> Abandon(GameObject* pChild);
+		GameObject* GetParent() const;
 		size_t GetChildCount() const;
-		std::weak_ptr<GameObject> GetChildAt(size_t index) const;
-		const std::vector<std::weak_ptr<GameObject>>& GetChildren() const;
+		GameObject* GetChildAt(size_t index) const;
+		std::vector<GameObject*> GetChildren() const;
+
+		Scene* GetScene() const;
 
 		const Transform& GetTransform() const;
 		Transform& GetTransform();
@@ -124,11 +131,9 @@ namespace aze
 		static void Destroy(GameObject* pGameObject);
 
 	private:
-		GameObject& AddChild(std::weak_ptr<GameObject> child);
-		GameObject& RemoveChild(std::weak_ptr<GameObject> child);
-
-		std::weak_ptr<GameObject> m_pParent;
-		std::vector<std::weak_ptr<GameObject>> m_pChildren;
+		Scene* m_pScene;
+		GameObject* m_pParent;
+		std::vector<std::unique_ptr<GameObject>> m_pChildren;
 		bool m_IsMarkedForDestroy;
 
 		std::vector<std::unique_ptr<Component>> m_pComponents;

@@ -5,6 +5,7 @@
 #include "Renderer.h"
 #include "Texture2D.h"
 #include "Font.h"
+#include "Surface2D.h"
 
 void aze::ResourceManager::Init(const std::string& dataPath)
 {
@@ -30,4 +31,15 @@ std::shared_ptr<aze::Texture2D> aze::ResourceManager::LoadTexture(const std::str
 std::shared_ptr<aze::Font> aze::ResourceManager::LoadFont(const std::string& file, unsigned int size) const
 {
 	return std::make_shared<Font>(m_dataPath + file, size);
+}
+
+std::shared_ptr<aze::Surface2D> aze::ResourceManager::LoadSurface(const std::string& file) const
+{
+	const auto fullPath = m_dataPath + file;
+	auto surface = IMG_Load(fullPath.c_str());
+	if (surface == nullptr)
+	{
+		throw std::runtime_error(std::string("Failed to load surface: ") + SDL_GetError());
+	}
+	return std::make_shared<Surface2D>(surface);
 }

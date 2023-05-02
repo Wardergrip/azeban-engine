@@ -94,8 +94,8 @@ const std::vector<std::vector<glm::vec3>>& aze::Grid::GetGridMids() const
 
 const glm::vec3& aze::Grid::GetPoint(size_t x, size_t y)
 {
-	assert(y > 1 && y < m_GridMids.size() && "y out of range!");
-	assert(x > 1 && x < m_GridMids.at(y).size() && "x out of range!");
+	assert(y >= 0 && y < m_GridMids.size() && "y out of range!");
+	assert(x >= 0 && x < m_GridMids.at(y).size() && "x out of range!");
 	return m_GridMids.at(y).at(x);
 }
 

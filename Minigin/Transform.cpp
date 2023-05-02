@@ -50,9 +50,9 @@ const glm::vec3& aze::Transform::GetLocalPosition() const
 void aze::Transform::SetWorldPosDirty()
 {
 	const auto children = GetGameObject()->GetChildren();
-	for (const auto child : children)
+	for (auto child : children)
 	{
-		child.lock()->GetTransform().SetWorldPosDirty();
+		child->GetTransform().SetWorldPosDirty();
 	}
 	m_IsWorldPosDirty = true;
 }
@@ -60,13 +60,13 @@ void aze::Transform::SetWorldPosDirty()
 void aze::Transform::UpdateWorldPos()
 {
 	const auto gameObjectParent = GetGameObject()->GetParent();
-	if (gameObjectParent.expired())
+	if (gameObjectParent == nullptr)
 	{
 		m_WorldPosition = m_LocalPosition;
 	}
 	else
 	{
-		const auto parentPosition = gameObjectParent.lock()->GetTransform().GetWorldPosition();
+		const auto parentPosition = gameObjectParent->GetTransform().GetWorldPosition();
 		m_WorldPosition = parentPosition + m_LocalPosition;
 	}
 	m_IsWorldPosDirty = false;

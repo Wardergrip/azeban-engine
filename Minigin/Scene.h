@@ -1,15 +1,17 @@
 #pragma once
 #include "SceneManager.h"
+#include "GameObject.h"
 
 namespace aze
 {
-	class GameObject;
 	class Scene final
 	{
 		friend Scene& SceneManager::CreateScene(const std::string& name);
 	public:
-		void Add(std::shared_ptr<GameObject> object);
-		void Remove(std::shared_ptr<GameObject> object);
+		void Adopt(std::unique_ptr<GameObject> object);
+		void Adopt(GameObject* object);
+		void Remove(GameObject* object);
+		std::unique_ptr<GameObject> Abandon(GameObject* object);
 		void RemoveAll();
 
 		void Start();
@@ -27,7 +29,7 @@ namespace aze
 		explicit Scene(const std::string& name);
 
 		std::string m_name;
-		std::vector < std::shared_ptr<GameObject>> m_objects{};
+		std::vector < std::unique_ptr<GameObject>> m_objects{};
 
 		static unsigned int m_idCounter; 
 	};

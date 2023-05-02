@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="ImageParser.cpp" />
+    <ClCompile Include="LevelComponent.cpp" />
     <ClCompile Include="LivesComponent.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
     <ClCompile Include="main.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Ev_PlayerDied.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="ImageParser.h" />
+    <ClInclude Include="LevelComponent.h" />
     <ClInclude Include="LivesComponent.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
     <ClInclude Include="MoveCommand.h" />

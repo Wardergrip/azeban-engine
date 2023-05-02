@@ -1,22 +1,29 @@
 #pragma once
 #include <iostream>
 
+// Managers / essentials
 #include "SceneManager.h"
 #include "InputManager.h"
 #include "ResourceManager.h"
 #include "FPS.h"
 
+// Data
 #include "TextObject.h"
 #include "TextureObject.h"
 
+#include "ImageParser.h"
+
+// Structural
 #include "Scene.h"
 #include "GameObject.h"
 
+// Commands
 #include "DebugCommand.h"
 #include "MoveCommand.h"
 #include "RemoveLifeCommand.h" 
 #include "AddScoreCommand.h"
 
+// Components
 #include "RevolutionComponent.h"
 #include "RenderComponent.h"
 #include "MovementComponent.h"
@@ -24,6 +31,7 @@
 #include "ScoreComponent.h"
 #include "LivesDisplayComponent.h"
 #include "ScoreDisplayComponent.h"
+#include "LevelComponent.h"
 
 using namespace aze;
 
@@ -32,36 +40,36 @@ void DemoScene()
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 
 	{
-		auto go = std::make_shared<GameObject>();
+		auto go = new GameObject(&scene);
 		go->AddComponent<RenderComponent>();
 		go->AddComponent<TextureObject>("background.tga");
-		scene.Add(go);
+		scene.Adopt(go);
 
-		go = std::make_shared<GameObject>();
+		go = new GameObject(&scene);
 		go->AddComponent<RenderComponent>();
 		go->AddComponent<TextureObject>("logo.tga")/*->SetPosition(216, 180)*/;
 		go->SetPosition(216, 180);
-		scene.Add(go);
+		scene.Adopt(go);
 
 		auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-		auto to = std::make_shared<GameObject>();
+		auto to = new GameObject(&scene);
 		to->AddComponent<RenderComponent>();
 		to->AddComponent<TextObject>("Programming 4 Assignment", font);
 		to->SetPosition(80, 20);
-		scene.Add(to);
+		scene.Adopt(to);
 	}
 
 	auto fpsFont = ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
-	auto fpsGO = std::make_shared<GameObject>();
+	auto fpsGO = new GameObject(&scene);
 	fpsGO->AddComponent<RenderComponent>();
 	auto fpsText = fpsGO->AddComponent<TextObject>("FPS", fpsFont);
 	fpsText->SetColor(SDL_Color{ 255,255,0 });
 	fpsGO->SetPosition(10, 10);
 	auto fps = fpsGO->AddComponent<FPS>(fpsText);
 	fps->SetUpdateInterval(1.f);
-	scene.Add(fpsGO);
+	scene.Adopt(fpsGO);
 
-	auto go_bub = std::make_shared<GameObject>();
+	auto go_bub = new GameObject(&scene);
 	go_bub->SetPosition(100, 100);
 	go_bub->AddComponent<RenderComponent>();
 	go_bub->AddComponent<TextureObject>("Bub.png");
@@ -69,53 +77,53 @@ void DemoScene()
 	auto bubLives = go_bub->AddComponent<LivesComponent>();
 	auto bubScore = go_bub->AddComponent<ScoreComponent>();
 
-	auto go_bob = std::make_shared<GameObject>();
+	auto go_bob = new GameObject(&scene);
 	go_bob->SetPosition(100, 200);
 	go_bob->AddComponent<RenderComponent>();
 	go_bob->AddComponent<TextureObject>("Bob.png");
 	auto bobMovement = go_bob->AddComponent<MovementComponent>();
 	auto bobLives = go_bob->AddComponent<LivesComponent>();
 	auto bobScore = go_bob->AddComponent<ScoreComponent>();
-	scene.Add(go_bub);
-	scene.Add(go_bob);
+	scene.Adopt(go_bub);
+	scene.Adopt(go_bob);
 
 	auto uiFont = ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
 
-	auto bub_livesGO = std::make_shared<GameObject>();
+	auto bub_livesGO = new GameObject(&scene);
 	bub_livesGO->AddComponent<RenderComponent>();
 	auto bub_livesText = bub_livesGO->AddComponent<TextObject>("Lives: " + std::to_string(bubLives->GetLivesAmount()), uiFont);
 	bub_livesText->SetColor(SDL_Color{ 255,255,0 });
 	bub_livesGO->GetTransform().SetPosition(0, 300);
 	auto bub_livesDisplay = bub_livesGO->AddComponent<LivesDisplayComponent>(bub_livesText);
 	bubLives->AddObserver(bub_livesDisplay);
-	scene.Add(bub_livesGO);
+	scene.Adopt(bub_livesGO);
 
-	auto bob_livesGO = std::make_shared<GameObject>();
+	auto bob_livesGO = new GameObject(&scene);
 	bob_livesGO->AddComponent<RenderComponent>();
 	auto bob_livesText = bob_livesGO->AddComponent<TextObject>("Lives: " + std::to_string(bobLives->GetLivesAmount()), uiFont);
 	bob_livesText->SetColor(SDL_Color{ 0,255,0 });
 	bob_livesGO->GetTransform().SetPosition(0, 350);
 	auto bob_livesDisplay = bob_livesGO->AddComponent<LivesDisplayComponent>(bob_livesText);
 	bobLives->AddObserver(bob_livesDisplay);
-	scene.Add(bob_livesGO);
+	scene.Adopt(bob_livesGO);
 
-	auto bub_scoreGO = std::make_shared<GameObject>();
+	auto bub_scoreGO = new GameObject(&scene);
 	bub_scoreGO->AddComponent<RenderComponent>();
 	auto bub_scoreText = bub_scoreGO->AddComponent<TextObject>("Score: " + std::to_string(bubScore->GetScoreAmount()), uiFont);
 	bub_scoreText->SetColor(SDL_Color{ 255,255,0 });
 	bub_scoreGO->GetTransform().SetPosition(0, 320);
 	auto bub_scoreDisplay = bub_scoreGO->AddComponent<ScoreDisplayComponent>(bub_scoreText);
 	bubScore->AddObserver(bub_scoreDisplay);
-	scene.Add(bub_scoreGO);
+	scene.Adopt(bub_scoreGO);
 
-	auto bob_scoreGO = std::make_shared<GameObject>();
+	auto bob_scoreGO = new GameObject(&scene);
 	bob_scoreGO->AddComponent<RenderComponent>();
 	auto bob_scoreText = bob_scoreGO->AddComponent<TextObject>("Score: " + std::to_string(bobScore->GetScoreAmount()), uiFont);
 	bob_scoreText->SetColor(SDL_Color{ 0,255,0 });
 	bob_scoreGO->GetTransform().SetPosition(0, 370);
 	auto bob_scoreDisplay = bob_scoreGO->AddComponent<ScoreDisplayComponent>(bob_scoreText);
 	bobScore->AddObserver(bob_scoreDisplay);
-	scene.Add(bob_scoreGO);
+	scene.Adopt(bob_scoreGO);
 
 	constexpr float movementSpeed{ 50.f };
 	// Input bindings
@@ -160,35 +168,44 @@ void LevelOne()
 	// FPS
 	{
 		auto fpsFont = ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
-		auto fpsObj = std::make_shared<GameObject>();
+		auto fpsObj = new GameObject(&scene);
 		fpsObj->AddComponent<RenderComponent>();
 		auto fpsText = fpsObj->AddComponent<TextObject>("FPS", fpsFont);
 		fpsText->SetColor(SDL_Color{ 255,255,0 });
 		fpsObj->SetPosition(10, 10);
 		auto fps = fpsObj->AddComponent<FPS>(fpsText);
 		fps->SetUpdateInterval(1.f);
-		scene.Add(fpsObj);
+		scene.Adopt(fpsObj);
 	}
 
 	// Bub
-	auto bubObj = std::make_shared<GameObject>();
+	auto bubObj = new GameObject(&scene);
 	bubObj->SetPosition(100, 100);
 	bubObj->AddComponent<RenderComponent>();
 	bubObj->AddComponent<TextureObject>("Bub.png");
 	auto bubMovement = bubObj->AddComponent<MovementComponent>();
 	auto bubLives = bubObj->AddComponent<LivesComponent>();
 	auto bubScore = bubObj->AddComponent<ScoreComponent>();
-	scene.Add(bubObj);
+	scene.Adopt(bubObj);
 
 	// Bob
-	auto bobObj = std::make_shared<GameObject>();
+	auto bobObj = new GameObject(&scene);
 	bobObj->SetPosition(100, 200);
 	bobObj->AddComponent<RenderComponent>();
 	bobObj->AddComponent<TextureObject>("Bob.png");
 	auto bobMovement = bobObj->AddComponent<MovementComponent>();
 	auto bobLives = bobObj->AddComponent<LivesComponent>();
 	auto bobScore = bobObj->AddComponent<ScoreComponent>();
-	scene.Add(bobObj);
+	scene.Adopt(bobObj);
+
+	// Level
+	{
+		auto levelObj = new GameObject(&scene);
+		scene.Adopt(levelObj);
+
+		ImageParser imageParser{"Level1.png"};
+		levelObj->AddComponent<LevelComponent>(&imageParser);
+	}
 
 	// Input bindings
 	{
