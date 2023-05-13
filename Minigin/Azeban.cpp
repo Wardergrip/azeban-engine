@@ -10,6 +10,7 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "GameTime.h"
+#include "CollisionManager.h"
 
 #include <chrono>
 #include <thread>
@@ -60,8 +61,8 @@ aze::Azeban::Azeban(const std::string &dataPath)
 		"Programming 4 assignment",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		640,
-		480,
+		769,
+		673,
 		SDL_WINDOW_OPENGL
 	);
 	if (g_window == nullptr) 
@@ -106,6 +107,8 @@ void aze::Azeban::Run(const std::function<void()>& load)
 
 		sceneManager.Update();
 		renderer.Render();
+
+		CollisionManager::GetInstance().Update();
 
 		lastTime = currentTime;
 		

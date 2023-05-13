@@ -54,9 +54,6 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Fundamentals</Filter>
     </ClCompile>
-    <ClCompile Include="Rectf.cpp">
-      <Filter>Fundamentals</Filter>
-    </ClCompile>
     <ClCompile Include="LevelComponent.cpp">
       <Filter>Fundamentals</Filter>
     </ClCompile>
@@ -102,9 +99,6 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
-      <Filter>Fundamentals</Filter>
-    </ClInclude>
-    <ClInclude Include="Rectf.h">
       <Filter>Fundamentals</Filter>
     </ClInclude>
     <ClInclude Include="LevelComponent.h">

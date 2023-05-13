@@ -3,6 +3,7 @@
 
 #include "RenderComponent.h"
 #include "TextureObject.h"
+#include "BoxColliderComponent.h"
 
 #include <iostream>
 
@@ -16,47 +17,26 @@ aze::LevelComponent::LevelComponent(GameObject* pParent, ImageParser* pImagePars
 	int p{0};
 	for (auto& pixel : pixels)
 	{
-		if (pixel.col.r >= 250)
+		if (pixel.col.r >= 250 && pixel.col.g >= 250 && pixel.col.b >= 250) // White
 		{
-			std::cout << "[" << p << "] " << pixel.point.x << " , " << pixel.point.y << "\n";
-			auto tile = CreateTile();
+			//std::cout << "[" << p << "] " << pixel.point.x << " , " << pixel.point.y << "\n";
+			auto tile = CreateTile(tileSize);
 
 			tile->GetTransform().SetPosition(m_pGrid->GetPoint(pixel.point.x, pixel.point.y));
 			m_pTiles.push_back(tile);
-		}
-		else
-		{
-			auto tile = new GameObject(GetGameObject()->GetScene());
-			GetGameObject()->Adopt(tile);
-
-			tile->AddComponent<RenderComponent>();
-			tile->AddComponent<TextureObject>("Yellow.png");
-
-			tile->GetTransform().SetPosition(m_pGrid->GetPoint(pixel.point.x, pixel.point.y));
-			m_pTiles.push_back(tile);
-
 		}
 		++p;
 	}
-	
-	/*std::cout << "Done with making tiles\n";
-	int i{ 0 };
-	for (auto& tile : m_pTiles)
-	{
-		auto transform = tile->GetTransform();
-		auto worldpos = transform.GetWorldPosition();
-		std::cout << "[" << i << "] " << worldpos.x << " , " << worldpos.y << "\n";
-		++i;
-	}*/
 }
 
-aze::GameObject* aze::LevelComponent::CreateTile()
+aze::GameObject* aze::LevelComponent::CreateTile(float size)
 {
 	auto tile = new GameObject(GetGameObject()->GetScene());
 	GetGameObject()->Adopt(tile);
 
 	tile->AddComponent<RenderComponent>();
 	tile->AddComponent<TextureObject>("Small.png");
+	tile->AddComponent<BoxColliderComponent>(Rectf{ {},size,size })->SetStatic(true);
 
 	return tile;
 }

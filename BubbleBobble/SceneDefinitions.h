@@ -32,6 +32,7 @@
 #include "LivesDisplayComponent.h"
 #include "ScoreDisplayComponent.h"
 #include "LevelComponent.h"
+#include "BoxColliderComponent.h"
 
 using namespace aze;
 
@@ -76,6 +77,7 @@ void DemoScene()
 	auto bubMovement = go_bub->AddComponent<MovementComponent>();
 	auto bubLives = go_bub->AddComponent<LivesComponent>();
 	auto bubScore = go_bub->AddComponent<ScoreComponent>();
+	go_bub->AddComponent<BoxColliderComponent>(Rectf{ {},24,24 });
 
 	auto go_bob = new GameObject(&scene);
 	go_bob->SetPosition(100, 200);
