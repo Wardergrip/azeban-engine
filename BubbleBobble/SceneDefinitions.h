@@ -5,7 +5,12 @@
 #include "SceneManager.h"
 #include "InputManager.h"
 #include "ResourceManager.h"
+#include "ServiceManager.h"
 #include "FPS.h"
+
+// Services
+#include "SoundSystemLogger.h"
+#include "SDLSoundSystem.h"
 
 // Data
 #include "TextObject.h"
@@ -22,6 +27,8 @@
 #include "MoveCommand.h"
 #include "RemoveLifeCommand.h" 
 #include "AddScoreCommand.h"
+#include "AudioPlayCommand.h"
+#include "MuteCommand.h"
 
 // Components
 #include "RevolutionComponent.h"
@@ -167,6 +174,13 @@ void LevelOne()
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Level 1");
 
+	// Audio
+#if _DEBUG
+	ServiceManager::GetInstance().RegisterSoundSystem(std::make_unique<SoundSystemLogger>(std::make_unique<SDLSoundSystem>()));
+#else
+	ServiceManager::GetInstance().RegisterSoundSystem(std::make_unique<SDLSoundSystem>());
+#endif
+
 	// FPS
 	{
 		auto fpsFont = ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
@@ -232,6 +246,9 @@ void LevelOne()
 		inputManager.BindCommand(std::make_unique<RemoveLifeCommand>(bobLives), KeyboardKey{ static_cast<KeyboardButton>(SDLK_SPACE),OnButtonDown });
 		inputManager.BindCommand(std::make_unique<AddScoreCommand>(bobScore), KeyboardKey{ static_cast<KeyboardButton>(SDLK_v),OnButtonDown });
 
+		inputManager.BindCommand(std::make_unique<AudioPlayCommand>(&ServiceManager::GetInstance().GetSoundSystem(),"../Data/Jump.wav",1.0f), KeyboardKey{static_cast<KeyboardButton>(SDLK_g),OnButtonDown});
+		inputManager.BindCommand(std::make_unique<MuteCommand>(&ServiceManager::GetInstance().GetSoundSystem()), KeyboardKey{static_cast<KeyboardButton>(SDLK_m),OnButtonDown});
+
 		std::cout << "[INFO] CONTROLS\n"
 			<< "Player 1:\n"
 			<< "- Dpad: movement\n"
@@ -241,6 +258,11 @@ void LevelOne()
 			<< "- Arrow keys: movement\n"
 			<< "- Space: remove life\n"
 			<< "- v: add score\n"
+			<< "Misc:\n"
+			<< "- g: play test sound\n"
+			<< "- m: toggle mute sound\n"
+			<< "Note:\n"
+			<< "Logging of the sound system will automatically happen in debug\n"
 			;
 	}
 }

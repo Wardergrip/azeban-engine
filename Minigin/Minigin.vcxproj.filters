@@ -167,6 +167,18 @@
     <ClInclude Include="ServiceManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="SDLSoundSystem.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioPlayCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="MuteCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundSystemLogger.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renderer.cpp">
@@ -267,6 +279,9 @@
     </ClCompile>
     <ClCompile Include="ServiceManager.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLSoundSystem.cpp">
+      <Filter>Audio</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
