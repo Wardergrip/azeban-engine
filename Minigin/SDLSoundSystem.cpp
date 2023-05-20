@@ -87,6 +87,7 @@ namespace aze
 				while (m_RequestQueue.size() > 0)
 				{
 					AudioRequest request{ m_RequestQueue.front() };
+					lock.unlock();
 
 					if (!m_SoundMap.contains(request.filePath))
 					{
@@ -108,7 +109,9 @@ namespace aze
 					// Return. The request is still at the start of the queue
 					if (channel == -1) return;
 					// Request was succesfull, we can already remove it from the queue
+					lock.lock();
 					m_RequestQueue.pop();
+					lock.unlock();
 					
 					m_Channels.emplace(channel);
 				}
