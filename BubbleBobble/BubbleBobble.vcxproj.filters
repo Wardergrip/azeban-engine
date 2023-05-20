@@ -60,6 +60,9 @@
     <ClCompile Include="ImageParser.cpp">
       <Filter>Fundamentals</Filter>
     </ClCompile>
+    <ClCompile Include="SceneDefinitions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneDefinitions.h">

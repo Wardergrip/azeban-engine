@@ -167,6 +167,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
     <ClCompile Include="RevolutionComponent.cpp" />
+    <ClCompile Include="SceneDefinitions.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreDisplayComponent.cpp" />
   </ItemGroup>

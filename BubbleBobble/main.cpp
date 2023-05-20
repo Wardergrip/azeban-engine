@@ -13,6 +13,6 @@
 int main(int, char* [])
 {
 	aze::Azeban engine("../Data/");
-	engine.Run(full_load);
+	engine.Run(aze::full_load);
 	return 0;
 }
