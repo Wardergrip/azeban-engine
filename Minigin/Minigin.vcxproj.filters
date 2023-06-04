@@ -152,15 +152,6 @@
     <ClInclude Include="Surface2D.h">
       <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="Rectf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BoxColliderComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="SoundSystem.h">
       <Filter>Audio</Filter>
     </ClInclude>
@@ -267,15 +258,6 @@
     </ClCompile>
     <ClCompile Include="Surface2D.cpp">
       <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="CollisionManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="Rectf.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BoxColliderComponent.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="ServiceManager.cpp">
       <Filter>Managers</Filter>

@@ -10,7 +10,6 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "GameTime.h"
-#include "CollisionManager.h"
 
 #include <chrono>
 #include <thread>
@@ -107,8 +106,6 @@ void aze::Azeban::Run(const std::function<void()>& load)
 
 		sceneManager.Update();
 		renderer.Render();
-
-		CollisionManager::GetInstance().Update();
 
 		lastTime = currentTime;
 		
