@@ -1,7 +1,6 @@
 #pragma once
 #include "Component.h"
 #include "Grid.h"
-#include "Rectf.h"
 #include "ImageParser.h"
 
 #include <memory>

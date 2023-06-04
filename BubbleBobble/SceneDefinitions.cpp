@@ -40,6 +40,8 @@
 #include "ScoreDisplayComponent.h"
 #include "LevelComponent.h"
 
+//#include "../3rdParty/box2d/box2d.h"
+
 using namespace aze;
 using namespace glm;
 
@@ -218,6 +220,11 @@ void aze::LevelOne()
 		ImageParser imageParser{ "Level1.png" };
 		levelObj->AddComponent<LevelComponent>(&imageParser);
 	}
+
+	//std::unique_ptr<b2World> bWorld = std::make_unique<b2World>(b2Vec2{0,-9.81f});
+	/*auto a = new b2World(b2Vec2{ 0,-9.81f });
+	std::cout << a->GetGravity().Length() << '\n';
+	delete a;*/
 
 	// Input bindings
 	{

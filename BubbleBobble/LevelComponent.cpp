@@ -3,7 +3,6 @@
 
 #include "RenderComponent.h"
 #include "TextureObject.h"
-#include "BoxColliderComponent.h"
 
 #include <iostream>
 
@@ -29,14 +28,13 @@ aze::LevelComponent::LevelComponent(GameObject* pParent, ImageParser* pImagePars
 	}
 }
 
-aze::GameObject* aze::LevelComponent::CreateTile(float size)
+aze::GameObject* aze::LevelComponent::CreateTile(float /*size*/)
 {
 	auto tile = new GameObject(GetGameObject()->GetScene());
 	GetGameObject()->Adopt(tile);
 
 	tile->AddComponent<RenderComponent>();
 	tile->AddComponent<TextureObject>("Small.png");
-	tile->AddComponent<BoxColliderComponent>(Rectf{ {},size,size })->SetStatic(true);
 
 	return tile;
 }
