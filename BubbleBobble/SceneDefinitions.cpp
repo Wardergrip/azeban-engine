@@ -39,8 +39,33 @@
 #include "LivesDisplayComponent.h"
 #include "ScoreDisplayComponent.h"
 #include "LevelComponent.h"
+#include "RigidbodyComponent.h"
 
-//#include "../3rdParty/box2d/box2d.h"
+// Box2d
+#include "../3rdParty/box2d/box2d.h"
+
+namespace aze
+{
+	class MoveRbCommand final : public Command
+	{
+	public:
+		MoveRbCommand(RigidbodyComponent* pRbComp, const glm::vec2& dir, float speed)
+			:m_pRbComp{pRbComp}
+			,m_Dir{dir}
+			,m_Speed{speed}
+		{}
+
+		void Execute() override
+		{
+			m_pRbComp->GetBody()->ApplyForce(b2Vec2{ m_Dir.x * m_Speed, m_Dir.y * m_Speed },m_pRbComp->GetBody()->GetWorldCenter(), true);
+		}
+
+	private:
+		RigidbodyComponent* m_pRbComp;
+		glm::vec2 m_Dir;
+		float m_Speed;
+	};
+}
 
 using namespace aze;
 using namespace glm;
@@ -207,9 +232,10 @@ void aze::LevelOne()
 	bobObj->SetPosition(100, 200);
 	bobObj->AddComponent<RenderComponent>();
 	bobObj->AddComponent<TextureObject>("Bob.png");
-	auto bobMovement = bobObj->AddComponent<MovementComponent>();
+	/*auto bobMovement = */bobObj->AddComponent<MovementComponent>();
 	auto bobLives = bobObj->AddComponent<LivesComponent>();
 	auto bobScore = bobObj->AddComponent<ScoreComponent>();
+	auto bobRbComp = bobObj->AddComponent<RigidbodyComponent>();
 	scene.Adopt(bobObj);
 
 	// Level
@@ -220,11 +246,6 @@ void aze::LevelOne()
 		ImageParser imageParser{ "Level1.png" };
 		levelObj->AddComponent<LevelComponent>(&imageParser);
 	}
-
-	//std::unique_ptr<b2World> bWorld = std::make_unique<b2World>(b2Vec2{0,-9.81f});
-	/*auto a = new b2World(b2Vec2{ 0,-9.81f });
-	std::cout << a->GetGravity().Length() << '\n';
-	delete a;*/
 
 	// Input bindings
 	{
@@ -239,10 +260,10 @@ void aze::LevelOne()
 		inputManager.BindCommand(std::make_unique<RemoveLifeCommand>(bubLives), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::A),OnButtonDown });
 		inputManager.BindCommand(std::make_unique<AddScoreCommand>(bubScore), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::B),OnButtonDown });
 
-		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ 1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_RIGHT),OnButtonPressed });
-		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ -1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_LEFT),OnButtonPressed });
-		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ 0,-1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_UP),OnButtonPressed });
-		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ 0,1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_DOWN),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveRbCommand>(bobRbComp, vec2{ 1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_RIGHT),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveRbCommand>(bobRbComp, vec2{ -1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_LEFT),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveRbCommand>(bobRbComp, vec2{ 0,1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_UP),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveRbCommand>(bobRbComp, vec2{ 0,-1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_DOWN),OnButtonPressed });
 
 		inputManager.BindCommand(std::make_unique<RemoveLifeCommand>(bobLives), KeyboardKey{ static_cast<KeyboardButton>(SDLK_SPACE),OnButtonDown });
 		inputManager.BindCommand(std::make_unique<AddScoreCommand>(bobScore), KeyboardKey{ static_cast<KeyboardButton>(SDLK_v),OnButtonDown });

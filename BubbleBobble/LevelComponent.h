@@ -13,7 +13,7 @@ namespace aze
 		LevelComponent(GameObject* pParent, ImageParser* pImageParser);
 
 	private:
-		GameObject* CreateTile(float size);
+		GameObject* CreateTile(float size, const glm::vec3& pos);
 
 		std::unique_ptr<Grid> m_pGrid;
 		std::vector<GameObject*> m_pTiles;

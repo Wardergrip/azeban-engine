@@ -10,12 +10,18 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "GameTime.h"
+#include "PhysicsManager.h"
 
 #include <chrono>
 #include <thread>
 
+#include <iostream>
+
 #undef min
 #undef max
+
+constexpr int WINDOW_WIDTH{ 769 };
+constexpr int WINDOW_HEIGHT{ 673 };
 
 SDL_Window* g_window{};
 
@@ -60,8 +66,8 @@ aze::Azeban::Azeban(const std::string &dataPath)
 		"Programming 4 assignment",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		769,
-		673,
+		WINDOW_WIDTH,
+		WINDOW_HEIGHT,
 		SDL_WINDOW_OPENGL
 	);
 	if (g_window == nullptr) 
@@ -72,6 +78,8 @@ aze::Azeban::Azeban(const std::string &dataPath)
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
+
+	PhysicsManager::GetInstance().Init(0, -10.f, WINDOW_WIDTH,WINDOW_HEIGHT);
 }
 
 aze::Azeban::~Azeban()
@@ -94,16 +102,27 @@ void aze::Azeban::Run(const std::function<void()>& load)
 	std::chrono::steady_clock::time_point currentTime;
 	std::chrono::steady_clock::time_point lastTime;
 	const constexpr int targetFps{ 144 };
+	const constexpr float physicsTimeStep{1 / 60.f};
+	const constexpr int velocityIterations{ 9 };
+	const constexpr int positionIterations{ 3 };
 	constexpr int maxWaitingTimeMs{ static_cast<int>(1000 / targetFps) };
+	float lag{ 0.0f };
 	sceneManager.Start();
 	while (doContinue)
 	{
 		currentTime = std::chrono::high_resolution_clock::now();
 		const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
-
 		doContinue = input.ProcessInput();
 		GameTime::GetInstance().SetElapsed(deltaTime);
 
+		lag += deltaTime;
+		while (lag >= physicsTimeStep)
+		{
+			// First time, lastTime is 0, which means deltaTime is very high, which messes this loop up
+			if (deltaTime >= 1000.0f) lag = physicsTimeStep;
+			PhysicsManager::GetInstance().Step(physicsTimeStep,velocityIterations,positionIterations);
+			lag -= physicsTimeStep;
+		}
 		sceneManager.Update();
 		renderer.Render();
 
