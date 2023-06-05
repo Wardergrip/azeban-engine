@@ -38,7 +38,7 @@ void aze::PhysicsManager::Step(float timeStep, int velocityIterations, int posit
 }
 
 glm::vec3 aze::PhysicsManager::b2toScreenSpace(const b2Vec2& pos)
-{;
+{
 	const float screenX = pos.x * PIXELS_PER_METER;
 	const float screenY = m_WindowHeight - (pos.y * PIXELS_PER_METER);
 

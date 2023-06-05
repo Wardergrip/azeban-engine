@@ -26,6 +26,11 @@ aze::RigidbodyComponent::RigidbodyComponent(GameObject* pParentGameObject, b2Bod
 	fixtureDef.friction = 0.3f; 
 
 	m_b2Body->CreateFixture(&fixtureDef); 
+	GetGameObject()
+		->GetTransform()
+		.SetPosition(
+			PhysicsManager::GetInstance().b2toScreenSpace(m_b2Body->GetPosition())
+		);
 }
 
 aze::RigidbodyComponent::~RigidbodyComponent()
@@ -35,9 +40,6 @@ aze::RigidbodyComponent::~RigidbodyComponent()
 
 void aze::RigidbodyComponent::Update()
 {
-	//auto& localPos = GetGameObject()->GetTransform().GetLocalPosition();
-	//auto& b2Pos = m_b2Body->GetPosition();
-	//std::cout << "GameObj transform: " << localPos.x << " " << localPos.y << " " << localPos.z << " b2 pos " << b2Pos.x << " " << b2Pos.y << "\n";
 	if (m_b2Body->GetType() == b2_staticBody) return;
 
 	GetGameObject()

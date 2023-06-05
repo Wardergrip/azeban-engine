@@ -235,7 +235,10 @@ void aze::LevelOne()
 	/*auto bobMovement = */bobObj->AddComponent<MovementComponent>();
 	auto bobLives = bobObj->AddComponent<LivesComponent>();
 	auto bobScore = bobObj->AddComponent<ScoreComponent>();
-	auto bobRbComp = bobObj->AddComponent<RigidbodyComponent>();
+	b2BodyDef bobBodyDef{};
+	bobBodyDef.position.Set(5, 5);
+	bobBodyDef.type = b2_dynamicBody;
+	auto bobRbComp = bobObj->AddComponent<RigidbodyComponent>(&bobBodyDef);
 	scene.Adopt(bobObj);
 
 	// Level
