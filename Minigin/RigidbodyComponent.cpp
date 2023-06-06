@@ -8,6 +8,7 @@
 aze::RigidbodyComponent::RigidbodyComponent(GameObject* pParentGameObject, b2BodyDef* pBodyDef)
 	:Component{ pParentGameObject }
 {
+	PhysicsManager::GetInstance().GetPhysicsEvent().AddObserver(this);
 	b2BodyDef bodyDef;
 	if (pBodyDef)
 	{
@@ -25,6 +26,9 @@ aze::RigidbodyComponent::RigidbodyComponent(GameObject* pParentGameObject, b2Bod
 	fixtureDef.density = 1.0f;  
 	fixtureDef.friction = 0.3f; 
 
+	m_b2Body->SetFixedRotation(true);
+	m_b2Body->SetLinearDamping(0.5f);
+
 	m_b2Body->CreateFixture(&fixtureDef); 
 	GetGameObject()
 		->GetTransform()
@@ -36,9 +40,10 @@ aze::RigidbodyComponent::RigidbodyComponent(GameObject* pParentGameObject, b2Bod
 aze::RigidbodyComponent::~RigidbodyComponent()
 {
 	PhysicsManager::GetInstance().GetWorld()->DestroyBody(m_b2Body);
+	PhysicsManager::GetInstance().GetPhysicsEvent().RemoveObserver(this);
 }
 
-void aze::RigidbodyComponent::Update()
+void aze::RigidbodyComponent::OnNotify(PhysicsEvent* /*data*/)
 {
 	if (m_b2Body->GetType() == b2_staticBody) return;
 

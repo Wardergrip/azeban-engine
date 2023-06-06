@@ -79,7 +79,7 @@ aze::Azeban::Azeban(const std::string &dataPath)
 
 	ResourceManager::GetInstance().Init(dataPath);
 
-	PhysicsManager::GetInstance().Init(0, -10.f, WINDOW_WIDTH,WINDOW_HEIGHT);
+	PhysicsManager::GetInstance().EngineInit(WINDOW_WIDTH,WINDOW_HEIGHT);
 }
 
 aze::Azeban::~Azeban()

@@ -6,6 +6,7 @@
 #include "InputManager.h"
 #include "ResourceManager.h"
 #include "ServiceManager.h"
+#include "PhysicsManager.h"
 #include "FPS.h"
 
 // Services
@@ -29,6 +30,8 @@
 #include "AddScoreCommand.h"
 #include "AudioPlayCommand.h"
 #include "MuteCommand.h"
+#include "MoveRbCommand.h"
+#include "JumpRbCommand.h"
 
 // Components
 #include "RevolutionComponent.h"
@@ -43,27 +46,50 @@
 
 // Box2d
 #include "../3rdParty/box2d/box2d.h"
+#include "PhysicsFilters.h"
 
 namespace aze
 {
-	class MoveRbCommand final : public Command
+	class PlatformingComponent : public Component
 	{
-	public:
-		MoveRbCommand(RigidbodyComponent* pRbComp, const glm::vec2& dir, float speed)
-			:m_pRbComp{pRbComp}
-			,m_Dir{dir}
-			,m_Speed{speed}
-		{}
+	private:
+		RigidbodyComponent* m_RbComp;
 
-		void Execute() override
+		void enableCollision() 
 		{
-			m_pRbComp->GetBody()->ApplyForce(b2Vec2{ m_Dir.x * m_Speed, m_Dir.y * m_Speed },m_pRbComp->GetBody()->GetWorldCenter(), true);
+			b2Filter playerFilter = m_RbComp->GetBody()->GetFixtureList()->GetFilterData();
+			playerFilter.maskBits |= physicsFilters::MASK_PLATFORM;  // Add platformBody to the mask bits
+			m_RbComp->GetBody()->GetFixtureList()->SetFilterData(playerFilter);
+			m_RbComp->GetBody()->GetFixtureList()->SetSensor(false);
 		}
 
-	private:
-		RigidbodyComponent* m_pRbComp;
-		glm::vec2 m_Dir;
-		float m_Speed;
+		void disableCollision() 
+		{
+			b2Filter playerFilter = m_RbComp->GetBody()->GetFixtureList()->GetFilterData();
+			playerFilter.maskBits &= ~physicsFilters::MASK_PLATFORM;  // Remove platformBody from the mask bits
+			m_RbComp->GetBody()->GetFixtureList()->SetFilterData(playerFilter);
+			m_RbComp->GetBody()->GetFixtureList()->SetSensor(true);
+		}
+	public:
+		PlatformingComponent(GameObject* pParent, RigidbodyComponent* rbComp)
+			:Component(pParent)
+			,m_RbComp{rbComp}
+		{
+		}
+
+		void Update()
+		{
+			if (m_RbComp->GetBody()->GetLinearVelocity().y > FLT_EPSILON)
+			{
+				disableCollision();
+				std::cout << "disabling collision\n";
+			}
+			else
+			{
+				enableCollision();
+				std::cout << "enabling collision\n";
+			}
+		}
 	};
 }
 
@@ -196,6 +222,7 @@ void aze::DemoScene()
 void aze::LevelOne()
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Level 1");
+	PhysicsManager::GetInstance().Init(16.f, 0, -10.f);
 
 	// Audio
 #if _DEBUG
@@ -217,6 +244,15 @@ void aze::LevelOne()
 		scene.Adopt(fpsObj);
 	}
 
+	// Level
+	{
+		auto levelObj = new GameObject(&scene);
+		scene.Adopt(levelObj);
+
+		ImageParser imageParser{ "Level1.png" };
+		levelObj->AddComponent<LevelComponent>(&imageParser);
+	}
+
 	// Bub
 	auto bubObj = new GameObject(&scene);
 	bubObj->SetPosition(100, 100);
@@ -232,29 +268,29 @@ void aze::LevelOne()
 	bobObj->SetPosition(100, 200);
 	bobObj->AddComponent<RenderComponent>();
 	bobObj->AddComponent<TextureObject>("Bob.png");
-	/*auto bobMovement = */bobObj->AddComponent<MovementComponent>();
+	/*auto bobMovement = bobObj->AddComponent<MovementComponent>();*/
 	auto bobLives = bobObj->AddComponent<LivesComponent>();
 	auto bobScore = bobObj->AddComponent<ScoreComponent>();
 	b2BodyDef bobBodyDef{};
 	bobBodyDef.position.Set(5, 5);
 	bobBodyDef.type = b2_dynamicBody;
 	auto bobRbComp = bobObj->AddComponent<RigidbodyComponent>(&bobBodyDef);
+	bobObj->AddComponent<PlatformingComponent>(bobRbComp);
+	auto bobBody = bobRbComp->GetBody();
+	auto bobFixtureList = bobBody->GetFixtureList();
+	b2Filter playerFilter;
+	playerFilter.categoryBits = physicsFilters::CATEGORY_PLAYER;
+	playerFilter.maskBits = physicsFilters::MASK_PLATFORM | physicsFilters::CATEGORY_LEVEL;
+	bobFixtureList->SetFilterData(playerFilter);
 	scene.Adopt(bobObj);
-
-	// Level
-	{
-		auto levelObj = new GameObject(&scene);
-		scene.Adopt(levelObj);
-
-		ImageParser imageParser{ "Level1.png" };
-		levelObj->AddComponent<LevelComponent>(&imageParser);
-	}
 
 	// Input bindings
 	{
 		constexpr float movementSpeed{ 50.f };
+		constexpr float jumpForce{ 5000.f };
 
 		InputManager& inputManager = InputManager::GetInstance();
+		// bub
 		inputManager.BindCommand(std::make_unique<MoveCommand>(bubMovement, vec2{ 1,0 }, movementSpeed * 2.f), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_RIGHT),OnButtonPressed });
 		inputManager.BindCommand(std::make_unique<MoveCommand>(bubMovement, vec2{ -1,0 }, movementSpeed * 2.f), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_LEFT),OnButtonPressed });
 		inputManager.BindCommand(std::make_unique<MoveCommand>(bubMovement, vec2{ 0,-1 }, movementSpeed * 2.f), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_UP),OnButtonPressed });
@@ -263,10 +299,11 @@ void aze::LevelOne()
 		inputManager.BindCommand(std::make_unique<RemoveLifeCommand>(bubLives), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::A),OnButtonDown });
 		inputManager.BindCommand(std::make_unique<AddScoreCommand>(bubScore), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::B),OnButtonDown });
 
+		// bob
 		inputManager.BindCommand(std::make_unique<MoveRbCommand>(bobRbComp, vec2{ 1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_RIGHT),OnButtonPressed });
 		inputManager.BindCommand(std::make_unique<MoveRbCommand>(bobRbComp, vec2{ -1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_LEFT),OnButtonPressed });
-		inputManager.BindCommand(std::make_unique<MoveRbCommand>(bobRbComp, vec2{ 0,1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_UP),OnButtonPressed });
-		inputManager.BindCommand(std::make_unique<MoveRbCommand>(bobRbComp, vec2{ 0,-1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_DOWN),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<JumpRbCommand>(bobRbComp, jumpForce), KeyboardKey{ static_cast<KeyboardButton>(SDLK_UP),OnButtonPressed });
+		//inputManager.BindCommand(std::make_unique<MoveRbCommand>(bobRbComp, vec2{ 0,-1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_DOWN),OnButtonPressed });
 
 		inputManager.BindCommand(std::make_unique<RemoveLifeCommand>(bobLives), KeyboardKey{ static_cast<KeyboardButton>(SDLK_SPACE),OnButtonDown });
 		inputManager.BindCommand(std::make_unique<AddScoreCommand>(bobScore), KeyboardKey{ static_cast<KeyboardButton>(SDLK_v),OnButtonDown });

@@ -182,6 +182,7 @@
     <ClInclude Include="LivesDisplayComponent.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="PhysicsFilters.h" />
     <ClInclude Include="RemoveLifeCommand.h" />
     <ClInclude Include="RevolutionComponent.h" />
     <ClInclude Include="SceneDefinitions.h" />

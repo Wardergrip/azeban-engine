@@ -326,6 +326,15 @@
     <ClInclude Include="RigidbodyComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsEvent.h">
+      <Filter>Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveRbCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpRbCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renderer.cpp">
