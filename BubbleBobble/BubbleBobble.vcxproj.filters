@@ -110,8 +110,5 @@
     <ClInclude Include="ImageParser.h">
       <Filter>Fundamentals</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsFilters.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

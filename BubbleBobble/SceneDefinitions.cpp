@@ -49,7 +49,7 @@
 
 namespace aze
 {
-	class PlatformingComponent : public Component
+	class PlatformingComponent final : public Component, public Observer<PhysicsEvent>
 	{
 	private:
 		RigidbodyComponent* m_RbComp;
@@ -68,9 +68,14 @@ namespace aze
 			:Component(pParent)
 			,m_RbComp{rbComp}
 		{
+			PhysicsManager::GetInstance().AddObserver(this);
+		}
+		virtual ~PlatformingComponent()
+		{
+			PhysicsManager::GetInstance().RemoveObserver(this);
 		}
 
-		void Update()
+		void OnNotify(PhysicsEvent* /*data*/)
 		{
 			if (m_RbComp->GetBody()->GetLinearVelocity().y > FLT_EPSILON)
 			{

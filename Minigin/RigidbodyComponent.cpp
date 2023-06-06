@@ -8,7 +8,7 @@
 aze::RigidbodyComponent::RigidbodyComponent(GameObject* pParentGameObject, b2BodyDef* pBodyDef)
 	:Component{ pParentGameObject }
 {
-	PhysicsManager::GetInstance().GetPhysicsEvent().AddObserver(this);
+	PhysicsManager::GetInstance().AddObserver(this);
 	b2BodyDef bodyDef;
 	if (pBodyDef)
 	{
@@ -40,7 +40,7 @@ aze::RigidbodyComponent::RigidbodyComponent(GameObject* pParentGameObject, b2Bod
 aze::RigidbodyComponent::~RigidbodyComponent()
 {
 	PhysicsManager::GetInstance().GetWorld()->DestroyBody(m_b2Body);
-	PhysicsManager::GetInstance().GetPhysicsEvent().RemoveObserver(this);
+	PhysicsManager::GetInstance().RemoveObserver(this);
 }
 
 void aze::RigidbodyComponent::OnNotify(PhysicsEvent* /*data*/)

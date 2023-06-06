@@ -16,11 +16,11 @@ namespace aze
 			, m_Force{ force }
 			, m_JumpSent{false}
 		{
-			PhysicsManager::GetInstance().GetPhysicsEvent().AddObserver(this);
+			PhysicsManager::GetInstance().AddObserver(this);
 		}
 		virtual ~JumpRbCommand()
 		{
-			PhysicsManager::GetInstance().GetPhysicsEvent().RemoveObserver(this);
+			PhysicsManager::GetInstance().RemoveObserver(this);
 		}
 
 		void Execute() override

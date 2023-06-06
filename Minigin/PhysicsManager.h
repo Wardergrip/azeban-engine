@@ -23,7 +23,9 @@ namespace aze
 		glm::vec3 b2toScreenSpace(const b2Vec2& pos);
 		b2Vec2 ScreenSpaceTob2(const glm::vec3& pos);
 
-		Subject<PhysicsEvent>& GetPhysicsEvent() { return m_PhysicsEvent; }
+		void AddObserver(Observer<PhysicsEvent>* pObserver) { m_PhysicsEvent.AddObserver(pObserver); }
+		void RemoveObserver(Observer<PhysicsEvent>* pObserver) { m_PhysicsEvent.RemoveObserver(pObserver); }
+
 	protected:
 		friend class Singleton<PhysicsManager>;
 		PhysicsManager();

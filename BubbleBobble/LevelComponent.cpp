@@ -7,7 +7,6 @@
 #include "PhysicsManager.h"
 #include "RigidbodyComponent.h"
 #include "../3rdParty/box2d/box2d.h"
-#include "PhysicsFilters.h"
 
 #include <iostream>
 
@@ -31,7 +30,7 @@ aze::LevelComponent::LevelComponent(GameObject* pParent, ImageParser* pImagePars
 		else if (pixel.col.r <= FLT_EPSILON && pixel.col.g >= 250 && pixel.col.b >= 250)
 		{
 			auto tile = CreateTile(tileSize, m_pGrid->GetPoint(pixel.point.x, pixel.point.y));
-			auto rbComp = tile->GetComponent<RigidbodyComponent>();
+			tile->GetComponent<RigidbodyComponent>();
 			m_pTiles.push_back(tile);
 		}
 		++p;
