@@ -46,7 +46,6 @@
 
 // Box2d
 #include "../3rdParty/box2d/box2d.h"
-#include "PhysicsFilters.h"
 
 namespace aze
 {
@@ -57,17 +56,11 @@ namespace aze
 
 		void enableCollision() 
 		{
-			b2Filter playerFilter = m_RbComp->GetBody()->GetFixtureList()->GetFilterData();
-			playerFilter.maskBits |= physicsFilters::MASK_PLATFORM;  // Add platformBody to the mask bits
-			m_RbComp->GetBody()->GetFixtureList()->SetFilterData(playerFilter);
 			m_RbComp->GetBody()->GetFixtureList()->SetSensor(false);
 		}
 
 		void disableCollision() 
 		{
-			b2Filter playerFilter = m_RbComp->GetBody()->GetFixtureList()->GetFilterData();
-			playerFilter.maskBits &= ~physicsFilters::MASK_PLATFORM;  // Remove platformBody from the mask bits
-			m_RbComp->GetBody()->GetFixtureList()->SetFilterData(playerFilter);
 			m_RbComp->GetBody()->GetFixtureList()->SetSensor(true);
 		}
 	public:
@@ -276,12 +269,6 @@ void aze::LevelOne()
 	bobBodyDef.type = b2_dynamicBody;
 	auto bobRbComp = bobObj->AddComponent<RigidbodyComponent>(&bobBodyDef);
 	bobObj->AddComponent<PlatformingComponent>(bobRbComp);
-	auto bobBody = bobRbComp->GetBody();
-	auto bobFixtureList = bobBody->GetFixtureList();
-	b2Filter playerFilter;
-	playerFilter.categoryBits = physicsFilters::CATEGORY_PLAYER;
-	playerFilter.maskBits = physicsFilters::MASK_PLATFORM | physicsFilters::CATEGORY_LEVEL;
-	bobFixtureList->SetFilterData(playerFilter);
 	scene.Adopt(bobObj);
 
 	// Input bindings

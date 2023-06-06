@@ -32,11 +32,6 @@ aze::LevelComponent::LevelComponent(GameObject* pParent, ImageParser* pImagePars
 		{
 			auto tile = CreateTile(tileSize, m_pGrid->GetPoint(pixel.point.x, pixel.point.y));
 			auto rbComp = tile->GetComponent<RigidbodyComponent>();
-			b2Filter platformFilter;
-			platformFilter.categoryBits = physicsFilters::CATEGORY_PLATFORM;
-			platformFilter.maskBits = 0;
-			rbComp->GetBody()->GetFixtureList()->SetFilterData(platformFilter);
-
 			m_pTiles.push_back(tile);
 		}
 		++p;
@@ -67,11 +62,5 @@ aze::GameObject* aze::LevelComponent::CreateTile(float /*size*/, const glm::vec3
 	fixtureDef.friction = 1.f;
 
 	body->CreateFixture(&fixtureDef);
-
-	b2Filter levelFilter;
-	levelFilter.categoryBits = physicsFilters::CATEGORY_LEVEL;
-	levelFilter.maskBits = 0xFFFF;
-	body->GetFixtureList()->SetFilterData(levelFilter);
-
 	return tile;
 }
