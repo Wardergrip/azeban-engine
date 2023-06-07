@@ -7,6 +7,7 @@
 #include "PhysicsManager.h"
 #include "RigidbodyComponent.h"
 #include "../3rdParty/box2d/box2d.h"
+#include "PlatformContactListener.h"
 
 #include <iostream>
 
@@ -59,6 +60,7 @@ aze::GameObject* aze::LevelComponent::CreateTile(float /*size*/, const glm::vec3
 	fixtureDef.shape = &staticBox;
 	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 1.f;
+	fixtureDef.userData = PlatformContactListener::GetInstance().GetPlatformUserData();
 
 	body->CreateFixture(&fixtureDef);
 	return tile;

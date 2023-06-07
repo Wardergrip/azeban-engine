@@ -45,6 +45,7 @@
 #include "RigidbodyComponent.h"
 
 // Box2d
+#include "PlatformContactListener.h"
 #include "../3rdParty/box2d/box2d.h"
 
 namespace aze
@@ -221,7 +222,7 @@ void aze::LevelOne()
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Level 1");
 	PhysicsManager::GetInstance().Init(16.f, 0, -10.f);
-
+	PlatformContactListener::GetInstance().OnNotify(nullptr);
 	// Audio
 #if _DEBUG
 	ServiceManager::GetInstance().RegisterSoundSystem(std::make_unique<SoundSystemLogger>(std::make_unique<SDLSoundSystem>()));
@@ -273,7 +274,7 @@ void aze::LevelOne()
 	bobBodyDef.position.Set(5, 5);
 	bobBodyDef.type = b2_dynamicBody;
 	auto bobRbComp = bobObj->AddComponent<RigidbodyComponent>(&bobBodyDef);
-	bobObj->AddComponent<PlatformingComponent>(bobRbComp);
+	//bobObj->AddComponent<PlatformingComponent>(bobRbComp);
 	scene.Adopt(bobObj);
 
 	// Input bindings
