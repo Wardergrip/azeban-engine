@@ -23,47 +23,49 @@ namespace aze
     public:
         void PreSolve(b2Contact* contact, const b2Manifold* /*oldManifold*/) override
         {
-            //b2Fixture* fixtureA = contact->GetFixtureA();
-            //b2Fixture* fixtureB = contact->GetFixtureB();
+            /*
+            b2Fixture* fixtureA = contact->GetFixtureA();
+            b2Fixture* fixtureB = contact->GetFixtureB();
 
-            //bool isPlatformA = fixtureA->GetUserData() == PLATFORM_USER_DATA;
-            //bool isPlatformB = fixtureB->GetUserData() == PLATFORM_USER_DATA;
+            bool isPlatformA = fixtureA->GetUserData() == PLATFORM_USER_DATA;
+            bool isPlatformB = fixtureB->GetUserData() == PLATFORM_USER_DATA;
 
-            //// Make sure one of the fixtures is a platform.
-            //if (!(isPlatformA || isPlatformB))
-            //    return;
+            // Make sure one of the fixtures is a platform.
+            if (!(isPlatformA || isPlatformB))
+                return;
 
-            //b2Fixture* platform = isPlatformA ? fixtureA : fixtureB;
-            //b2Fixture* character = isPlatformA ? fixtureB : fixtureA;
+            b2Fixture* platform = isPlatformA ? fixtureA : fixtureB;
+            b2Fixture* character = isPlatformA ? fixtureB : fixtureA;
 
-            //b2Body* characterBody = character->GetBody();
-            //b2Body* platformBody = platform->GetBody();
+            b2Body* characterBody = character->GetBody();
+            b2Body* platformBody = platform->GetBody();
 
-            //// Check if the character is under the platform.
-            //if (characterBody->GetPosition().y < platformBody->GetPosition().y)
-            //{
-            //    std::cout << "here\n";
-            //    // Check if the character is going up
-            //    if (characterBody->GetLinearVelocity().y >= -FLT_EPSILON)
-            //    {
-            //        std::cout << "disabled\n";
-            //        contact->SetEnabled(false);
-            //    }
-            //    else
-            //    {
-            //        std::cout << "enabled\n";
-            //        contact->SetEnabled(true);
-            //    }
-            //    return;
-            //}
+            // Check if the character is under the platform.
+            if (characterBody->GetPosition().y < platformBody->GetPosition().y)
+            {
+                std::cout << "here\n";
+                // Check if the character is going up
+                if (characterBody->GetLinearVelocity().y >= -FLT_EPSILON)
+                {
+                    std::cout << "disabled\n";
+                    contact->SetEnabled(false);
+                }
+                else
+                {
+                    std::cout << "enabled\n";
+                    contact->SetEnabled(true);
+                }
+                return;
+            }
 
-            //// Check if the character is moving downward.
-            //if (characterBody->GetLinearVelocity().y < 0)
-            //    return;
+            // Check if the character is moving downward.
+            if (characterBody->GetLinearVelocity().y < 0)
+                return;
 
-            //// If the character wants to drop through the platform, ignore this collision.
-            //if (m_WantsToDrop)  // You'll have to write this function.
-            //    contact->SetEnabled(false);
+            // If the character wants to drop through the platform, ignore this collision.
+            if (m_WantsToDrop)  // You'll have to write this function.
+                contact->SetEnabled(false);
+            */
 
             b2Fixture* fixtureA = contact->GetFixtureA();
             b2Fixture* fixtureB = contact->GetFixtureB();
@@ -71,25 +73,23 @@ namespace aze
             bool isPlatformA = fixtureA->GetUserData() == PLATFORM_USER_DATA;
             bool isPlatformB = fixtureB->GetUserData() == PLATFORM_USER_DATA;
 
-            // Make sure one is a platform but not both.
-            if (isPlatformA)
+            if (!isPlatformA || !isPlatformB) 
             {
-                if (isPlatformB) return;
+                return;
             }
-            else if (isPlatformB == false) return;
 
             b2Fixture* platform = isPlatformA ? fixtureA : fixtureB;
             b2Fixture* character = isPlatformA ? fixtureB : fixtureA;
 
             b2Vec2 position = character->GetBody()->GetPosition();
 
-            float top{ platform->GetBody()->GetPosition().y + 0.5f };
-            if (position.y < top)
+            float top{ platform->GetBody()->GetPosition().y + 1.0f };
+            if (position.y - 1.0f < top)
             {
                 std::cout << "Disabled\n";
                 contact->SetEnabled(false);
             }
-            std::cout << "No change\n";
+            else std::cout << "No change\n";
         }
 
         void OnNotify(bool* data)

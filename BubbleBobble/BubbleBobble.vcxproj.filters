@@ -28,6 +28,9 @@
     <Filter Include="Fundamentals">
       <UniqueIdentifier>{dc2a6427-e627-45de-8ce5-915f290a3067}</UniqueIdentifier>
     </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{9a3afe03-bf57-4773-accb-439add84fae3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -112,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="PlatformContactListener.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

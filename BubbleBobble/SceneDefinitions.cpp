@@ -222,7 +222,7 @@ void aze::LevelOne()
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Level 1");
 	PhysicsManager::GetInstance().Init(16.f, 0, -10.f);
-	PlatformContactListener::GetInstance().OnNotify(nullptr);
+	//PlatformContactListener::GetInstance().OnNotify(nullptr);
 	// Audio
 #if _DEBUG
 	ServiceManager::GetInstance().RegisterSoundSystem(std::make_unique<SoundSystemLogger>(std::make_unique<SDLSoundSystem>()));
