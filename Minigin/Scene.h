@@ -19,6 +19,8 @@ namespace aze
 		void Render() const;
 		void OnGUI();
 
+		const std::string& GetName() const { return m_name; }
+
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
