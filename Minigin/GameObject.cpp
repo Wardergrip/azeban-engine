@@ -155,7 +155,7 @@ aze::GameObject& aze::GameObject::SetParent(GameObject* pParent, bool worldPosit
 	m_pParent = pParent;
 
 	// Adjust location
-	auto transform = GetTransform();
+	auto& transform = GetTransform();
 	if (worldPositionStays)
 	{
 		transform.SetPosition(transform.GetLocalPosition() - m_pParent->GetTransform().GetWorldPosition());
@@ -182,7 +182,7 @@ aze::GameObject& aze::GameObject::SetParent(std::nullptr_t)
 	m_pParent = nullptr;
 
 	// Adjust location
-	auto transform = GetTransform();
+	auto& transform = GetTransform();
 	// Our local = world since our parent is the scene.
 	transform.SetPosition(transform.GetWorldPosition());
 	return *this;

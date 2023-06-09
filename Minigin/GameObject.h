@@ -5,12 +5,11 @@
 #include <vector>
 #include <stdexcept>
 #include "Subject.h"
-#include "DestroyEvent.h"
+#include "Ev_Destroy.h"
 
 namespace aze
 {
 	class Texture2D;
-	class Component;
 	class Scene;
 
 	class wrong_parent : public std::runtime_error

@@ -2,7 +2,7 @@
 #include <memory>
 #include <stdexcept>
 #include "Subject.h"
-#include "DestroyEvent.h"
+#include "Ev_Destroy.h"
 
 namespace aze
 {
@@ -18,7 +18,6 @@ namespace aze
 		}
 	};
 
-	template <typename T>
 	class Component
 	{
 	public:
@@ -29,7 +28,7 @@ namespace aze
 		Component& operator=(const Component& component) = delete;
 		virtual ~Component()
 		{
-			Ev_Destroy<T> destroyE{this};
+			Ev_Destroy<Component> destroyE{this};
 			m_OnDestroyEvent.NotifyObservers(&destroyE);
 		}
 
@@ -49,6 +48,6 @@ namespace aze
 		}
 	private:
 		GameObject* m_pParentGameObject;
-		Subject<Ev_Destroy<T>> m_OnDestroyEvent;
+		Subject<Ev_Destroy<Component>> m_OnDestroyEvent;
 	};
 }

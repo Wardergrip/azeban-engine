@@ -6,7 +6,7 @@ namespace aze
 {
 	class TextObject;
 
-	class ScoreDisplayComponent : public Component<ScoreDisplayComponent>, public Observer<Ev_AddScore>
+	class ScoreDisplayComponent : public Component, public Observer<Ev_AddScore>
 	{
 	public:
 		ScoreDisplayComponent(GameObject* pParentGameObject, TextObject* pTextRenderer)

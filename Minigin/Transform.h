@@ -5,7 +5,7 @@
 
 namespace aze
 {
-	class Transform final : public Component<Transform>
+	class Transform final : public Component
 	{
 	public:
 		Transform(GameObject* pParent, const glm::vec3& pos);

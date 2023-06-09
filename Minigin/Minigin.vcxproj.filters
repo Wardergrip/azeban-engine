@@ -128,9 +128,6 @@
     <ClInclude Include="Event.h">
       <Filter>Observer</Filter>
     </ClInclude>
-    <ClInclude Include="EventQueue.h">
-      <Filter>Observer</Filter>
-    </ClInclude>
     <ClInclude Include="Command.h">
       <Filter>Commands</Filter>
     </ClInclude>
@@ -335,7 +332,7 @@
     <ClInclude Include="JumpRbCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="DestroyEvent.h">
+    <ClInclude Include="Ev_Destroy.h">
       <Filter>Observer</Filter>
     </ClInclude>
   </ItemGroup>
@@ -402,9 +399,6 @@
     </ClCompile>
     <ClCompile Include="GameTime.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="EventQueue.cpp">
-      <Filter>Observer</Filter>
     </ClCompile>
     <ClCompile Include="TrashTheCachPlotterComponent.cpp">
       <Filter>TrashTheCache</Filter>

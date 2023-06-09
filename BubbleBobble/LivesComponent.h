@@ -4,7 +4,7 @@
 #include "Ev_PlayerDied.h"
 namespace aze
 {
-	class LivesComponent : public Component<LivesComponent>
+	class LivesComponent : public Component
 	{
 	public:
 		LivesComponent(GameObject* pParentGameObject, int lives = 3)

@@ -6,7 +6,7 @@ namespace aze
 {
 	class TextObject;
 
-	class LivesDisplayComponent : public Component<LivesDisplayComponent>, public Observer<Ev_PlayerDied>
+	class LivesDisplayComponent : public Component, public Observer<Ev_PlayerDied>
 	{
 	public:
 		LivesDisplayComponent(GameObject* pParentGameObject, TextObject* pTextRenderer)

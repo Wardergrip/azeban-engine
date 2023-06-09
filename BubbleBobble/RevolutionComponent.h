@@ -5,7 +5,7 @@ namespace aze
 {
 	class Transform;
 
-	class RevolutionComponent final : public Component<RevolutionComponent>
+	class RevolutionComponent final : public Component
 	{
 	public:
 		RevolutionComponent(GameObject* pGameObjectParent, float radius = 10.f, float speed = 10.f);

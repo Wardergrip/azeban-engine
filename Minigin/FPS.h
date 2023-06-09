@@ -4,7 +4,7 @@ namespace aze
 {
 	class TextObject;
 
-	class FPS : public Component<FPS>
+	class FPS : public Component
 	{
 	public:
 		FPS(GameObject* pParentGameObject, TextObject* pTextRenderer)

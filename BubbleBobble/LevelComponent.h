@@ -7,7 +7,7 @@
 
 namespace aze
 {
-	class LevelComponent final : public Component<LevelComponent>
+	class LevelComponent final : public Component
 	{
 	public:
 		LevelComponent(GameObject* pParent, ImageParser* pImageParser);
