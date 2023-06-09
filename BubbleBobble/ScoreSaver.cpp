@@ -26,9 +26,9 @@ const std::vector<aze::ScoreEntry>& aze::ScoreSaver::ReadScoreEntries(const std:
             uint16_t score{ 0 };
             try 
             {
-                score = std::stoi(scoreStr);
+                score = static_cast<uint16_t>(std::stoi(scoreStr));
             }
-            catch (const std::exception& e) 
+            catch (const std::exception&) 
             {
                 std::cerr << "Failed to convert score to integer for entry: " << entry << "\n";
                 continue;
