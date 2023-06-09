@@ -4,7 +4,8 @@
 #include <memory>
 #include <vector>
 #include <stdexcept>
-#include "Azemacros.h"
+#include "Subject.h"
+#include "DestroyEvent.h"
 
 namespace aze
 {
@@ -32,7 +33,7 @@ namespace aze
 		}
 	};
 	
-	class GameObject final : public std::enable_shared_from_this<GameObject>
+	class GameObject final
 	{
 	public:
 		GameObject(Scene* pScene);
@@ -130,6 +131,16 @@ namespace aze
 
 		static void Destroy(GameObject* pGameObject);
 
+		void SubscribeOnDestroyEvent(Observer<Ev_Destroy<GameObject>>* pObserver)
+		{
+			m_OnDestroyEvent.AddObserver(pObserver);
+		}
+
+		void UnsubscribeOnDestroyEvent(Observer<Ev_Destroy<GameObject>>* pObserver)
+		{
+			m_OnDestroyEvent.RemoveObserver(pObserver);
+		}
+
 	private:
 		Scene* m_pScene;
 		GameObject* m_pParent;
@@ -139,5 +150,7 @@ namespace aze
 		std::vector<std::unique_ptr<Component>> m_pComponents;
 
 		std::unique_ptr<Transform> m_Transform;
+
+		Subject<Ev_Destroy<GameObject>> m_OnDestroyEvent;
 	};
 }

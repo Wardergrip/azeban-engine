@@ -7,7 +7,7 @@ class b2Body;
 struct b2BodyDef;
 namespace aze
 {
-	class RigidbodyComponent final : public Component, public Observer<PhysicsEvent>
+	class RigidbodyComponent final : public Component<RigidbodyComponent>, public Observer<PhysicsEvent>
 	{
 	public:
 		RigidbodyComponent(GameObject* pParentGameObject, b2BodyDef* pBodyDef = nullptr);

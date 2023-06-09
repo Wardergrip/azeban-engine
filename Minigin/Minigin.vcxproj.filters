@@ -335,6 +335,9 @@
     <ClInclude Include="JumpRbCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
+    <ClInclude Include="DestroyEvent.h">
+      <Filter>Observer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renderer.cpp">
@@ -366,9 +369,6 @@
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="RenderComponent.cpp">
       <Filter>Components</Filter>

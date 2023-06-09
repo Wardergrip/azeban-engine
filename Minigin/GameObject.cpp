@@ -4,8 +4,6 @@
 #include "Renderer.h"
 #include "Scene.h"
 
-#include "Azemacros.h"
-
 aze::GameObject::GameObject(Scene* pScene)
 	:m_pParent{}
 	,m_pChildren{}
@@ -13,11 +11,16 @@ aze::GameObject::GameObject(Scene* pScene)
 	,m_pComponents{}
 	,m_Transform{nullptr}
 	,m_pScene{pScene}
+	,m_OnDestroyEvent{}
 {
 	assert(pScene != nullptr && "Scene is nullptr!");
 }
 
-aze::GameObject::~GameObject() = default;
+aze::GameObject::~GameObject()
+{
+	Ev_Destroy<GameObject> destroyE{this};
+	m_OnDestroyEvent.NotifyObservers(&destroyE);
+}
 
 bool aze::GameObject::IsMarkedForDestroy() const
 {

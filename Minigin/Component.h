@@ -1,6 +1,9 @@
 #pragma once
 #include <memory>
 #include <stdexcept>
+#include "Subject.h"
+#include "DestroyEvent.h"
+
 namespace aze
 {
 	class GameObject;
@@ -15,23 +18,37 @@ namespace aze
 		}
 	};
 
+	template <typename T>
 	class Component
 	{
 	public:
 		Component(GameObject* pParent):m_pParentGameObject{pParent}{}
-		Component(Component&& component) = default;
-		Component(const Component& component) = default;
-		Component& operator=(Component&& component) = default;
-		Component& operator=(const Component& component) = default;
-		virtual ~Component() = default;
+		Component(Component&& component) = delete;
+		Component(const Component& component) = delete;
+		Component& operator=(Component&& component) = delete;
+		Component& operator=(const Component& component) = delete;
+		virtual ~Component()
+		{
+			Ev_Destroy<T> destroyE{this};
+			m_OnDestroyEvent.NotifyObservers(&destroyE);
+		}
 
-		virtual void Start();
-		virtual void Render() const;
-		virtual void Update();
-		virtual void OnGUI();
+		virtual void Start(){}
+		virtual void Render() const{}
+		virtual void Update(){}
+		virtual void OnGUI(){}
 
 		GameObject* GetGameObject() const { return m_pParentGameObject; }
+		void SubscribeOnDestroyEvent(Observer<Ev_Destroy<Component>>* pObserver)
+		{
+			m_OnDestroyEvent.AddObserver(pObserver);
+		}
+		void UnsubscribeOnDestroyEvent(Observer<Ev_Destroy<Component>>* pObserver)
+		{
+			m_OnDestroyEvent.RemoveObserver(pObserver);
+		}
 	private:
 		GameObject* m_pParentGameObject;
+		Subject<Ev_Destroy<T>> m_OnDestroyEvent;
 	};
 }

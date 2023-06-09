@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 namespace aze
 {
-	class MovementComponent : public Component
+	class MovementComponent : public Component<MovementComponent>
 	{
 	public:
 		MovementComponent(GameObject* pParentGameObject);

@@ -5,7 +5,7 @@
 
 namespace aze
 {
-	class TextureObject : public Component
+	class TextureObject : public Component<TextureObject>
 	{
 	public:
 		TextureObject(GameObject* pParentGameObject, const std::string& fileName);

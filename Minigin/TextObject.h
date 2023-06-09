@@ -8,7 +8,7 @@ namespace aze
 {
 	class Font;
 	class Texture2D;
-	class TextObject final : public Component
+	class TextObject final : public Component<TextObject>
 	{
 	public:
 		void Update() override;

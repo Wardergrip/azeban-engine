@@ -4,7 +4,7 @@
 #include "Ev_AddScore.h"
 namespace aze
 {
-	class ScoreComponent : public Component
+	class ScoreComponent : public Component<ScoreComponent>
 	{
 	public:
 		ScoreComponent(GameObject* pParentGameObject, int score = 0)

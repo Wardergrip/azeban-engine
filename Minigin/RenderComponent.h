@@ -4,7 +4,7 @@
 #include <vector>
 namespace aze
 {
-	class RenderComponent : public Component
+	class RenderComponent : public Component<RenderComponent>
 	{
 	public:
 		RenderComponent(GameObject* pParentGameObject);
