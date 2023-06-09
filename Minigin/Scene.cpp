@@ -8,14 +8,18 @@ Scene::Scene(const std::string& name) : m_name(name) {}
 
 Scene::~Scene() = default;
 
-void Scene::Adopt(std::unique_ptr<GameObject> object)
+aze::GameObject* Scene::Adopt(std::unique_ptr<GameObject> object)
 {
+	auto ptr = object.get();
 	m_objects.emplace_back(std::move(object));
+	return ptr;
 }
 
-void aze::Scene::Adopt(GameObject* object)
+aze::GameObject* aze::Scene::Adopt(GameObject* object)
 {
+	auto ptr = object;
 	m_objects.emplace_back(std::move(std::unique_ptr<GameObject>(object)));
+	return ptr;
 }
 
 void aze::Scene::Remove(GameObject* object)

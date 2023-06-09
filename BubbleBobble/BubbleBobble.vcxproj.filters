@@ -66,15 +66,15 @@
     <ClCompile Include="SceneDefinitions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ScoreSaver.cpp">
+      <Filter>Fundamentals</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneDefinitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Ev_PlayerDied.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="Ev_AddScore.h">
       <Filter>Events</Filter>
     </ClInclude>
     <ClInclude Include="AddScoreCommand.h">
@@ -118,6 +118,12 @@
     </ClInclude>
     <ClInclude Include="State.h">
       <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Ev_AddScore.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreSaver.h">
+      <Filter>Fundamentals</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

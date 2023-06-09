@@ -8,11 +8,19 @@ namespace aze
 	{
 		friend Scene& SceneManager::CreateScene(const std::string& name);
 	public:
-		void Adopt(std::unique_ptr<GameObject> object);
-		void Adopt(GameObject* object);
+		// Give ownership of a gameobject to the scene
+		GameObject* Adopt(std::unique_ptr<GameObject> object);
+		// Give ownership of a gameobject to the scene
+		GameObject* Adopt(GameObject* object);
+		// Remove a gameobject from the scene
 		void Remove(GameObject* object);
+		// Remove a gameobject from the scene and get ownership of it
 		std::unique_ptr<GameObject> Abandon(GameObject* object);
+		// Remove all gameobject from the scene
 		void RemoveAll();
+
+		// Creates a gameobject and automatically adds it to the scene
+		GameObject* CreateGameObject() { return Adopt(new GameObject(this)); }
 
 		void Start();
 		void Update();
