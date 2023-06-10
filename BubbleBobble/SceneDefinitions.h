@@ -9,7 +9,7 @@ namespace aze
 	inline void full_load()
 	{
 		//MainMenu();
-		//LevelOne();
-		TestScene();
+		LevelOne();
+		//TestScene();
 	}
 }

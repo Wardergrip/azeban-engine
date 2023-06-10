@@ -3,6 +3,8 @@
 
 #include "RenderComponent.h"
 #include "TextureObject.h"
+#include "BoxColliderComponent.h"
+#include "ColliderLayers.h"
 
 #include <iostream>
 
@@ -27,14 +29,14 @@ aze::LevelComponent::LevelComponent(GameObject* pParent, ImageParser* pImagePars
 		else if (pixel.col.r <= FLT_EPSILON && pixel.col.g >= 250 && pixel.col.b >= 250)
 		{
 			auto tile = CreateTile(tileSize, m_pGrid->GetPoint(pixel.point.x, pixel.point.y));
-
+			tile->GetComponent<BoxColliderComponent>()->SetLayer(layers::L_PLATFORM);
 			m_pTiles.push_back(tile);
 		}
 		++p;
 	}
 }
 
-aze::GameObject* aze::LevelComponent::CreateTile(float /*size*/, const glm::vec3& pos)
+aze::GameObject* aze::LevelComponent::CreateTile(float size, const glm::vec3& pos)
 {
 	auto tile = new GameObject(GetGameObject()->GetScene());
 	GetGameObject()->Adopt(tile);
@@ -42,6 +44,7 @@ aze::GameObject* aze::LevelComponent::CreateTile(float /*size*/, const glm::vec3
 
 	tile->AddComponent<RenderComponent>();
 	tile->AddComponent<TextureObject>("Small.png");
+	tile->AddComponent<BoxColliderComponent>(size, size)->SetStatic(true);
 
 	return tile;
 }

@@ -175,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddScoreCommand.h" />
+    <ClInclude Include="ColliderLayers.h" />
     <ClInclude Include="Ev_AddScore.h" />
     <ClInclude Include="Ev_PlayerDied.h" />
     <ClInclude Include="Grid.h" />
