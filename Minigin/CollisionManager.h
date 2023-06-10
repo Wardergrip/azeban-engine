@@ -19,6 +19,7 @@ namespace aze
 		CollisionManager() = default;
 
 	private:
+		std::vector<BoxColliderComponent*> GetColliding(BoxColliderComponent* pBoxCollider) const;
 		std::vector<BoxColliderComponent*> m_BoxColliders;
 	};
 }
