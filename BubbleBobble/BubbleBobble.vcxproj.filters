@@ -137,5 +137,8 @@
     <ClInclude Include="JumpCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
+    <ClInclude Include="LandOnPlatformComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

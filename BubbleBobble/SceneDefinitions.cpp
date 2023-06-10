@@ -43,6 +43,7 @@
 #include "MainMenuGUIComponent.h"
 #include "BoxColliderComponent.h"
 #include "RigidbodyComponent.h"
+#include "LandOnPlatformComponent.h"
 
 #include "ColliderLayers.h"
 
@@ -225,8 +226,10 @@ void aze::LevelOne()
 	auto bobMovement = bobObj->AddComponent<MovementComponent>();
 	auto bobLives = bobObj->AddComponent<LivesComponent>();
 	auto bobScore = bobObj->AddComponent<ScoreComponent>();
-	bobObj->AddComponent<BoxColliderComponent>(32.f, 32.f)->SetLayer(layers::L_PLAYER);
+	auto bobBoxColl = bobObj->AddComponent<BoxColliderComponent>(32.f, 32.f);
+	bobBoxColl->SetLayer(layers::L_PLAYER);
 	auto bobRigidBody = bobObj->AddComponent<RigidbodyComponent>();
+	bobObj->AddComponent<LandOnPlatformComponent>(bobBoxColl,bobRigidBody);
 	scene.Adopt(bobObj);
 
 	// Input bindings
