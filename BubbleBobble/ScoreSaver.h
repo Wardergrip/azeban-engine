@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 namespace aze
 {
@@ -38,6 +39,18 @@ namespace aze
 
 		const std::vector<ScoreEntry>& GetScoreEntries() const { return m_ScoreEntries; }
 		void Clear() { m_ScoreEntries.clear(); }
+		ScoreSaver& SortScoreEntries()
+		{
+			static auto compareByScore = [](const ScoreEntry& entry1, const ScoreEntry& entry2) 
+			{
+				return entry1.score > entry2.score;
+			};
+			if (!m_ScoreEntries.empty())
+			{
+				std::sort(m_ScoreEntries.begin(), m_ScoreEntries.end(), compareByScore);
+			}
+			return *this;
+		}
 	private:
 		std::vector<ScoreEntry> m_ScoreEntries;
 	};

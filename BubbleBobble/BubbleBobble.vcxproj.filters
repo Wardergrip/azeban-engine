@@ -31,6 +31,9 @@
     <Filter Include="States">
       <UniqueIdentifier>{9a3afe03-bf57-4773-accb-439add84fae3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Menu">
+      <UniqueIdentifier>{3c82ec49-8af3-4c7d-97db-d326177efef5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -68,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="ScoreSaver.cpp">
       <Filter>Fundamentals</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuGUIComponent.cpp">
+      <Filter>Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="ScoreSaver.h">
       <Filter>Fundamentals</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuGUIComponent.h">
+      <Filter>Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

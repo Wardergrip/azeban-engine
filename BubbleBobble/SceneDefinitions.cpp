@@ -43,6 +43,7 @@
 #include "ScoreDisplayComponent.h"
 #include "LevelComponent.h"
 #include "RigidbodyComponent.h"
+#include "MainMenuGUIComponent.h"
 
 // Box2d
 #include "PlatformContactListener.h"
@@ -220,7 +221,7 @@ void aze::DemoScene()
 
 void aze::LevelOne()
 {
-	auto& scene = SceneManager::GetInstance().CreateScene("Level 1");
+	auto& scene = SceneManager::GetInstance().CreateScene("Level1");
 	PhysicsManager::GetInstance().Init(16.f, 0, -10.f);
 	//PlatformContactListener::GetInstance().OnNotify(nullptr);
 	// Audio
@@ -320,4 +321,15 @@ void aze::LevelOne()
 			<< "Logging of the sound system will automatically happen in debug\n"
 			;
 	}
+}
+
+void aze::MainMenu()
+{
+	auto& scene = SceneManager::GetInstance().CreateScene("MainMenu");
+	auto backGround_go = scene.CreateGameObject();
+	backGround_go->AddComponent<RenderComponent>();
+	backGround_go->AddComponent<TextureObject>("titlescreen.png");
+	backGround_go->SetPosition(130.f, 130.f);
+
+	scene.CreateGameObject()->AddComponent<MainMenuGUIComponent>();
 }
