@@ -40,6 +40,7 @@
 #include "ScoreDisplayComponent.h"
 #include "LevelComponent.h"
 #include "MainMenuGUIComponent.h"
+#include "BoxColliderComponent.h"
 
 using namespace aze;
 using namespace glm;
@@ -273,4 +274,39 @@ void aze::MainMenu()
 	backGround_go->SetPosition(130.f, 130.f);
 
 	scene.CreateGameObject()->AddComponent<MainMenuGUIComponent>();
+}
+
+void aze::TestScene()
+{
+	auto& scene = SceneManager::GetInstance().CreateScene("TestScene");
+
+	auto first_go = scene.CreateGameObject();
+	first_go->AddComponent<RenderComponent>();
+	first_go->AddComponent<TextureObject>("Small.png");
+	first_go->AddComponent<BoxColliderComponent>();
+	auto firstMovementComp = first_go->AddComponent<MovementComponent>();
+	first_go->SetPosition(100, 100);
+
+	auto second_go = scene.CreateGameObject();
+	second_go->AddComponent<RenderComponent>();
+	second_go->AddComponent<TextureObject>("Small.png");
+	second_go->AddComponent<BoxColliderComponent>();
+	auto secondMovementComp = second_go->AddComponent<MovementComponent>();
+	second_go->SetPosition(0, 0);
+
+	// Input
+	{
+		constexpr float movementSpeed{ 50.f };
+		auto& inputManager = InputManager::GetInstance();
+
+		inputManager.BindCommand(std::make_unique<MoveCommand>(firstMovementComp, vec2{ 1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_RIGHT),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveCommand>(firstMovementComp, vec2{ -1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_LEFT),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveCommand>(firstMovementComp, vec2{ 0,-1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_UP),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveCommand>(firstMovementComp, vec2{ 0,1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_DOWN),OnButtonPressed });
+
+		inputManager.BindCommand(std::make_unique<MoveCommand>(secondMovementComp, vec2{ 1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_d),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveCommand>(secondMovementComp, vec2{ -1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_a),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveCommand>(secondMovementComp, vec2{ 0,-1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_w),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveCommand>(secondMovementComp, vec2{ 0,1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_s),OnButtonPressed });
+	}
 }

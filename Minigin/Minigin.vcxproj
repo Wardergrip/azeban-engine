@@ -224,6 +224,8 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPat
     <ClInclude Include="..\3rdParty\imgui\imstb_truetype.h" />
     <ClInclude Include="AudioPlayCommand.h" />
     <ClInclude Include="Azemacros.h" />
+    <ClInclude Include="BoxColliderComponent.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="DebugCommand.h" />
@@ -235,6 +237,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPat
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="MuteCommand.h" />
     <ClInclude Include="Observer.h" />
+    <ClInclude Include="Rect.h" />
     <ClInclude Include="SDLSoundSystem.h" />
     <ClInclude Include="ServiceManager.h" />
     <ClInclude Include="SoundSystem.h" />
@@ -266,6 +269,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPat
     <ClCompile Include="..\3rdParty\imgui\imgui_plot.cpp" />
     <ClCompile Include="..\3rdParty\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameObject.cpp" />
