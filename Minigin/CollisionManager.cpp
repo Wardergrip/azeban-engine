@@ -62,6 +62,9 @@ void aze::CollisionManager::FixedUpdate()
 
 			totalOffsetX += offsetX;
 			totalOffsetY += offsetY;
+
+			Ev_Collision collisionE{ pBoxCollider,collider };
+			pBoxCollider->m_OnCollisionEvent.NotifyObservers(&collisionE);
 		}
 
 		// Make sure we won't overcorrect too much

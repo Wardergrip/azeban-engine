@@ -3,7 +3,8 @@
 #include "Rect.h"
 #include "GameObject.h"
 #include "CollisionManager.h"
-#include <iostream>
+#include "Ev_Collision.h"
+#include "Subject.h"
 
 namespace aze
 {
@@ -27,7 +28,6 @@ namespace aze
 		virtual void Update() override
 		{
 			m_Rect.topLeft = GetGameObject()->GetTransform().GetWorldPosition();
-			std::cout << this << " " << m_Rect.topLeft.x << " , " << m_Rect.topLeft.y << "\n";
 		}
 
 		const Rect& GetHitbox() const { return m_Rect; }
@@ -53,10 +53,21 @@ namespace aze
 			return m_ColliderMask;
 		}
 
+		void SubscribeOnCollision(Observer<Ev_Collision>* pObserver)
+		{
+			m_OnCollisionEvent.AddObserver(pObserver);
+		}
+		void UnsubscribeOnCollision(Observer<Ev_Collision>* pObserver)
+		{
+			m_OnCollisionEvent.RemoveObserver(pObserver);
+		}
+
 	private:
+		friend void aze::CollisionManager::FixedUpdate();
 		Rect m_Rect;
 		bool m_IsStatic;
 		ColliderLayer m_ColliderLayer;
 		ColliderMask m_ColliderMask;
+		Subject<Ev_Collision> m_OnCollisionEvent;
 	};
 }
