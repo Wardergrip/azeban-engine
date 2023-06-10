@@ -4,11 +4,6 @@
 #include "RenderComponent.h"
 #include "TextureObject.h"
 
-#include "PhysicsManager.h"
-#include "RigidbodyComponent.h"
-#include "../3rdParty/box2d/box2d.h"
-#include "PlatformContactListener.h"
-
 #include <iostream>
 
 aze::LevelComponent::LevelComponent(GameObject* pParent, ImageParser* pImageParser)
@@ -21,17 +16,18 @@ aze::LevelComponent::LevelComponent(GameObject* pParent, ImageParser* pImagePars
 	int p{0};
 	for (auto& pixel : pixels)
 	{
+		// LEVEL 
 		if (pixel.col.r >= 250 && pixel.col.g >= 250 && pixel.col.b >= 250) // White
 		{
-			//std::cout << "[" << p << "] " << pixel.point.x << " , " << pixel.point.y << "\n";
 			auto tile = CreateTile(tileSize, m_pGrid->GetPoint(pixel.point.x, pixel.point.y));
 
 			m_pTiles.push_back(tile);
 		}
+		// PLATFORMS
 		else if (pixel.col.r <= FLT_EPSILON && pixel.col.g >= 250 && pixel.col.b >= 250)
 		{
 			auto tile = CreateTile(tileSize, m_pGrid->GetPoint(pixel.point.x, pixel.point.y));
-			tile->GetComponent<RigidbodyComponent>();
+
 			m_pTiles.push_back(tile);
 		}
 		++p;
@@ -42,26 +38,10 @@ aze::GameObject* aze::LevelComponent::CreateTile(float /*size*/, const glm::vec3
 {
 	auto tile = new GameObject(GetGameObject()->GetScene());
 	GetGameObject()->Adopt(tile);
-	//tile->SetPosition(pos.x, pos.y);
+	tile->SetPosition(pos.x, pos.y);
 
 	tile->AddComponent<RenderComponent>();
 	tile->AddComponent<TextureObject>("Small.png");
 
-	b2BodyDef bodyDef{};
-	bodyDef.type = b2_staticBody;
-	auto b2Pos = PhysicsManager::GetInstance().ScreenSpaceTob2(pos);
-	bodyDef.position.Set(b2Pos.x,b2Pos.y);
-	auto body = tile->AddComponent<RigidbodyComponent>(&bodyDef)->GetBody();
-
-	b2PolygonShape staticBox;
-	staticBox.SetAsBox(1.0f, 1.0f);
-
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &staticBox;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 1.f;
-	fixtureDef.userData = PlatformContactListener::GetInstance().GetPlatformUserData();
-
-	body->CreateFixture(&fixtureDef);
 	return tile;
 }
