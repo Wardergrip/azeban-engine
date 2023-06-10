@@ -9,7 +9,8 @@ namespace aze
 	namespace globals
 	{
 		static constexpr ColliderLayer L_DEFAULT{ 0x0001 };
-		static constexpr ColliderMask M_DEFAULT{ 0xFFFF };
+		static constexpr ColliderMask M_DEFAULT{ 0x0001 };
+		static constexpr ColliderMask M_ALL{ 0xFFFF };
 	}
 
 	class BoxColliderComponent;
@@ -25,7 +26,7 @@ namespace aze
 		void FixedUpdate();
 
 	private:
-		std::vector<BoxColliderComponent*> GetColliding(BoxColliderComponent* pBoxCollider) const;
+		std::vector<BoxColliderComponent*> GetOverlapping(BoxColliderComponent* pBoxCollider) const;
 		std::vector<BoxColliderComponent*> m_BoxColliders;
 	};
 }
