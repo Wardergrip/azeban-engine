@@ -35,6 +35,7 @@ namespace aze
 		virtual void Start(){}
 		virtual void Render() const{}
 		virtual void Update(){}
+		virtual void FixedUpdate(){}
 		virtual void OnGUI(){}
 
 		GameObject* GetGameObject() const { return m_pParentGameObject; }

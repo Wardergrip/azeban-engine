@@ -44,6 +44,7 @@ namespace aze
 
 		void Start();
 		void Update();
+		void FixedUpdate();
 		void Render() const;
 		void OnGUI();
 

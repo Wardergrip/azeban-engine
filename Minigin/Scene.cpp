@@ -72,6 +72,15 @@ void Scene::Update()
 	}
 }
 
+void aze::Scene::FixedUpdate()
+{
+	m_CollisionManager.FixedUpdate();
+	for (auto& object : m_objects)
+	{
+		object->FixedUpdate();
+	}
+}
+
 void Scene::Render() const
 {
 	for (const auto& object : m_objects)
