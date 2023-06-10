@@ -10,7 +10,6 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "GameTime.h"
-#include "PhysicsManager.h"
 
 #include <chrono>
 #include <thread>
@@ -78,8 +77,6 @@ aze::Azeban::Azeban(const std::string &dataPath)
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
-
-	PhysicsManager::GetInstance().EngineInit(WINDOW_WIDTH,WINDOW_HEIGHT);
 }
 
 aze::Azeban::~Azeban()
@@ -103,8 +100,6 @@ void aze::Azeban::Run(const std::function<void()>& load)
 	std::chrono::steady_clock::time_point lastTime;
 	const constexpr int targetFps{ 144 };
 	const constexpr float physicsTimeStep{1 / 60.f};
-	const constexpr int velocityIterations{ 9 };
-	const constexpr int positionIterations{ 3 };
 	constexpr int maxWaitingTimeMs{ static_cast<int>(1000 / targetFps) };
 	float lag{ 0.0f };
 	sceneManager.Start();
@@ -120,7 +115,7 @@ void aze::Azeban::Run(const std::function<void()>& load)
 		{
 			// First time, lastTime is 0, which means deltaTime is very high, which messes this loop up
 			if (deltaTime >= 1000.0f) lag = physicsTimeStep;
-			PhysicsManager::GetInstance().Step(physicsTimeStep,velocityIterations,positionIterations);
+			// fixed update
 			lag -= physicsTimeStep;
 		}
 		sceneManager.Update();
