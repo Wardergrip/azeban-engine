@@ -232,6 +232,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPat
     <ClInclude Include="Ev_Collision.h" />
     <ClInclude Include="Ev_Destroy.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="Ev_TriggerOverlap.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameObject.h" />

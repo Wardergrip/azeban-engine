@@ -9,6 +9,7 @@ float aze::RigidbodyComponent::s_MaxFallVelocity{ -20.f };
 aze::RigidbodyComponent::RigidbodyComponent(GameObject* pParent)
 	:Component{pParent}
 	,m_Transform{pParent->GetTransform()}
+	,m_IsOnGround{false}
 {
 }
 

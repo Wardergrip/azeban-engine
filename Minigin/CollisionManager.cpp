@@ -11,16 +11,23 @@ void aze::CollisionManager::AddCollider(BoxColliderComponent* pCollider)
 
 void aze::CollisionManager::RemoveCollider(BoxColliderComponent* pCollider)
 {
-	//m_BoxColliders.erase(std::remove(m_BoxColliders.begin(), m_BoxColliders.end(), pCollider), m_BoxColliders.end());
-	pCollider;
+	auto it = std::find(m_BoxColliders.begin(), m_BoxColliders.end(), pCollider);
+	if (it != m_BoxColliders.end())
+	{
+		m_BoxColliders.erase(std::remove(m_BoxColliders.begin(), m_BoxColliders.end(), pCollider), m_BoxColliders.end());
+	}
 }
 
 void aze::CollisionManager::FixedUpdate()
 {
 	for (auto& pBoxCollider : m_BoxColliders)
 	{
+		if (pBoxCollider->IsTrigger())
+		{
+			int i{}; i;
+		}
 		if (pBoxCollider->IsStatic()) continue;
-		std::vector<BoxColliderComponent*> colliding{GetColliding(pBoxCollider)};
+		std::vector<BoxColliderComponent*> colliding{GetOverlapping(pBoxCollider)};
 		const auto& hitBox{ pBoxCollider->GetHitbox() };
 		float totalOffsetX{ 0 };
 		float totalOffsetY{ 0 };
@@ -30,6 +37,15 @@ void aze::CollisionManager::FixedUpdate()
 		for (const auto& collider : colliding)
 		{
 			// Source: https://github.com/BramVernimmen/Prog4_Engine/blob/main/Minigin/CollisionManager.cpp
+			if (!pBoxCollider->ShouldCollide(collider->GetLayer()))
+			{
+				if (pBoxCollider->IsTrigger())
+				{
+					Ev_TriggerOverlap collisionE{ pBoxCollider,collider };
+					pBoxCollider->m_OnTriggerOverlapEvent.NotifyObservers(&collisionE);
+				}
+				continue;
+			}
 			const auto& otherHitBox{ collider->GetHitbox() };
 			const bool otherIsRight{ hitBox.topLeft.x <= otherHitBox.topLeft.x };
 			const bool otherIsUnder{ hitBox.topLeft.y <= otherHitBox.topLeft.y };
@@ -84,7 +100,7 @@ void aze::CollisionManager::FixedUpdate()
 		pBoxCollider->GetGameObject()->GetTransform().SetPosition(localPos.x + totalOffsetX, localPos.y + totalOffsetY);
 
 		auto pRigidbody = pBoxCollider->GetGameObject()->GetComponent<RigidbodyComponent>();
-		if (!pRigidbody) return;
+		if (!pRigidbody) continue;
 		// Rigidbody
 		if (pRigidbody->IsOnGround())
 		{
@@ -102,7 +118,7 @@ void aze::CollisionManager::FixedUpdate()
 				}
 			}
 			if (!found) pRigidbody->SetIsOnGround(false);
-			if (pRigidbody->IsOnGround()) return;
+			if (pRigidbody->IsOnGround()) continue;
 		}
 
 		auto vel = pRigidbody->GetVelocity();
@@ -135,7 +151,7 @@ void aze::CollisionManager::FixedUpdate()
 	}
 }
 
-std::vector<aze::BoxColliderComponent*> aze::CollisionManager::GetColliding(BoxColliderComponent* pBoxCollider) const
+std::vector<aze::BoxColliderComponent*> aze::CollisionManager::GetOverlapping(BoxColliderComponent* pBoxCollider) const
 {
 	std::vector<BoxColliderComponent*> colliding;
 	if (pBoxCollider == nullptr) return std::move(colliding);
@@ -144,7 +160,6 @@ std::vector<aze::BoxColliderComponent*> aze::CollisionManager::GetColliding(BoxC
 	for (auto& pOtherBoxCollider : m_BoxColliders)
 	{
 		if (pBoxCollider == pOtherBoxCollider) continue;
-		if (!pBoxCollider->ShouldCollide(pOtherBoxCollider->GetLayer())) continue;
 
 		if (hitbox.IsOverlapping(pOtherBoxCollider->GetHitbox()))
 		{
