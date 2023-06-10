@@ -9,6 +9,7 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "CollisionManager.h"
 #include "GameTime.h"
 
 #include <chrono>
@@ -94,6 +95,8 @@ void aze::Azeban::Run(const std::function<void()>& load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
+	auto& gameTime = GameTime::GetInstance();
+	auto& collisionManager = CollisionManager::GetInstance();
 
 	bool doContinue = true;
 	std::chrono::steady_clock::time_point currentTime;
@@ -108,14 +111,14 @@ void aze::Azeban::Run(const std::function<void()>& load)
 		currentTime = std::chrono::high_resolution_clock::now();
 		const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 		doContinue = input.ProcessInput();
-		GameTime::GetInstance().SetElapsed(deltaTime);
+		gameTime.SetElapsed(deltaTime);
 
 		lag += deltaTime;
 		while (lag >= physicsTimeStep)
 		{
 			// First time, lastTime is 0, which means deltaTime is very high, which messes this loop up
 			if (deltaTime >= 1000.0f) lag = physicsTimeStep;
-			// fixed update
+			collisionManager.FixedUpdate();
 			lag -= physicsTimeStep;
 		}
 		sceneManager.Update();
