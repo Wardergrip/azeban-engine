@@ -96,13 +96,13 @@ void aze::Azeban::Run(const std::function<void()>& load)
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 	auto& gameTime = GameTime::GetInstance();
-	auto& collisionManager = CollisionManager::GetInstance();
 
 	bool doContinue = true;
 	std::chrono::steady_clock::time_point currentTime;
 	std::chrono::steady_clock::time_point lastTime;
 	const constexpr int targetFps{ 144 };
 	const constexpr float physicsTimeStep{1 / 60.f};
+	gameTime.SetFixedTimeStep(physicsTimeStep);
 	constexpr int maxWaitingTimeMs{ static_cast<int>(1000 / targetFps) };
 	float lag{ 0.0f };
 	sceneManager.Start();
@@ -114,12 +114,12 @@ void aze::Azeban::Run(const std::function<void()>& load)
 		gameTime.SetElapsed(deltaTime);
 
 		lag += deltaTime;
-		while (lag >= physicsTimeStep)
+		while (lag >= gameTime.GetFixedTimeStep())
 		{
 			// First time, lastTime is 0, which means deltaTime is very high, which messes this loop up
-			if (deltaTime >= 1000.0f) lag = physicsTimeStep;
-			collisionManager.FixedUpdate();
-			lag -= physicsTimeStep;
+			if (deltaTime >= 1000.0f) lag = gameTime.GetFixedTimeStep();
+			sceneManager.FixedUpdate();
+			lag -= gameTime.GetFixedTimeStep();
 		}
 		sceneManager.Update();
 		renderer.Render();

@@ -6,6 +6,7 @@
 #include "Ev_Collision.h"
 #include "Subject.h"
 #include "Renderer.h"
+#include "Scene.h"
 
 namespace aze
 {
@@ -19,12 +20,12 @@ namespace aze
 			,m_ColliderLayer{ globals::L_DEFAULT }
 			,m_ColliderMask{ globals::M_DEFAULT }
 		{
-			CollisionManager::GetInstance().AddCollider(this);
+			GetGameObject()->GetScene()->GetCollisionManager().AddCollider(this);
 			m_Rect.topLeft = GetGameObject()->GetTransform().GetWorldPosition();
 		}
 		virtual ~BoxColliderComponent()
 		{
-			CollisionManager::GetInstance().RemoveCollider(this);
+			GetGameObject()->GetScene()->GetCollisionManager().RemoveCollider(this);
 		}
 
 		/*virtual void Render() const override
@@ -42,7 +43,7 @@ namespace aze
 			}
 		}*/
 
-		virtual void Update() override
+		virtual void FixedUpdate() override
 		{
 			if (m_IsStatic) return;
 			m_Rect.topLeft = GetGameObject()->GetTransform().GetWorldPosition();

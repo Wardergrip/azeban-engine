@@ -19,6 +19,11 @@ void aze::SceneManager::Update()
 	if (m_pActiveScene) m_pActiveScene->Update();
 }
 
+void aze::SceneManager::FixedUpdate()
+{
+	if (m_pActiveScene) m_pActiveScene->FixedUpdate();
+}
+
 void aze::SceneManager::Render()
 {
 	if (m_pActiveScene) m_pActiveScene->Render();

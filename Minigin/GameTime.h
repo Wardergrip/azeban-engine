@@ -10,9 +10,12 @@ namespace aze
 
 		float GetElapsed() const;
 		void SetElapsed(float elapsed);
+		float GetFixedTimeStep() const;
+		void SetFixedTimeStep(float fixedTimeStep);
 
 	private:
 		float m_Elapsed;
+		float m_FixedTimeStep;
 	};
 }
 

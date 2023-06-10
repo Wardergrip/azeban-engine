@@ -1,6 +1,7 @@
 #pragma once
 #include "SceneManager.h"
 #include "GameObject.h"
+#include "CollisionManager.h"
 
 namespace aze
 {
@@ -24,10 +25,12 @@ namespace aze
 
 		void Start();
 		void Update();
+		void FixedUpdate();
 		void Render() const;
 		void OnGUI();
 
 		const std::string& GetName() const { return m_name; }
+		CollisionManager& GetCollisionManager() { return m_CollisionManager; }
 
 		~Scene();
 		Scene(const Scene& other) = delete;
@@ -40,6 +43,7 @@ namespace aze
 
 		std::string m_name;
 		std::vector < std::unique_ptr<GameObject>> m_objects{};
+		CollisionManager m_CollisionManager;
 
 		static unsigned int m_idCounter; 
 	};

@@ -66,6 +66,19 @@ void aze::GameObject::Update()
 	}
 }
 
+void aze::GameObject::FixedUpdate()
+{
+	for (auto& comp : m_pComponents)
+	{
+		comp->FixedUpdate();
+	}
+	for (auto& child : m_pChildren)
+	{
+		if (child.get() == nullptr) continue;
+		child->FixedUpdate();
+	}
+}
+
 void aze::GameObject::Render() const
 {
 	for (const auto& comp : m_pComponents)
