@@ -42,6 +42,8 @@
 #include "MainMenuGUIComponent.h"
 #include "BoxColliderComponent.h"
 
+#include "ColliderLayers.h"
+
 using namespace aze;
 using namespace glm;
 
@@ -209,6 +211,7 @@ void aze::LevelOne()
 	auto bubMovement = bubObj->AddComponent<MovementComponent>();
 	auto bubLives = bubObj->AddComponent<LivesComponent>();
 	auto bubScore = bubObj->AddComponent<ScoreComponent>();
+	bubObj->AddComponent<BoxColliderComponent>(32.f, 32.f)->SetLayer(layers::L_PLAYER);
 	scene.Adopt(bubObj);
 
 	// Bob
@@ -219,6 +222,7 @@ void aze::LevelOne()
 	auto bobMovement = bobObj->AddComponent<MovementComponent>();
 	auto bobLives = bobObj->AddComponent<LivesComponent>();
 	auto bobScore = bobObj->AddComponent<ScoreComponent>();
+	bobObj->AddComponent<BoxColliderComponent>(32.f, 32.f)->SetLayer(layers::L_PLAYER);
 	scene.Adopt(bobObj);
 
 	// Input bindings
@@ -283,14 +287,14 @@ void aze::TestScene()
 	auto first_go = scene.CreateGameObject();
 	first_go->AddComponent<RenderComponent>();
 	first_go->AddComponent<TextureObject>("Small.png");
-	first_go->AddComponent<BoxColliderComponent>();
+	first_go->AddComponent<BoxColliderComponent>(24.f,24.f);
 	auto firstMovementComp = first_go->AddComponent<MovementComponent>();
 	first_go->SetPosition(100, 100);
 
 	auto second_go = scene.CreateGameObject();
 	second_go->AddComponent<RenderComponent>();
 	second_go->AddComponent<TextureObject>("Small.png");
-	second_go->AddComponent<BoxColliderComponent>();
+	second_go->AddComponent<BoxColliderComponent>(24.f, 24.f);
 	auto secondMovementComp = second_go->AddComponent<MovementComponent>();
 	second_go->SetPosition(0, 0);
 

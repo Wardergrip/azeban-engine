@@ -5,28 +5,46 @@
 #include "CollisionManager.h"
 #include "Ev_Collision.h"
 #include "Subject.h"
+#include "Renderer.h"
 
 namespace aze
 {
 	class BoxColliderComponent final : public Component
 	{
 	public:
-		BoxColliderComponent(GameObject* pParent)
+		BoxColliderComponent(GameObject* pParent, float width,float height)
 			:Component{pParent}
-			,m_Rect{ 24.f,24.f }
+			,m_Rect{ width,height }
 			,m_IsStatic{false}
 			,m_ColliderLayer{ globals::L_DEFAULT }
 			,m_ColliderMask{ globals::M_DEFAULT }
 		{
 			CollisionManager::GetInstance().AddCollider(this);
+			m_Rect.topLeft = GetGameObject()->GetTransform().GetWorldPosition();
 		}
 		virtual ~BoxColliderComponent()
 		{
 			CollisionManager::GetInstance().RemoveCollider(this);
 		}
 
+		/*virtual void Render() const override
+		{
+			auto sdlRenderer =  Renderer::GetInstance().GetSDLRenderer();
+			SDL_Rect r;
+			r.x = static_cast<int>(m_Rect.topLeft.x);
+			r.y = static_cast<int>(m_Rect.topLeft.y);
+			r.w = static_cast<int>(m_Rect.width);
+			r.h = static_cast<int>(m_Rect.height);
+			SDL_SetRenderDrawColor(sdlRenderer, 255, 0, 0, 255);
+			if (SDL_RenderDrawRect(sdlRenderer, &r) != 0)
+			{
+				std::cout << SDL_GetError() << "\n";
+			}
+		}*/
+
 		virtual void Update() override
 		{
+			if (m_IsStatic) return;
 			m_Rect.topLeft = GetGameObject()->GetTransform().GetWorldPosition();
 		}
 
