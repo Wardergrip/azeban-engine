@@ -1,6 +1,8 @@
 #pragma once
 #include <Command.h>
 #include <RigidbodyComponent.h>
+#include <BoxColliderComponent.h>
+#include "ColliderLayers.h"
 
 namespace aze
 {
@@ -21,6 +23,8 @@ namespace aze
 				jump.y = m_JumpForce;
 				m_pRigidbody->AddVelocity(jump);
 				m_pRigidbody->SetIsOnGround(false);
+				auto pBoxColl = m_pRigidbody->GetGameObject()->GetComponent<BoxColliderComponent>();
+				if (pBoxColl) pBoxColl->RemoveLayerFromMask(layers::L_PLATFORM);
 			}
 		}
 	private:
