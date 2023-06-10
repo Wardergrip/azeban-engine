@@ -180,6 +180,7 @@
     <ClInclude Include="Ev_PlayerDied.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="ImageParser.h" />
+    <ClInclude Include="JumpCommand.h" />
     <ClInclude Include="LevelComponent.h" />
     <ClInclude Include="LivesComponent.h" />
     <ClInclude Include="LivesDisplayComponent.h" />

@@ -134,5 +134,8 @@
     <ClInclude Include="ColliderLayers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="JumpCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

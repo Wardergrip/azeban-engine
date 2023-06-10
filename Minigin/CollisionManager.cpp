@@ -1,6 +1,8 @@
 #include "CollisionManager.h"
 #include "BoxColliderComponent.h"
+#include "RigidbodyComponent.h"
 #include <iostream>
+#include "Renderer.h"
 
 void aze::CollisionManager::AddCollider(BoxColliderComponent* pCollider)
 {
@@ -22,28 +24,33 @@ void aze::CollisionManager::FixedUpdate()
 		const auto& hitBox{ pBoxCollider->GetHitbox() };
 		float totalOffsetX{ 0 };
 		float totalOffsetY{ 0 };
+
+		size_t amountOfRights{ 0 };
+		size_t amountOfBelow{ 0 };
 		for (const auto& collider : colliding)
 		{
 			// Source: https://github.com/BramVernimmen/Prog4_Engine/blob/main/Minigin/CollisionManager.cpp
 			const auto& otherHitBox{ collider->GetHitbox() };
-			const bool hitIsLeft{ hitBox.topLeft.x <= otherHitBox.topLeft.x };
-			const bool hitIsAbove{ hitBox.topLeft.y <= otherHitBox.topLeft.y };
+			const bool otherIsRight{ hitBox.topLeft.x <= otherHitBox.topLeft.x };
+			const bool otherIsUnder{ hitBox.topLeft.y <= otherHitBox.topLeft.y };
 
 			float offsetX{ 0 };
 			float offsetY{ 0 };
 
-			if (hitIsLeft)
+			if (otherIsRight)
 			{
 				offsetX = otherHitBox.topLeft.x - (hitBox.topLeft.x + hitBox.width);
+				++amountOfRights;
 			}
 			else
 			{
 				offsetX = (hitBox.topLeft.x - (otherHitBox.topLeft.x + otherHitBox.width)) * -1;
 			}
 
-			if (hitIsAbove)
+			if (otherIsUnder)
 			{
 				offsetY = otherHitBox.topLeft.y - (hitBox.topLeft.y + hitBox.height);
+				++amountOfBelow;
 			}
 			else
 			{
@@ -75,6 +82,56 @@ void aze::CollisionManager::FixedUpdate()
 		}
 		const glm::vec3& localPos{ pBoxCollider->GetGameObject()->GetTransform().GetLocalPosition()};
 		pBoxCollider->GetGameObject()->GetTransform().SetPosition(localPos.x + totalOffsetX, localPos.y + totalOffsetY);
+
+		auto pRigidbody = pBoxCollider->GetGameObject()->GetComponent<RigidbodyComponent>();
+		if (!pRigidbody) return;
+		// Rigidbody
+		if (pRigidbody->IsOnGround())
+		{
+			glm::vec3 point{};
+			point.x = hitBox.GetMiddle().x;
+			point.y = hitBox.topLeft.y + hitBox.height + 2.f;
+			bool found{ false };
+			for (const auto& otherBoxCollider : m_BoxColliders)
+			{
+				if (otherBoxCollider == pBoxCollider) continue;
+				if (otherBoxCollider->GetHitbox().IsOverlapping(point))
+				{
+					found = true;
+					break;
+				}
+			}
+			if (!found) pRigidbody->SetIsOnGround(false);
+			if (pRigidbody->IsOnGround()) return;
+		}
+
+		auto vel = pRigidbody->GetVelocity();
+		if ((amountOfBelow == colliding.size() || (amountOfBelow >= amountOfRights && amountOfRights > 0)) && colliding.size() > 1 && colliding.size() < 6)
+		{
+			vel.y = 0.0f;
+			pRigidbody->SetIsOnGround(true);
+		}
+		else if (colliding.size() == 6 && vel.y < 0 && amountOfBelow > 3)
+		{
+			vel.y = 0.0f;
+			pRigidbody->SetIsOnGround(true);
+		}
+
+		/*if ((amountOfBelow == 0 || colliding.size() == 6) && vel.y >= 0.0f)
+		{
+			vel.y = 0.0f;
+		}*/
+
+
+		// make sure we stop moving when hitting the lowest side of a tile, while keep moving if we are higher up.
+		if (pRigidbody->IsOnGround() || (colliding.size() == 1 && amountOfBelow == 0 && (hitBox.topLeft.y < colliding.front()->GetHitbox().topLeft.y + colliding.front()->GetHitbox().width - 1)))
+		{
+			vel.x = 0.0f;
+		}
+
+
+		// set velocity
+		pRigidbody->SetVelocity(vel);
 	}
 }
 
