@@ -4,6 +4,14 @@
 
 namespace aze
 {
+	typedef uint32_t ColliderLayer;
+	typedef uint32_t ColliderMask;
+	namespace globals
+	{
+		static constexpr ColliderLayer L_DEFAULT{ 0x0001 };
+		static constexpr ColliderMask M_DEFAULT{ 0xFFFF };
+	}
+
 	class BoxColliderComponent;
 	class CollisionManager final : public Singleton<CollisionManager>
 	{

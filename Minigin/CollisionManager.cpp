@@ -84,6 +84,7 @@ std::vector<aze::BoxColliderComponent*> aze::CollisionManager::GetColliding(BoxC
 	for (auto& pOtherBoxCollider : m_BoxColliders)
 	{
 		if (pBoxCollider == pOtherBoxCollider) continue;
+		if (!pBoxCollider->ShouldCollide(pOtherBoxCollider->GetLayer())) continue;
 
 		if (hitbox.IsOverlapping(pOtherBoxCollider->GetHitbox()))
 		{
