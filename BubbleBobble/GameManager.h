@@ -1,5 +1,6 @@
 #pragma once
 #include <Singleton.h>
+#include <vector>
 #include <Observer.h>
 #include <Ev_Destroy.h>
 
@@ -20,6 +21,12 @@ namespace aze
 		GameObject* GetBubSpawnPoint() const;
 		void SetPlayerMode(PlayerMode mode);
 		PlayerMode GetPlayerMode() const;
+		std::vector<GameObject*>& GetEnemySpawnpoints();
+
+		void SetBobPlayer(GameObject* ptr);
+		GameObject* GetBobPlayer();
+		void SetBubPlayer(GameObject* ptr);
+		GameObject* GetBubPlayer();
 
 		void OnNotify(Ev_Destroy<GameObject>* data) override;
 	protected:
@@ -27,8 +34,11 @@ namespace aze
 		friend Singleton<GameManager>;
 
 	private:
+		std::vector<GameObject*> m_pEnemySpawns;
 		GameObject* m_pBobSpawnPoint{ nullptr };
 		GameObject* m_pBubSpawnPoint{ nullptr };
+		GameObject* m_pPlayerBob{ nullptr };
+		GameObject* m_pPlayerBub{ nullptr };
 		PlayerMode m_Playermode{ PlayerMode::singlePlayer };
 	};
 }

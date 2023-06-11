@@ -158,5 +158,8 @@
     <ClInclude Include="PlayerStates.h">
       <Filter>States</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyMovementComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

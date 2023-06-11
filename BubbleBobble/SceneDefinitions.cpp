@@ -44,6 +44,7 @@
 #include "BoxColliderComponent.h"
 #include "RigidbodyComponent.h"
 #include "LandOnPlatformComponent.h"
+#include "EnemyMovementComponent.h"
 
 #include "ColliderLayers.h"
 
@@ -219,6 +220,7 @@ void aze::LevelOne(Scene& scene)
 	case PlayerMode::coop:
 	case PlayerMode::versus:
 		bubObj = scene.CreateGameObject();
+		GameManager::GetInstance().SetBubPlayer(bubObj);
 		break;
 	}
 
@@ -251,6 +253,7 @@ void aze::LevelOne(Scene& scene)
 
 	// Bob
 	bobObj = scene.CreateGameObject();
+	GameManager::GetInstance().SetBobPlayer(bobObj);
 	auto bobSpawnPoint = GameManager::GetInstance().GetBobSpawnPoint();
 	if (bobSpawnPoint)
 	{
@@ -280,6 +283,24 @@ void aze::LevelOne(Scene& scene)
 		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ 1,0 }, movementSpeed), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_RIGHT),OnButtonPressed });
 		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ -1,0 }, movementSpeed), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_LEFT),OnButtonPressed });
 		inputManager.BindCommand(std::make_unique<JumpCommand>(bobRigidBody, jumpForce), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_UP),OnButtonPressed });
+	}
+
+	// Enemies
+	constexpr float enemySpeed{ 30.f };
+	for (auto enemySpawnPoint : GameManager::GetInstance().GetEnemySpawnpoints())
+	{
+		auto enemyObj = scene.CreateGameObject();
+		const auto& pos = enemySpawnPoint->GetTransform().GetWorldPosition();
+		enemyObj->SetPosition(pos.x, pos.y);
+		enemyObj->AddComponent<RenderComponent>();
+		enemyObj->AddComponent<TextureObject>("Zen-Chan.png");
+		auto movement = enemyObj->AddComponent<MovementComponent>();
+		auto coll = enemyObj->AddComponent<BoxColliderComponent>(32.f, 32.f);
+		coll->SetIsTrigger(true);
+		coll->SetLayer(0x0000);
+		auto rb = enemyObj->AddComponent<RigidbodyComponent>();
+		enemyObj->AddComponent<LandOnPlatformComponent>(coll, rb);
+		enemyObj->AddComponent<EnemyMovementComponent>(movement, enemySpeed);
 	}
 
 	// General input

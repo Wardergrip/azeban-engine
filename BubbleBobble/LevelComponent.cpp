@@ -24,7 +24,11 @@ inline bool CheckForBlue(const SDL_Color& col)
 }
 inline bool CheckForGreen(const SDL_Color& col)
 {
-	return (col.r == 0) && (col.g >= 255) && (col.b >= 0);
+	return (col.r == 0) && (col.g >= 255) && (col.b == 0);
+}
+inline bool CheckForRed(const SDL_Color& col)
+{
+	return (col.r >= 255) && (col.g == 0) && (col.b == 0);
 }
 
 
@@ -66,6 +70,14 @@ aze::LevelComponent::LevelComponent(GameObject* pParent, ImageParser* pImagePars
 			const auto& pos = m_pGrid->GetPoint(pixel.point.x, pixel.point.y);
 			spawnPoint->SetPosition(pos.x, pos.y);
 			GameManager::GetInstance().SetBubSpawnPoint(spawnPoint);
+		}
+		// ENEMY SPAWN (RED)
+		else if (CheckForRed(pixel.col))
+		{
+			auto spawnPoint = GetGameObject()->GetScene()->CreateGameObject();
+			const auto& pos = m_pGrid->GetPoint(pixel.point.x, pixel.point.y);
+			spawnPoint->SetPosition(pos.x, pos.y);
+			GameManager::GetInstance().GetEnemySpawnpoints().emplace_back(spawnPoint);
 		}
 	}
 }

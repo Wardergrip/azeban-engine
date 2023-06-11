@@ -33,14 +33,50 @@ aze::PlayerMode aze::GameManager::GetPlayerMode() const
 	return m_Playermode;
 }
 
+std::vector<aze::GameObject*>& aze::GameManager::GetEnemySpawnpoints()
+{
+	return m_pEnemySpawns;
+}
+
+void aze::GameManager::SetBobPlayer(GameObject* ptr)
+{
+	m_pPlayerBob = ptr;
+	m_pPlayerBob->SubscribeOnDestroyEvent(this);
+}
+
+aze::GameObject* aze::GameManager::GetBobPlayer()
+{
+	return m_pPlayerBob;
+}
+
+void aze::GameManager::SetBubPlayer(GameObject* ptr)
+{
+	m_pPlayerBub = ptr;
+	m_pPlayerBub->SubscribeOnDestroyEvent(this);
+}
+
+aze::GameObject* aze::GameManager::GetBubPlayer()
+{
+	return m_pPlayerBub;
+}
+
 void aze::GameManager::OnNotify(Ev_Destroy<GameObject>* data)
 {
-	if (data->GetEntity() == m_pBobSpawnPoint)
+	auto destroyedObj = data->GetEntity();
+	if (destroyedObj == m_pBobSpawnPoint)
 	{
 		m_pBobSpawnPoint = nullptr;
 	}
-	else if (data->GetEntity() == m_pBubSpawnPoint)
+	else if (destroyedObj == m_pBubSpawnPoint)
 	{
 		m_pBobSpawnPoint = nullptr;
+	}
+	else if (destroyedObj == m_pPlayerBob)
+	{
+		m_pPlayerBob = nullptr;
+	}
+	else if (destroyedObj == m_pPlayerBub)
+	{
+		m_pPlayerBub = nullptr;
 	}
 }
