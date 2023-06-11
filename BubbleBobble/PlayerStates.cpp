@@ -5,11 +5,15 @@
 #include "LivesComponent.h"
 #include "GameManager.h"
 #include <SceneManager.h>
+#include <iostream>
 
 // IDLE
 aze::IdleState::IdleState(PlayerComponent* pPlayerComponent)
 	:PlayerState(pPlayerComponent)
+	,m_IsDead{false}
+	,m_IsHurt{false}
 {
+	pPlayerComponent->GetGameObject()->GetComponent<LivesComponent>()->AddObserver(this);
 }
 
 void aze::IdleState::OnNotify(Ev_PlayerDied* data)
@@ -25,13 +29,13 @@ aze::PlayerState* aze::IdleState::OnHandle()
 {
 	if (m_IsDead)
 	{
-
+		return m_pPlayerComponent->GetDeadState();
 	}
-	else if (m_IsHurt)
+	if (m_IsHurt)
 	{
 		return m_pPlayerComponent->GetHurtState();
 	}
-	return nullptr;
+	return this;
 }
 
 void aze::IdleState::OnExit()
@@ -52,6 +56,7 @@ aze::HurtState::HurtState(PlayerComponent* pPlayerComponent)
 void aze::HurtState::OnEnter()
 {
 	m_pLivesComponent->SetIsInvincible(true);
+	std::cout << "Entering hurtstate\n";
 }
 
 aze::PlayerState* aze::HurtState::OnHandle()
@@ -82,8 +87,8 @@ aze::PlayerState* aze::DeadState::OnHandle()
 {
 	if (!m_IsLoading)
 	{
-		SceneManager::GetInstance().SetActiveScene("MainMenu");
 		m_IsLoading = true;
+		SceneManager::GetInstance().SetActiveScene("MainMenu");
 	}
 	return this;
 }

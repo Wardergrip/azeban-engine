@@ -25,14 +25,6 @@ aze::GameObject* aze::Scene::Adopt(GameObject* object)
 	return ptr;
 }
 
-void aze::Scene::Remove(GameObject* object)
-{
-	assert(object->GetParent() == nullptr && "Object is not owned by the scene");
-
-	auto it = std::find_if(m_objects.begin(), m_objects.end(), [&](const std::unique_ptr<GameObject>& ptr) { return ptr.get() == object; });
-	m_objects.erase(it, m_objects.end());
-}
-
 std::unique_ptr<GameObject> aze::Scene::Abandon(GameObject* object)
 {
 	auto found = std::find_if(m_objects.begin(), m_objects.end(),[&](const auto& p) { return p.get() == object; });
@@ -95,12 +87,11 @@ void aze::Scene::OnGUI()
 
 void aze::Scene::CleanUp()
 {
-	for (auto& object : m_objects)
-	{
-		if (object->IsMarkedForDestroy())
+	m_objects.erase(std::remove_if(m_objects.begin(), m_objects.end(), 
+		[](const std::unique_ptr<GameObject>& ptr) 
 		{
-			Remove(object.get());
+			return ptr->IsMarkedForDestroy();
 		}
-	}
+	), m_objects.end());
 }
 

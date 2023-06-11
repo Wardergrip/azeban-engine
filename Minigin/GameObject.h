@@ -88,6 +88,7 @@ namespace aze
 
 			for (const auto& pComp : m_pComponents)
 			{
+				if (pComp.get() == nullptr) continue;
 				T* compToFind{ dynamic_cast<T*>(pComp.get()) };
 				if (compToFind) return compToFind;
 			}
@@ -104,6 +105,7 @@ namespace aze
 
 			for (const auto& pComp : m_pComponents)
 			{
+				if (pComp == nullptr) continue;
 				T* compToFind{ dynamic_cast<T*>(pComp.get()) };
 				if (compToFind) return true;
 			}

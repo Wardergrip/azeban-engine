@@ -45,6 +45,8 @@
 #include "RigidbodyComponent.h"
 #include "LandOnPlatformComponent.h"
 #include "EnemyMovementComponent.h"
+#include "HitPlayerComponent.h"
+#include "PlayerComponent.h"
 
 #include "ColliderLayers.h"
 
@@ -244,6 +246,7 @@ void aze::LevelOne(Scene& scene)
 		bubBoxColl->RemoveLayerFromMask(layers::L_PLAYER);
 		auto bubRigidBody = bubObj->AddComponent<RigidbodyComponent>();
 		bubObj->AddComponent<LandOnPlatformComponent>(bubBoxColl, bubRigidBody);
+		bubObj->AddComponent<PlayerComponent>();
 
 		// Bub Input
 		inputManager.BindCommand(std::make_unique<MoveCommand>(bubMovement, vec2{ 1,0 }, movementSpeed), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_RIGHT),OnButtonPressed });
@@ -271,6 +274,7 @@ void aze::LevelOne(Scene& scene)
 	bobBoxColl->RemoveLayerFromMask(layers::L_PLAYER);
 	auto bobRigidBody = bobObj->AddComponent<RigidbodyComponent>();
 	bobObj->AddComponent<LandOnPlatformComponent>(bobBoxColl,bobRigidBody);
+	bobObj->AddComponent<PlayerComponent>();
 
 	// Bob input
 	inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ 1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_RIGHT),OnButtonPressed });
@@ -301,6 +305,7 @@ void aze::LevelOne(Scene& scene)
 		auto rb = enemyObj->AddComponent<RigidbodyComponent>();
 		enemyObj->AddComponent<LandOnPlatformComponent>(coll, rb);
 		enemyObj->AddComponent<EnemyMovementComponent>(movement, enemySpeed);
+		enemyObj->AddComponent<HitPlayerComponent>();
 	}
 
 	// General input

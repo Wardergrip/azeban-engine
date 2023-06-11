@@ -184,6 +184,7 @@
     <ClInclude Include="Ev_PlayerDied.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="HitPlayerComponent.h" />
     <ClInclude Include="ImageParser.h" />
     <ClInclude Include="JumpCommand.h" />
     <ClInclude Include="LandOnPlatformComponent.h" />

@@ -40,5 +40,6 @@ namespace aze
 		SceneManager();
 		std::vector<std::unique_ptr<Scene>> m_scenes;
 		std::unique_ptr<Scene> m_pActiveScene;
+		Scene* m_pSceneToBeLoaded;
 	};
 }

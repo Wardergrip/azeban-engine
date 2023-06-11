@@ -3,7 +3,10 @@
 
 #include <iostream>
 
-aze::SceneManager::SceneManager() = default;
+aze::SceneManager::SceneManager()
+	:m_pSceneToBeLoaded{nullptr}
+{
+}
 aze::SceneManager::~SceneManager() = default;
 
 void aze::SceneManager::Start()
@@ -34,6 +37,16 @@ void aze::SceneManager::OnGUI()
 void aze::SceneManager::CleanUp()
 {
 	if (m_pActiveScene.get()) m_pActiveScene->CleanUp();
+	if (m_pSceneToBeLoaded)
+	{
+		auto sceneToLoad = m_pSceneToBeLoaded;
+		auto loadFunct = sceneToLoad->GetLoadFunction();
+
+		m_pActiveScene = std::unique_ptr<Scene>(new Scene(sceneToLoad->GetName(), loadFunct));
+		loadFunct(*m_pActiveScene);
+		m_pActiveScene->Start();
+		m_pSceneToBeLoaded = nullptr;
+	}
 }
 
 void aze::SceneManager::SetActiveScene(const std::string& sceneName)
@@ -45,12 +58,14 @@ void aze::SceneManager::SetActiveScene(const std::string& sceneName)
 
 	if (it == m_scenes.end()) throw unregistered_scene();
 
-	auto sceneToLoad = (*it).get();
-	auto loadFunct = sceneToLoad->GetLoadFunction();
-
-	m_pActiveScene = std::unique_ptr<Scene>(new Scene(sceneToLoad->GetName(), loadFunct));
-	loadFunct(*m_pActiveScene);
-	m_pActiveScene->Start();
+	m_pSceneToBeLoaded = (*it).get();
+	if (m_pActiveScene.get())
+	{
+		for (auto& obj : m_pActiveScene->m_objects)
+		{
+			GameObject::Destroy(obj.get());
+		}
+	}
 }
 
 aze::Scene* aze::SceneManager::GetActiveScene()
@@ -61,7 +76,7 @@ aze::Scene* aze::SceneManager::GetActiveScene()
 aze::Scene& aze::SceneManager::CreateScene(const std::string& name, const std::function<void(aze::Scene&)>& loadFunc)
 {
 	m_scenes.emplace_back(std::unique_ptr<Scene>(new Scene(name,loadFunc)));
-	if (m_pActiveScene == nullptr)
+	if (m_pSceneToBeLoaded == nullptr)
 	{
 		SetActiveScene(m_scenes.back().get()->GetName());
 	}

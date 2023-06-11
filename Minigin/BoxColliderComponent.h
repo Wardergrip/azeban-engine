@@ -18,6 +18,7 @@ namespace aze
 			:Component{pParent}
 			,m_Rect{ width,height }
 			,m_IsStatic{false}
+			,m_IsTrigger{false}
 			,m_ColliderLayer{ globals::L_DEFAULT }
 			,m_ColliderMask{ globals::M_ALL }
 		{
@@ -97,7 +98,7 @@ namespace aze
 		{
 			m_OnTriggerOverlapEvent.AddObserver(pObserver);
 		}
-		void UnsubscribeOnCollision(Observer<Ev_TriggerOverlap>* pObserver)
+		void UnsubscribeOnTriggerOverlap(Observer<Ev_TriggerOverlap>* pObserver)
 		{
 			m_OnTriggerOverlapEvent.RemoveObserver(pObserver);
 		}
