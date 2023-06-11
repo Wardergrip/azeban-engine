@@ -4,7 +4,10 @@ using namespace aze;
 
 unsigned int Scene::m_idCounter = 0;
 
-Scene::Scene(const std::string& name) : m_name(name) {}
+Scene::Scene(const std::string& name, const std::function<void(Scene&)>& loadFunct) 
+	: m_name(name)
+	, m_LoadFunction{loadFunct} 
+{}
 
 Scene::~Scene() = default;
 
@@ -63,13 +66,6 @@ void Scene::Update()
 	{
 		object->Update();
 	}
-	for (auto& object : m_objects)
-	{
-		if (object->IsMarkedForDestroy())
-		{
-			Remove(object.get());
-		}
-	}
 }
 
 void aze::Scene::FixedUpdate()
@@ -94,6 +90,17 @@ void aze::Scene::OnGUI()
 	for (const auto& object : m_objects)
 	{
 		object->OnGUI();
+	}
+}
+
+void aze::Scene::CleanUp()
+{
+	for (auto& object : m_objects)
+	{
+		if (object->IsMarkedForDestroy())
+		{
+			Remove(object.get());
+		}
 	}
 }
 

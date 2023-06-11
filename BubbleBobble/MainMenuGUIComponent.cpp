@@ -18,6 +18,9 @@ void aze::MainMenuGUIComponent::OnGUI()
     if (ImGui::Button("Single player"))
     {
         SceneManager::GetInstance().SetActiveScene("Level1");
+        // After loading, this does not longer exist.
+        ImGui::End();
+        return;
     }
     if (ImGui::Button("Co-op"))
     {

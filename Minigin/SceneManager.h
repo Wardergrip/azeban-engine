@@ -3,6 +3,7 @@
 #include <string>
 #include <memory>
 #include <stdexcept>
+#include <functional>
 #include "Singleton.h"
 
 namespace aze
@@ -23,21 +24,21 @@ namespace aze
 	public:
 		virtual ~SceneManager();
 
-		Scene& CreateScene(const std::string& name);
+		Scene& CreateScene(const std::string& name, const std::function<void(Scene&)>& loadFunc);
 
 		void Start();
 		void Update();
 		void FixedUpdate();
 		void Render();
 		void OnGUI();
+		void CleanUp();
 
-		void SetActiveScene(Scene* pScene);
 		void SetActiveScene(const std::string& sceneName);
 		Scene* GetActiveScene();
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager();
 		std::vector<std::unique_ptr<Scene>> m_scenes;
-		Scene* m_pActiveScene{ nullptr };
+		std::unique_ptr<Scene> m_pActiveScene;
 	};
 }

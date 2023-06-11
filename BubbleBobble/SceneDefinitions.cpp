@@ -2,7 +2,6 @@
 
 // Managers / essentials
 #include <iostream>
-#include "SceneManager.h"
 #include "InputManager.h"
 #include "ResourceManager.h"
 #include "ServiceManager.h"
@@ -51,10 +50,8 @@
 using namespace aze;
 using namespace glm;
 
-void aze::DemoScene()
+void aze::DemoScene(Scene& scene)
 {
-	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
-
 	{
 		auto go = new GameObject(&scene);
 		go->AddComponent<RenderComponent>();
@@ -174,10 +171,8 @@ void aze::DemoScene()
 	}
 }
 
-void aze::LevelOne()
+void aze::LevelOne(Scene& scene)
 {
-	auto& scene = SceneManager::GetInstance().CreateScene("Level1");
-
 	// Audio
 #if _DEBUG
 	ServiceManager::GetInstance().RegisterSoundSystem(std::make_unique<SoundSystemLogger>(std::make_unique<SDLSoundSystem>()));
@@ -290,9 +285,8 @@ void aze::LevelOne()
 	}
 }
 
-void aze::MainMenu()
+void aze::MainMenu(Scene& scene)
 {
-	auto& scene = SceneManager::GetInstance().CreateScene("MainMenu");
 	auto backGround_go = scene.CreateGameObject();
 	backGround_go->AddComponent<RenderComponent>();
 	backGround_go->AddComponent<TextureObject>("titlescreen.png");
@@ -301,10 +295,8 @@ void aze::MainMenu()
 	scene.CreateGameObject()->AddComponent<MainMenuGUIComponent>();
 }
 
-void aze::TestScene()
+void aze::TestScene(Scene& scene)
 {
-	auto& scene = SceneManager::GetInstance().CreateScene("TestScene");
-
 	auto first_go = scene.CreateGameObject();
 	first_go->AddComponent<RenderComponent>();
 	first_go->AddComponent<TextureObject>("Small.png");

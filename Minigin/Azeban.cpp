@@ -124,6 +124,8 @@ void aze::Azeban::Run(const std::function<void()>& load)
 		sceneManager.Update();
 		renderer.Render();
 
+		sceneManager.CleanUp();
+
 		lastTime = currentTime;
 		
 		const auto sleepTime{ currentTime + std::chrono::milliseconds(maxWaitingTimeMs) - std::chrono::high_resolution_clock::now() };

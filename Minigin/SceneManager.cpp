@@ -8,42 +8,32 @@ aze::SceneManager::~SceneManager() = default;
 
 void aze::SceneManager::Start()
 {
-	for (auto& scene : m_scenes)
-	{
-		scene->Start();
-	}
+	
 }
 
 void aze::SceneManager::Update()
 {
-	if (m_pActiveScene) m_pActiveScene->Update();
+	if (m_pActiveScene.get()) m_pActiveScene->Update();
 }
 
 void aze::SceneManager::FixedUpdate()
 {
-	if (m_pActiveScene) m_pActiveScene->FixedUpdate();
+	if (m_pActiveScene.get()) m_pActiveScene->FixedUpdate();
 }
 
 void aze::SceneManager::Render()
 {
-	if (m_pActiveScene) m_pActiveScene->Render();
+	if (m_pActiveScene.get()) m_pActiveScene->Render();
 }
 
 void aze::SceneManager::OnGUI()
 {
-	if (m_pActiveScene) m_pActiveScene->OnGUI();
+	if (m_pActiveScene.get()) m_pActiveScene->OnGUI();
 }
 
-void aze::SceneManager::SetActiveScene(Scene* pScene)
+void aze::SceneManager::CleanUp()
 {
-	auto it = std::find_if(m_scenes.begin(), m_scenes.end(),
-		[&](const std::unique_ptr<Scene>& uniquePtr) {
-			return uniquePtr.get() == pScene;
-		});
-
-	if (it == m_scenes.end()) throw unregistered_scene();
-
-	m_pActiveScene = pScene;
+	if (m_pActiveScene.get()) m_pActiveScene->CleanUp();
 }
 
 void aze::SceneManager::SetActiveScene(const std::string& sceneName)
@@ -55,20 +45,25 @@ void aze::SceneManager::SetActiveScene(const std::string& sceneName)
 
 	if (it == m_scenes.end()) throw unregistered_scene();
 
-	m_pActiveScene = (*it).get();
+	auto sceneToLoad = (*it).get();
+	auto loadFunct = sceneToLoad->GetLoadFunction();
+
+	m_pActiveScene = std::unique_ptr<Scene>(new Scene(sceneToLoad->GetName(), loadFunct));
+	loadFunct(*m_pActiveScene);
+	m_pActiveScene->Start();
 }
 
 aze::Scene* aze::SceneManager::GetActiveScene()
 {
-	return m_pActiveScene;
+	return m_pActiveScene.get();
 }
 
-aze::Scene& aze::SceneManager::CreateScene(const std::string& name)
+aze::Scene& aze::SceneManager::CreateScene(const std::string& name, const std::function<void(aze::Scene&)>& loadFunc)
 {
-	m_scenes.emplace_back(std::unique_ptr<Scene>(new Scene(name)));
+	m_scenes.emplace_back(std::unique_ptr<Scene>(new Scene(name,loadFunc)));
 	if (m_pActiveScene == nullptr)
 	{
-		m_pActiveScene = m_scenes.back().get();
+		SetActiveScene(m_scenes.back().get()->GetName());
 	}
 	return *m_scenes.back();
 }
