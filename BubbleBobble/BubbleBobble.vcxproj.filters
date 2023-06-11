@@ -78,6 +78,12 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStates.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneDefinitions.h">
@@ -122,7 +128,7 @@
     <ClInclude Include="ImageParser.h">
       <Filter>Fundamentals</Filter>
     </ClInclude>
-    <ClInclude Include="State.h">
+    <ClInclude Include="PlayerState.h">
       <Filter>States</Filter>
     </ClInclude>
     <ClInclude Include="Ev_AddScore.h">
@@ -145,6 +151,12 @@
     </ClInclude>
     <ClInclude Include="GameManager.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStates.h">
+      <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

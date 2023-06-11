@@ -168,6 +168,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenuGUIComponent.cpp" />
     <ClCompile Include="MovementComponent.cpp" />
+    <ClCompile Include="PlayerComponent.cpp" />
+    <ClCompile Include="PlayerStates.cpp" />
     <ClCompile Include="RevolutionComponent.cpp" />
     <ClCompile Include="SceneDefinitions.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
@@ -190,13 +192,15 @@
     <ClInclude Include="MainMenuGUIComponent.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MovementComponent.h" />
+    <ClInclude Include="PlayerComponent.h" />
+    <ClInclude Include="PlayerStates.h" />
     <ClInclude Include="RemoveLifeCommand.h" />
     <ClInclude Include="RevolutionComponent.h" />
     <ClInclude Include="SceneDefinitions.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreDisplayComponent.h" />
     <ClInclude Include="ScoreSaver.h" />
-    <ClInclude Include="State.h" />
+    <ClInclude Include="PlayerState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

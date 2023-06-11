@@ -11,6 +11,7 @@ namespace aze
 			:Component{ pParentGameObject }
 			,m_pSubject{std::make_unique<Subject<Ev_PlayerDied>>()}
 			,m_Lives{lives}
+			,m_IsInvincible{false}
 		{
 		}
 		LivesComponent(LivesComponent&& component) = default;
@@ -39,9 +40,13 @@ namespace aze
 		{ 
 			return m_Lives; 
 		}
+
+		void SetIsInvincible(bool state) { m_IsInvincible = state; }
+		bool IsInvincible() const { return m_IsInvincible; }
 	private:
 		std::unique_ptr<Subject<Ev_PlayerDied>> m_pSubject;
 		int m_Lives;
+		bool m_IsInvincible;
 	};
 }
 
