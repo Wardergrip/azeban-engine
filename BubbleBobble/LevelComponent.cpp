@@ -82,6 +82,11 @@ aze::LevelComponent::LevelComponent(GameObject* pParent, ImageParser* pImagePars
 	}
 }
 
+aze::LevelComponent::~LevelComponent()
+{
+	GameManager::GetInstance().GetEnemySpawnpoints().clear();
+}
+
 aze::GameObject* aze::LevelComponent::CreateTile(float size, const glm::vec3& pos)
 {
 	auto tile = new GameObject(GetGameObject()->GetScene());

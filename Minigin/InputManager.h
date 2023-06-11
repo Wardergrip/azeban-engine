@@ -137,6 +137,8 @@ namespace aze
 		void BindCommand(std::unique_ptr<Command> pCommand, ControllerKey key);
 		void BindCommand(std::unique_ptr<Command> pCommand, KeyboardKey key);
 
+		void Clear();
+
 	private:
 		using ControllerCommandsMap = std::unordered_map<ControllerKey, std::unique_ptr<Command>>;
 		using KeyboardCommandsMap = std::unordered_map<KeyboardKey, std::unique_ptr<Command>>;

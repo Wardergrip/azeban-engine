@@ -203,6 +203,7 @@
     <ClInclude Include="ScoreDisplayComponent.h" />
     <ClInclude Include="ScoreSaver.h" />
     <ClInclude Include="PlayerState.h" />
+    <ClInclude Include="SkipLevelCommand.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

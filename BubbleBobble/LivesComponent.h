@@ -31,9 +31,10 @@ namespace aze
 
 		void RemoveLife()
 		{
+			if (m_IsInvincible) return;
 			--m_Lives;
-			std::unique_ptr<Ev_PlayerDied> playerDied = std::make_unique<Ev_PlayerDied>(m_Lives);
-			m_pSubject->NotifyObservers(playerDied.get());
+			Ev_PlayerDied playerDied{ m_Lives,GetGameObject()};
+			m_pSubject->NotifyObservers(&playerDied);
 		}
 
 		int GetLivesAmount() const 

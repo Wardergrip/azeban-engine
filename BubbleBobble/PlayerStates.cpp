@@ -20,6 +20,8 @@ void aze::IdleState::OnNotify(Ev_PlayerDied* data)
 {
 	if (data->GetLivesLeft() > 0)
 	{
+		auto lives = data->GetPlayer()->GetComponent<LivesComponent>();
+		if (lives) lives->SetIsInvincible(true);
 		m_IsHurt = true;
 	}
 	else m_IsDead = true;
@@ -56,7 +58,6 @@ aze::HurtState::HurtState(PlayerComponent* pPlayerComponent)
 void aze::HurtState::OnEnter()
 {
 	m_pLivesComponent->SetIsInvincible(true);
-	std::cout << "Entering hurtstate\n";
 }
 
 aze::PlayerState* aze::HurtState::OnHandle()

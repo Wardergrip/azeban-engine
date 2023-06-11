@@ -164,5 +164,8 @@
     <ClInclude Include="HitPlayerComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="SkipLevelCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -30,6 +30,7 @@
 #include "AudioPlayCommand.h"
 #include "MuteCommand.h"
 #include "JumpCommand.h"
+#include "SkipLevelCommand.h"
 
 // Components
 #include "RevolutionComponent.h"
@@ -176,12 +177,29 @@ void aze::DemoScene(Scene& scene)
 
 void aze::LevelOne(Scene& scene)
 {
+	Level(scene, "Level1.png");
+}
+
+void aze::LevelTwo(Scene& scene)
+{
+	Level(scene, "Level2.png");
+}
+
+void aze::LevelThree(Scene& scene)
+{
+	Level(scene, "Level3.png");
+}
+
+void aze::Level(Scene& scene, const std::string& levelFilePath)
+{
 	// Audio
 #if _DEBUG
 	ServiceManager::GetInstance().RegisterSoundSystem(std::make_unique<SoundSystemLogger>(std::make_unique<SDLSoundSystem>()));
 #else
 	ServiceManager::GetInstance().RegisterSoundSystem(std::make_unique<SDLSoundSystem>());
 #endif
+
+	auto defaultFont = ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
 
 	// FPS
 	{
@@ -201,7 +219,7 @@ void aze::LevelOne(Scene& scene)
 		auto levelObj = new GameObject(&scene);
 		scene.Adopt(levelObj);
 
-		ImageParser imageParser{ "Level1.png" };
+		ImageParser imageParser{ levelFilePath };
 		levelObj->AddComponent<LevelComponent>(&imageParser);
 	}
 
@@ -210,6 +228,7 @@ void aze::LevelOne(Scene& scene)
 	constexpr float jumpForce{ 10.0f };
 
 	InputManager& inputManager = InputManager::GetInstance();
+	inputManager.Clear();
 
 	// Players
 	GameObject* bobObj{ nullptr };
@@ -239,14 +258,28 @@ void aze::LevelOne(Scene& scene)
 		bubObj->AddComponent<RenderComponent>();
 		bubObj->AddComponent<TextureObject>("Bub.png");
 		auto bubMovement = bubObj->AddComponent<MovementComponent>();
-		bubObj->AddComponent<LivesComponent>();
-		bubObj->AddComponent<ScoreComponent>();
+		auto bubLives = bubObj->AddComponent<LivesComponent>();
+		auto bubScore = bubObj->AddComponent<ScoreComponent>();
 		auto bubBoxColl = bubObj->AddComponent<BoxColliderComponent>(32.f, 32.f);
 		bubBoxColl->SetLayer(layers::L_PLAYER);
 		bubBoxColl->RemoveLayerFromMask(layers::L_PLAYER);
 		auto bubRigidBody = bubObj->AddComponent<RigidbodyComponent>();
 		bubObj->AddComponent<LandOnPlatformComponent>(bubBoxColl, bubRigidBody);
 		bubObj->AddComponent<PlayerComponent>();
+
+		auto bubLivesDisplay = scene.CreateGameObject();
+		bubLivesDisplay->AddComponent<RenderComponent>();
+		auto bubLivesText = bubLivesDisplay->AddComponent<TextObject>("Lives: 3", defaultFont);
+		SDL_Color green{}; green.g = 255;
+		bubLivesText->SetColor(green);
+		bubLives->AddObserver(bubLivesDisplay->AddComponent<LivesDisplayComponent>(bubLivesText));
+		bubLivesDisplay->SetPosition(200, 10);
+		auto bubScoreDisplay = scene.CreateGameObject();
+		bubScoreDisplay->AddComponent<RenderComponent>();
+		auto bubScoreText = bubScoreDisplay->AddComponent<TextObject>("Score: 0", defaultFont);
+		bubScoreText->SetColor(green);
+		bubScore->AddObserver(bubScoreDisplay->AddComponent<ScoreDisplayComponent>(bubScoreText));
+		bubScoreDisplay->SetPosition(200, 25);
 
 		// Bub Input
 		inputManager.BindCommand(std::make_unique<MoveCommand>(bubMovement, vec2{ 1,0 }, movementSpeed), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_RIGHT),OnButtonPressed });
@@ -261,20 +294,31 @@ void aze::LevelOne(Scene& scene)
 	if (bobSpawnPoint)
 	{
 		const auto& pos = bobSpawnPoint->GetTransform().GetWorldPosition();
-		bobObj->SetPosition(pos.x,pos.y);
+		bobObj->SetPosition(pos.x, pos.y);
 	}
 	else bobObj->SetPosition(100, 200);
 	bobObj->AddComponent<RenderComponent>();
 	bobObj->AddComponent<TextureObject>("Bob.png");
 	auto bobMovement = bobObj->AddComponent<MovementComponent>();
-	bobObj->AddComponent<LivesComponent>();
-	bobObj->AddComponent<ScoreComponent>();
+	auto bobLives = bobObj->AddComponent<LivesComponent>();
+	auto bobScore = bobObj->AddComponent<ScoreComponent>();
 	auto bobBoxColl = bobObj->AddComponent<BoxColliderComponent>(32.f, 32.f);
 	bobBoxColl->SetLayer(layers::L_PLAYER);
 	bobBoxColl->RemoveLayerFromMask(layers::L_PLAYER);
 	auto bobRigidBody = bobObj->AddComponent<RigidbodyComponent>();
-	bobObj->AddComponent<LandOnPlatformComponent>(bobBoxColl,bobRigidBody);
+	bobObj->AddComponent<LandOnPlatformComponent>(bobBoxColl, bobRigidBody);
 	bobObj->AddComponent<PlayerComponent>();
+
+	auto bobLivesDisplay = scene.CreateGameObject();
+	bobLivesDisplay->AddComponent<RenderComponent>();
+	auto bobLivesText = bobLivesDisplay->AddComponent<TextObject>("Lives: 3", defaultFont);
+	bobLives->AddObserver(bobLivesDisplay->AddComponent<LivesDisplayComponent>(bobLivesText));
+	bobLivesDisplay->SetPosition(100, 10);
+	auto bobScoreDisplay = scene.CreateGameObject();
+	bobScoreDisplay->AddComponent<RenderComponent>();
+	auto bobScoreText = bobScoreDisplay->AddComponent<TextObject>("Score: 0", defaultFont);
+	bobScore->AddObserver(bobScoreDisplay->AddComponent<ScoreDisplayComponent>(bobScoreText));
+	bobScoreDisplay->SetPosition(100, 25);
 
 	// Bob input
 	inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ 1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_RIGHT),OnButtonPressed });
@@ -310,6 +354,7 @@ void aze::LevelOne(Scene& scene)
 
 	// General input
 	inputManager.BindCommand(std::make_unique<MuteCommand>(&ServiceManager::GetInstance().GetSoundSystem()), KeyboardKey{ static_cast<KeyboardButton>(SDLK_m),OnButtonDown });
+	inputManager.BindCommand(std::make_unique<SkipLevelCommand>(), KeyboardKey{ static_cast<KeyboardButton>(SDLK_l),OnButtonDown });
 
 	// Controlls info
 	std::cout << "[INFO] CONTROLS\n"
@@ -319,6 +364,7 @@ void aze::LevelOne(Scene& scene)
 		<< "- Arrow keys: movement\n"
 		<< "Misc:\n"
 		<< "- m: toggle mute sound\n"
+		<< "- l: skip to next level\n"
 		<< "Note:\n"
 		<< "Logging of the sound system will automatically happen in debug\n"
 		;

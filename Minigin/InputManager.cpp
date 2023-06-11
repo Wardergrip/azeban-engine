@@ -113,3 +113,9 @@ void aze::InputManager::BindCommand(std::unique_ptr<Command> pCommand, KeyboardK
 {
 	m_pKeyboardKeyCommands[key] = std::move(pCommand);
 }
+
+void aze::InputManager::Clear()
+{
+	m_pKeyboardKeyCommands.clear();
+	m_pControllerKeyCommands.clear();
+}

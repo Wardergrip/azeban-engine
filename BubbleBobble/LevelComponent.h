@@ -11,6 +11,7 @@ namespace aze
 	{
 	public:
 		LevelComponent(GameObject* pParent, ImageParser* pImageParser);
+		virtual ~LevelComponent();
 
 	private:
 		GameObject* CreateTile(float size, const glm::vec3& pos);
