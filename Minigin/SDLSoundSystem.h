@@ -15,7 +15,7 @@ namespace aze
 		virtual ~SDLSoundSystem();
 
 		// SoundSystem interface
-		virtual void Play(const std::string& fileName, float volume) override;
+		virtual void Play(const std::string& fileName, float volume, int loops = 0) override;
 		virtual void SetMute(bool state) override;
 		virtual bool IsMuted() const;
 

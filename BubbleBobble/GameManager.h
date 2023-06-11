@@ -30,7 +30,7 @@ namespace aze
 
 		void OnNotify(Ev_Destroy<GameObject>* data) override;
 	protected:
-		GameManager() = default;
+		GameManager();
 		friend Singleton<GameManager>;
 
 	private:

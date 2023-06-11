@@ -1,5 +1,6 @@
 #include "GameManager.h"
 #include <GameObject.h>
+#include <ServiceManager.h>
 
 void aze::GameManager::SetBobSpawnPoint(GameObject* ptr)
 {
@@ -79,4 +80,9 @@ void aze::GameManager::OnNotify(Ev_Destroy<GameObject>* data)
 	{
 		m_pPlayerBub = nullptr;
 	}
+}
+
+aze::GameManager::GameManager()
+{
+	ServiceManager::GetInstance().GetSoundSystem().Play("../Data/music.mp3",0.4f,-1);
 }

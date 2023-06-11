@@ -14,12 +14,12 @@ namespace aze
 		{
 		}
 
-		virtual void Play(const std::string& fileName, float volume)
+		virtual void Play(const std::string& fileName, float volume, int loops = 0)
 		{
 			std::stringstream ss;
 			ss << "[SoundSystemLogger] " << "{Play} " << "FileName: " << fileName << " at " << volume << " volume\n";
 			std::cout << ss.str();
-			m_pSoundSystem->Play(fileName, volume);
+			m_pSoundSystem->Play(fileName, volume, loops);
 		}
 		virtual void SetMute(bool state)
 		{

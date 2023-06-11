@@ -15,6 +15,7 @@ namespace aze
 	{
 		std::string filePath;
 		float volume;
+		int loops;
 	};
 
 	class SDLSoundSystem::SDLSoundSystemImpl final : public SoundSystem
@@ -56,10 +57,10 @@ namespace aze
 		}
 
 		// SoundSystem interface
-		virtual void Play(const std::string& fileName, float volume) override
+		virtual void Play(const std::string& fileName, float volume, int loops) override
 		{
 			const std::lock_guard lock{ m_Mutex };
-			m_RequestQueue.push(AudioRequest{ fileName,volume });
+			m_RequestQueue.push(AudioRequest{ fileName,volume,loops });
 			m_ThreadCondition.notify_one();
 		}
 		virtual void SetMute(bool state) override
@@ -102,7 +103,7 @@ namespace aze
 
 					// Set audio for the chunk to the desired volume
 					Mix_VolumeChunk(pAudio, std::clamp(static_cast<int>(request.volume * MIX_MAX_VOLUME), 0, MIX_MAX_VOLUME));
-					const int channel = Mix_PlayChannel(-1, pAudio, 0);
+					const int channel = Mix_PlayChannel(-1, pAudio, request.loops);
 					Mix_Volume(channel, m_IsMuted ? 0 : MIX_MAX_VOLUME);
 
 					// If we were not able to play (no available channels)
@@ -138,9 +139,9 @@ aze::SDLSoundSystem::SDLSoundSystem()
 
 aze::SDLSoundSystem::~SDLSoundSystem() = default;
 
-void aze::SDLSoundSystem::Play(const std::string& fileName, float volume)
+void aze::SDLSoundSystem::Play(const std::string& fileName, float volume, int loops)
 {
-	m_pImpl->Play(fileName, volume);
+	m_pImpl->Play(fileName, volume,loops);
 }
 
 void aze::SDLSoundSystem::SetMute(bool state)

@@ -2,6 +2,7 @@
 #include <Command.h>
 #include <RigidbodyComponent.h>
 #include <BoxColliderComponent.h>
+#include <ServiceManager.h>
 #include "ColliderLayers.h"
 
 namespace aze
@@ -25,6 +26,7 @@ namespace aze
 				m_pRigidbody->SetIsOnGround(false);
 				auto pBoxColl = m_pRigidbody->GetGameObject()->GetComponent<BoxColliderComponent>();
 				if (pBoxColl) pBoxColl->RemoveLayerFromMask(layers::L_PLATFORM);
+				ServiceManager::GetInstance().GetSoundSystem().Play("../Data/Jump.wav", 1.f);
 			}
 		}
 	private:

@@ -192,13 +192,6 @@ void aze::LevelThree(Scene& scene)
 
 void aze::Level(Scene& scene, const std::string& levelFilePath)
 {
-	// Audio
-#if _DEBUG
-	ServiceManager::GetInstance().RegisterSoundSystem(std::make_unique<SoundSystemLogger>(std::make_unique<SDLSoundSystem>()));
-#else
-	ServiceManager::GetInstance().RegisterSoundSystem(std::make_unique<SDLSoundSystem>());
-#endif
-
 	auto defaultFont = ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
 
 	// FPS
@@ -325,13 +318,11 @@ void aze::Level(Scene& scene, const std::string& levelFilePath)
 	inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ -1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_LEFT),OnButtonPressed });
 	inputManager.BindCommand(std::make_unique<JumpCommand>(bobRigidBody, jumpForce), KeyboardKey{ static_cast<KeyboardButton>(SDLK_UP),OnButtonPressed });
 
-	if (bubObj == nullptr)
-	{
-		// If we are alone, bind controller commands aswell
-		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ 1,0 }, movementSpeed), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_RIGHT),OnButtonPressed });
-		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ -1,0 }, movementSpeed), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_LEFT),OnButtonPressed });
-		inputManager.BindCommand(std::make_unique<JumpCommand>(bobRigidBody, jumpForce), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_UP),OnButtonPressed });
-	}
+	ControllerIdx bobControllerIdx{bubObj == nullptr ? static_cast<ControllerIdx>(0) : static_cast<ControllerIdx>(1)};
+	// If we are alone, bind controller commands aswell
+	inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ 1,0 }, movementSpeed), ControllerKey{ bobControllerIdx,static_cast<ControllerButton>(GamepadButton::DPAD_RIGHT),OnButtonPressed });
+	inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ -1,0 }, movementSpeed), ControllerKey{ bobControllerIdx,static_cast<ControllerButton>(GamepadButton::DPAD_LEFT),OnButtonPressed });
+	inputManager.BindCommand(std::make_unique<JumpCommand>(bobRigidBody, jumpForce), ControllerKey{ bobControllerIdx,static_cast<ControllerButton>(GamepadButton::DPAD_UP),OnButtonPressed });
 
 	// Enemies
 	constexpr float enemySpeed{ 30.f };
@@ -355,19 +346,6 @@ void aze::Level(Scene& scene, const std::string& levelFilePath)
 	// General input
 	inputManager.BindCommand(std::make_unique<MuteCommand>(&ServiceManager::GetInstance().GetSoundSystem()), KeyboardKey{ static_cast<KeyboardButton>(SDLK_m),OnButtonDown });
 	inputManager.BindCommand(std::make_unique<SkipLevelCommand>(), KeyboardKey{ static_cast<KeyboardButton>(SDLK_l),OnButtonDown });
-
-	// Controlls info
-	std::cout << "[INFO] CONTROLS\n"
-		<< "Player 1:\n"
-		<< "- Dpad: movement\n"
-		<< "Player 2:\n"
-		<< "- Arrow keys: movement\n"
-		<< "Misc:\n"
-		<< "- m: toggle mute sound\n"
-		<< "- l: skip to next level\n"
-		<< "Note:\n"
-		<< "Logging of the sound system will automatically happen in debug\n"
-		;
 }
 
 void aze::MainMenu(Scene& scene)
@@ -378,6 +356,9 @@ void aze::MainMenu(Scene& scene)
 	backGround_go->SetPosition(130.f, 130.f);
 
 	scene.CreateGameObject()->AddComponent<MainMenuGUIComponent>();
+
+	// General input
+	InputManager::GetInstance().BindCommand(std::make_unique<MuteCommand>(&ServiceManager::GetInstance().GetSoundSystem()), KeyboardKey{static_cast<KeyboardButton>(SDLK_m),OnButtonDown});
 }
 
 void aze::TestScene(Scene& scene)
@@ -411,4 +392,35 @@ void aze::TestScene(Scene& scene)
 		inputManager.BindCommand(std::make_unique<MoveCommand>(secondMovementComp, vec2{ 0,-1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_w),OnButtonPressed });
 		inputManager.BindCommand(std::make_unique<MoveCommand>(secondMovementComp, vec2{ 0,1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_s),OnButtonPressed });
 	}
+}
+
+void aze::full_load()
+{
+	// Audio
+#if _DEBUG
+	ServiceManager::GetInstance().RegisterSoundSystem(std::make_unique<SoundSystemLogger>(std::make_unique<SDLSoundSystem>()));
+#else
+	ServiceManager::GetInstance().RegisterSoundSystem(std::make_unique<SDLSoundSystem>());
+#endif
+	// init gamemanager
+	GameManager::GetInstance();
+
+	SceneManager::GetInstance().CreateScene("MainMenu", MainMenu);
+	SceneManager::GetInstance().CreateScene("Level1", LevelOne);
+	SceneManager::GetInstance().CreateScene("Level2", LevelTwo);
+	SceneManager::GetInstance().CreateScene("Level3", LevelThree);
+	//SceneManager::GetInstance().CreateScene("TestScene",TestScene);
+
+	// Controlls info
+	std::cout << "[INFO] CONTROLS\n"
+		<< "Player 1:\n"
+		<< "- Dpad: movement\n"
+		<< "Player 2:\n"
+		<< "- Arrow keys: movement\n"
+		<< "Misc:\n"
+		<< "- m: toggle mute sound\n"
+		<< "- l: skip to next level\n"
+		<< "Note:\n"
+		<< "Logging of the sound system will automatically happen in debug\n"
+		;
 }

@@ -6,6 +6,7 @@
 #include "GameManager.h"
 #include <SceneManager.h>
 #include <iostream>
+#include "ScoreSaver.h"
 
 // IDLE
 aze::IdleState::IdleState(PlayerComponent* pPlayerComponent)
