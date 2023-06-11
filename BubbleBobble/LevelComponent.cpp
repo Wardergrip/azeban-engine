@@ -24,7 +24,7 @@ inline bool CheckForBlue(const SDL_Color& col)
 }
 inline bool CheckForGreen(const SDL_Color& col)
 {
-	return (col.r == 0) && (col.g >= 255) && (col.b >= 255);
+	return (col.r == 0) && (col.g >= 255) && (col.b >= 0);
 }
 
 

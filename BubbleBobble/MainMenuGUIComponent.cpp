@@ -1,6 +1,7 @@
 #include "MainMenuGUIComponent.h"
 #include "../imgui/imgui.h"
 #include "SceneManager.h"
+#include "GameManager.h"
 #include <sstream>
 
 void aze::MainMenuGUIComponent::OnGUI()
@@ -17,6 +18,9 @@ void aze::MainMenuGUIComponent::OnGUI()
 
     if (ImGui::Button("Single player"))
     {
+        // First tell the game manager what gamemode it is
+        GameManager::GetInstance().SetPlayerMode(PlayerMode::singlePlayer);
+        // Then load the scene with this information
         SceneManager::GetInstance().SetActiveScene("Level1");
         // After loading, this does not longer exist.
         ImGui::End();
@@ -24,11 +28,23 @@ void aze::MainMenuGUIComponent::OnGUI()
     }
     if (ImGui::Button("Co-op"))
     {
-
+        // First tell the game manager what gamemode it is
+        GameManager::GetInstance().SetPlayerMode(PlayerMode::coop);
+        // Then load the scene with this information
+        SceneManager::GetInstance().SetActiveScene("Level1");
+        // After loading, this does not longer exist.
+        ImGui::End();
+        return;
     }
     if (ImGui::Button("Versus"))
     {
-
+        // First tell the game manager what gamemode it is
+        GameManager::GetInstance().SetPlayerMode(PlayerMode::versus);
+        // Then load the scene with this information
+        SceneManager::GetInstance().SetActiveScene("Level1");
+        // After loading, this does not longer exist.
+        ImGui::End();
+        return;
     }
     if (ImGui::Button("Score"))
     {

@@ -202,26 +202,55 @@ void aze::LevelOne(Scene& scene)
 		levelObj->AddComponent<LevelComponent>(&imageParser);
 	}
 
-	// Bub
-	/*auto bubObj = new GameObject(&scene);
-	auto bubSpawnPoint = GameManager::GetInstance().GetBubSpawnPoint();
-	if (bubSpawnPoint)
+	// Input/controls
+	constexpr float movementSpeed{ 50.f };
+	constexpr float jumpForce{ 10.0f };
+
+	InputManager& inputManager = InputManager::GetInstance();
+
+	// Players
+	GameObject* bobObj{ nullptr };
+	GameObject* bubObj{ nullptr };
+	auto playerMode = GameManager::GetInstance().GetPlayerMode();
+	switch (playerMode)
 	{
-		const auto& pos = bubSpawnPoint->GetTransform().GetWorldPosition();
-		bubObj->SetPosition(pos.x,pos.y);
+	case PlayerMode::singlePlayer:
+		break;
+	case PlayerMode::coop:
+	case PlayerMode::versus:
+		bubObj = scene.CreateGameObject();
+		break;
 	}
-	else bobObj->SetPosition(100, 200);
-	bubObj->AddComponent<RenderComponent>();
-	bubObj->AddComponent<TextureObject>("Bub.png");
-	auto bubMovement = bubObj->AddComponent<MovementComponent>();
-	auto bubLives = bubObj->AddComponent<LivesComponent>();
-	auto bubScore = bubObj->AddComponent<ScoreComponent>();
-	bubObj->AddComponent<BoxColliderComponent>(32.f, 32.f)->SetLayer(layers::L_PLAYER);
-	bubObj->AddComponent<RigidbodyComponent>();
-	scene.Adopt(bubObj);*/
+
+	// Bub
+	if (bubObj)
+	{
+		auto bubSpawnPoint = GameManager::GetInstance().GetBubSpawnPoint();
+		if (bubSpawnPoint)
+		{
+			const auto& pos = bubSpawnPoint->GetTransform().GetWorldPosition();
+			bubObj->SetPosition(pos.x, pos.y);
+		}
+		else bubObj->SetPosition(100, 200);
+		bubObj->AddComponent<RenderComponent>();
+		bubObj->AddComponent<TextureObject>("Bub.png");
+		auto bubMovement = bubObj->AddComponent<MovementComponent>();
+		bubObj->AddComponent<LivesComponent>();
+		bubObj->AddComponent<ScoreComponent>();
+		auto bubBoxColl = bubObj->AddComponent<BoxColliderComponent>(32.f, 32.f);
+		bubBoxColl->SetLayer(layers::L_PLAYER);
+		bubBoxColl->RemoveLayerFromMask(layers::L_PLAYER);
+		auto bubRigidBody = bubObj->AddComponent<RigidbodyComponent>();
+		bubObj->AddComponent<LandOnPlatformComponent>(bubBoxColl, bubRigidBody);
+
+		// Bub Input
+		inputManager.BindCommand(std::make_unique<MoveCommand>(bubMovement, vec2{ 1,0 }, movementSpeed), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_RIGHT),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveCommand>(bubMovement, vec2{ -1,0 }, movementSpeed), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_LEFT),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<JumpCommand>(bubRigidBody, jumpForce), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_UP),OnButtonPressed });
+	}
 
 	// Bob
-	auto bobObj = new GameObject(&scene);
+	bobObj = scene.CreateGameObject();
 	auto bobSpawnPoint = GameManager::GetInstance().GetBobSpawnPoint();
 	if (bobSpawnPoint)
 	{
@@ -232,57 +261,41 @@ void aze::LevelOne(Scene& scene)
 	bobObj->AddComponent<RenderComponent>();
 	bobObj->AddComponent<TextureObject>("Bob.png");
 	auto bobMovement = bobObj->AddComponent<MovementComponent>();
-	auto bobLives = bobObj->AddComponent<LivesComponent>();
-	auto bobScore = bobObj->AddComponent<ScoreComponent>();
+	bobObj->AddComponent<LivesComponent>();
+	bobObj->AddComponent<ScoreComponent>();
 	auto bobBoxColl = bobObj->AddComponent<BoxColliderComponent>(32.f, 32.f);
 	bobBoxColl->SetLayer(layers::L_PLAYER);
+	bobBoxColl->RemoveLayerFromMask(layers::L_PLAYER);
 	auto bobRigidBody = bobObj->AddComponent<RigidbodyComponent>();
 	bobObj->AddComponent<LandOnPlatformComponent>(bobBoxColl,bobRigidBody);
-	scene.Adopt(bobObj);
 
-	// Input bindings
+	// Bob input
+	inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ 1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_RIGHT),OnButtonPressed });
+	inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ -1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_LEFT),OnButtonPressed });
+	inputManager.BindCommand(std::make_unique<JumpCommand>(bobRigidBody, jumpForce), KeyboardKey{ static_cast<KeyboardButton>(SDLK_UP),OnButtonPressed });
+
+	if (bubObj == nullptr)
 	{
-		constexpr float movementSpeed{ 50.f };
-		constexpr float jumpForce{ 10.0f };
-
-		InputManager& inputManager = InputManager::GetInstance();
-		// bub
-		/*inputManager.BindCommand(std::make_unique<MoveCommand>(bubMovement, vec2{ 1,0 }, movementSpeed * 2.f), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_RIGHT),OnButtonPressed });
-		inputManager.BindCommand(std::make_unique<MoveCommand>(bubMovement, vec2{ -1,0 }, movementSpeed * 2.f), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_LEFT),OnButtonPressed });
-		inputManager.BindCommand(std::make_unique<MoveCommand>(bubMovement, vec2{ 0,-1 }, movementSpeed * 2.f), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_UP),OnButtonPressed });
-		inputManager.BindCommand(std::make_unique<MoveCommand>(bubMovement, vec2{ 0,1 }, movementSpeed * 2.f), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_DOWN),OnButtonPressed });
-
-		inputManager.BindCommand(std::make_unique<RemoveLifeCommand>(bubLives), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::A),OnButtonDown });
-		inputManager.BindCommand(std::make_unique<AddScoreCommand>(bubScore), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::B),OnButtonDown });*/
-
-		// bob
-		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ 1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_RIGHT),OnButtonPressed });
-		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ -1,0 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_LEFT),OnButtonPressed });
-		inputManager.BindCommand(std::make_unique<JumpCommand>(bobRigidBody, jumpForce), KeyboardKey{static_cast<KeyboardButton>(SDLK_UP),OnButtonPressed});
-		//inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ 0,1 }, movementSpeed), KeyboardKey{ static_cast<KeyboardButton>(SDLK_DOWN),OnButtonPressed });
-
-		inputManager.BindCommand(std::make_unique<RemoveLifeCommand>(bobLives), KeyboardKey{ static_cast<KeyboardButton>(SDLK_SPACE),OnButtonDown });
-		inputManager.BindCommand(std::make_unique<AddScoreCommand>(bobScore), KeyboardKey{ static_cast<KeyboardButton>(SDLK_v),OnButtonDown });
-
-		inputManager.BindCommand(std::make_unique<AudioPlayCommand>(&ServiceManager::GetInstance().GetSoundSystem(), "../Data/Jump.wav", 1.0f), KeyboardKey{ static_cast<KeyboardButton>(SDLK_g),OnButtonDown });
-		inputManager.BindCommand(std::make_unique<MuteCommand>(&ServiceManager::GetInstance().GetSoundSystem()), KeyboardKey{ static_cast<KeyboardButton>(SDLK_m),OnButtonDown });
-
-		std::cout << "[INFO] CONTROLS\n"
-			<< "Player 1:\n"
-			<< "- Dpad: movement\n"
-			<< "- A: remove life\n"
-			<< "- B: add score\n"
-			<< "Player 2:\n"
-			<< "- Arrow keys: movement\n"
-			<< "- Space: remove life\n"
-			<< "- v: add score\n"
-			<< "Misc:\n"
-			<< "- g: play test sound\n"
-			<< "- m: toggle mute sound\n"
-			<< "Note:\n"
-			<< "Logging of the sound system will automatically happen in debug\n"
-			;
+		// If we are alone, bind controller commands aswell
+		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ 1,0 }, movementSpeed), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_RIGHT),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<MoveCommand>(bobMovement, vec2{ -1,0 }, movementSpeed), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_LEFT),OnButtonPressed });
+		inputManager.BindCommand(std::make_unique<JumpCommand>(bobRigidBody, jumpForce), ControllerKey{ ControllerIdx{0},static_cast<ControllerButton>(GamepadButton::DPAD_UP),OnButtonPressed });
 	}
+
+	// General input
+	inputManager.BindCommand(std::make_unique<MuteCommand>(&ServiceManager::GetInstance().GetSoundSystem()), KeyboardKey{ static_cast<KeyboardButton>(SDLK_m),OnButtonDown });
+
+	// Controlls info
+	std::cout << "[INFO] CONTROLS\n"
+		<< "Player 1:\n"
+		<< "- Dpad: movement\n"
+		<< "Player 2:\n"
+		<< "- Arrow keys: movement\n"
+		<< "Misc:\n"
+		<< "- m: toggle mute sound\n"
+		<< "Note:\n"
+		<< "Logging of the sound system will automatically happen in debug\n"
+		;
 }
 
 void aze::MainMenu(Scene& scene)

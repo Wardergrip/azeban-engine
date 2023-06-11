@@ -23,6 +23,16 @@ aze::GameObject* aze::GameManager::GetBubSpawnPoint() const
 	return m_pBubSpawnPoint;
 }
 
+void aze::GameManager::SetPlayerMode(PlayerMode mode)
+{
+	m_Playermode = mode;
+}
+
+aze::PlayerMode aze::GameManager::GetPlayerMode() const
+{
+	return m_Playermode;
+}
+
 void aze::GameManager::OnNotify(Ev_Destroy<GameObject>* data)
 {
 	if (data->GetEntity() == m_pBobSpawnPoint)
