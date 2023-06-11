@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="ImageParser.cpp" />
     <ClCompile Include="LevelComponent.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="ColliderLayers.h" />
     <ClInclude Include="Ev_AddScore.h" />
     <ClInclude Include="Ev_PlayerDied.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="ImageParser.h" />
     <ClInclude Include="JumpCommand.h" />

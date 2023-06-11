@@ -5,8 +5,28 @@
 #include "TextureObject.h"
 #include "BoxColliderComponent.h"
 #include "ColliderLayers.h"
+#include "GameManager.h"
 
 #include <iostream>
+
+
+inline bool CheckForWhite(const SDL_Color& col)
+{
+	return (col.r >= 255) && (col.g >= 255) && (col.b >= 255);
+}
+inline bool CheckForCyan(const SDL_Color& col)
+{
+	return (col.r == 0) && (col.g >= 255) && (col.b >= 255);
+}
+inline bool CheckForBlue(const SDL_Color& col)
+{
+	return (col.r == 0) && (col.g == 0) && (col.b >= 255);
+}
+inline bool CheckForGreen(const SDL_Color& col)
+{
+	return (col.r == 0) && (col.g >= 255) && (col.b >= 255);
+}
+
 
 aze::LevelComponent::LevelComponent(GameObject* pParent, ImageParser* pImageParser)
 	:Component(pParent)
@@ -15,24 +35,38 @@ aze::LevelComponent::LevelComponent(GameObject* pParent, ImageParser* pImagePars
 	GetGameObject()->SetPosition(0, 0);
 	auto pixels = pImageParser->GetPixels();
 	m_pGrid = std::make_unique<Grid>(pImageParser->GetWidth(), pImageParser->GetHeight(), tileSize, tileSize);
-	int p{0};
 	for (auto& pixel : pixels)
 	{
 		// LEVEL 
-		if (pixel.col.r >= 250 && pixel.col.g >= 250 && pixel.col.b >= 250) // White
+		if (CheckForWhite(pixel.col))
 		{
 			auto tile = CreateTile(tileSize, m_pGrid->GetPoint(pixel.point.x, pixel.point.y));
 
 			m_pTiles.push_back(tile);
 		}
 		// PLATFORMS
-		else if (pixel.col.r <= FLT_EPSILON && pixel.col.g >= 250 && pixel.col.b >= 250)
+		else if (CheckForCyan(pixel.col))
 		{
 			auto tile = CreateTile(tileSize, m_pGrid->GetPoint(pixel.point.x, pixel.point.y));
 			tile->GetComponent<BoxColliderComponent>()->SetLayer(layers::L_PLATFORM);
 			m_pTiles.push_back(tile);
 		}
-		++p;
+		// BOB SPAWN (BLUE)
+		else if (CheckForBlue(pixel.col))
+		{
+			auto spawnPoint = GetGameObject()->GetScene()->CreateGameObject();
+			const auto& pos = m_pGrid->GetPoint(pixel.point.x, pixel.point.y);
+			spawnPoint->SetPosition(pos.x, pos.y);
+			GameManager::GetInstance().SetBobSpawnPoint(spawnPoint);
+		}
+		// BUB SPAWN (GREEN)
+		else if (CheckForGreen(pixel.col))
+		{
+			auto spawnPoint = GetGameObject()->GetScene()->CreateGameObject();
+			const auto& pos = m_pGrid->GetPoint(pixel.point.x, pixel.point.y);
+			spawnPoint->SetPosition(pos.x, pos.y);
+			GameManager::GetInstance().SetBubSpawnPoint(spawnPoint);
+		}
 	}
 }
 

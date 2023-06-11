@@ -7,6 +7,7 @@
 #include "ResourceManager.h"
 #include "ServiceManager.h"
 #include "FPS.h"
+#include "GameManager.h"
 
 // Services
 #include "SoundSystemLogger.h"
@@ -208,7 +209,13 @@ void aze::LevelOne()
 
 	// Bub
 	/*auto bubObj = new GameObject(&scene);
-	bubObj->SetPosition(100, 100);
+	auto bubSpawnPoint = GameManager::GetInstance().GetBubSpawnPoint();
+	if (bubSpawnPoint)
+	{
+		const auto& pos = bubSpawnPoint->GetTransform().GetWorldPosition();
+		bubObj->SetPosition(pos.x,pos.y);
+	}
+	else bobObj->SetPosition(100, 200);
 	bubObj->AddComponent<RenderComponent>();
 	bubObj->AddComponent<TextureObject>("Bub.png");
 	auto bubMovement = bubObj->AddComponent<MovementComponent>();
@@ -220,7 +227,13 @@ void aze::LevelOne()
 
 	// Bob
 	auto bobObj = new GameObject(&scene);
-	bobObj->SetPosition(100, 200);
+	auto bobSpawnPoint = GameManager::GetInstance().GetBobSpawnPoint();
+	if (bobSpawnPoint)
+	{
+		const auto& pos = bobSpawnPoint->GetTransform().GetWorldPosition();
+		bobObj->SetPosition(pos.x,pos.y);
+	}
+	else bobObj->SetPosition(100, 200);
 	bobObj->AddComponent<RenderComponent>();
 	bobObj->AddComponent<TextureObject>("Bob.png");
 	auto bobMovement = bobObj->AddComponent<MovementComponent>();
